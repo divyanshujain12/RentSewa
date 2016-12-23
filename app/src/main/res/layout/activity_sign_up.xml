@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"
+    android:id="@+id/activity_login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/custom_toolbar_with_white_title" />
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/fifteen_dp"
+            android:src="@drawable/rentsewa_logo" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo"
+            android:layout_marginBottom="@dimen/eighty_dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/fifteen_dp">
+
+                <com.neopixl.pixlui.components.textview.TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/thirty_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/user_name"
+                    android:textSize="@dimen/eighteen_sp"
+                    pixlui:typeface="Roboto-Medium.ttf" />
+
+                <com.neopixl.pixlui.components.edittext.EditText
+                    android:id="@+id/usernameET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/two_dp"
+                    android:background="@drawable/rounded_corner_light_grey"
+                    android:gravity="center_vertical"
+                    android:hint="@string/your_user_name_here"
+                    android:inputType="text"
+                    android:padding="@dimen/fifteen_dp"
+                    android:textSize="@dimen/sixteen_sp"
+                    pixlui:typeface="Roboto-Regular.ttf" />
+
+                <com.neopixl.pixlui.components.textview.TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ten_dp"
+                    android:gravity="center_vertical"
+                    android:text="E-mail Address"
+                    android:textSize="@dimen/eighteen_sp"
+                    pixlui:typeface="Roboto-Medium.ttf" />
+
+                <com.neopixl.pixlui.components.edittext.EditText
+                    android:id="@+id/emailET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/two_dp"
+                    android:background="@drawable/rounded_corner_light_grey"
+                    android:gravity="center_vertical"
+                    android:hint="@string/your_email_address_here"
+                    android:inputType="textEmailAddress"
+                    android:padding="@dimen/fifteen_dp"
+                    android:textSize="@dimen/sixteen_sp"
+                    pixlui:typeface="Roboto-Regular.ttf" />
+
+                <com.neopixl.pixlui.components.textview.TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ten_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/password"
+                    android:textSize="@dimen/eighteen_sp"
+                    pixlui:typeface="Roboto-Medium.ttf" />
+
+                <com.neopixl.pixlui.components.edittext.EditText
+                    android:id="@+id/passwordET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/two_dp"
+                    android:background="@drawable/rounded_corner_light_grey"
+                    android:gravity="center_vertical"
+                    android:hint="@string/your_password_here"
+                    android:inputType="textPassword"
+                    android:padding="@dimen/fifteen_dp"
+                    android:textSize="@dimen/sixteen_sp"
+                    pixlui:typeface="Roboto-Regular.ttf" />
+
+                <com.neopixl.pixlui.components.textview.TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ten_dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/re_enter_password"
+                    android:textSize="@dimen/eighteen_sp"
+                    pixlui:typeface="Roboto-Medium.ttf" />
+
+                <com.neopixl.pixlui.components.edittext.EditText
+                    android:id="@+id/confPasswordET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/two_dp"
+                    android:background="@drawable/rounded_corner_light_grey"
+                    android:gravity="center_vertical"
+                    android:hint="@string/your_password_here"
+                    android:inputType="textPassword"
+                    android:padding="@dimen/fifteen_dp"
+                    android:textSize="@dimen/sixteen_sp"
+                    pixlui:typeface="Roboto-Regular.ttf" />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <com.neopixl.pixlui.components.button.Button
+        android:id="@+id/signUpBT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="@dimen/fifteen_dp"
+        android:background="@drawable/rounded_shape_blue_button"
+        android:gravity="center"
+        android:text="@string/create_account"
+        android:textColor="@color/white"
+        android:textSize="@dimen/eighteen_sp"
+        pixlui:typeface="Roboto-Medium.ttf" />
+</FrameLayout>

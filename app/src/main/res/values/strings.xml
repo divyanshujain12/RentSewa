@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Rent Sewa</string>
+    <string name="working_please_wait">Working! Please Wait...</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="login_as_vendor">Login As Vendor</string>
+    <string name="login_as_visitor">Login As Visitor</string>
+    <string name="or">or</string>
+    <string name="visitor_signup">Visitor Signup</string>
+    <string name="create_new_account">Create New Account</string>
+    <string name="user_name">Username</string>
+    <string name="your_user_name_here">Your Username Here</string>
+    <string name="password">Password</string>
+    <string name="your_password_here">Your password here</string>
+    <string name="forgot_password">FORGOT PASSWORD?</string>
+    <string name="login">Login</string>
+    <string name="vendor_login">Vendor Login</string>
+    <string name="visitor_login">Visitor Login</string>
+    <string name="your_email_address_here">Your Email Address Here</string>
+    <string name="re_enter_password">Re-enter Password</string>
+    <string name="create_account">Create Account</string>
+    <string name="categories">Categories</string>
+    <string name="kothi_for_rent">Kothi For Rent</string>
+    <string name="view_detail">View Detail</string>
+    <string name="sub_category_name">Sub Category Name</string>
+    <string name="category_name">Category Name</string>
+    <string name="brand">Brand</string>
+    <string name="local">Local</string>
+    <string name="price">Price</string>
+    <string name="category">Category</string>
+    <string name="sub_category">Sub Category</string>
+    <string name="added">Added</string>
+    <string name="views">Views</string>
+    <string name="vendor_rating">Vendor Rating</string>
+    <string name="description">Description</string>
+    <string name="dummy_desc">4 Bedroom kothi for rent in delta 3, Greater noida \nContact: 7812413521</string>
+    <string name="product_name">Product Name</string>
+</resources>

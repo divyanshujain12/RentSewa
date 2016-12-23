@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"
+    android:layout_width="match_parent"
+    android:layout_margin="@dimen/five_dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/categoryIV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/property" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/black_gradient_background" />
+
+    <com.neopixl.pixlui.components.textview.TextView
+        android:id="@+id/categoryNameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="category name"
+        android:textSize="@dimen/sixteen_sp"
+        android:textColor="@color/white"
+        android:padding="@dimen/eight_dp"
+        pixlui:typeface="Roboto-Medium.ttf" />
+</FrameLayout>
