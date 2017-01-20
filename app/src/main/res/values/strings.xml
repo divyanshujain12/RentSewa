@@ -3,7 +3,18 @@
     <string name="working_please_wait">Working! Please Wait...</string>
     <string name="no_internet_connection">No Internet Connection</string>
     <string name="login_as_vendor">Login As Vendor</string>
-    <string name="login_as_visitor">Login As Visitor</string>
+    <string name="login_as_visitor">LOGIN AS VISITOR</string>
+    <string name="err_user_name">Enter user name</string>
+    <string name="err_enter_name">Enter Your Name!</string>
+    <string name="err_pass">Enter Your Password!</string>
+    <string name="err_email">Enter Your Email</string>
+    <string name="err_first_name">Enter First Name!</string>
+    <string name="err_status">Enter Your Status!</string>
+    <string name="err_last_name">Enter Last Name!</string>
+    <string name="err_phone_number">Enter Your Phone Number!</string>
+    <string name="err_dob">Enter Date Of Birth!</string>
+    <string name="err_re_enter_pass">Enter Second Password</string>
+    <string name="err_password_mismatch">Password Mismatch!</string>
     <string name="or">or</string>
     <string name="visitor_signup">Visitor Signup</string>
     <string name="create_new_account">Create New Account</string>
@@ -33,5 +44,12 @@
     <string name="vendor_rating">Vendor Rating</string>
     <string name="description">Description</string>
     <string name="dummy_desc">4 Bedroom kothi for rent in delta 3, Greater noida \nContact: 7812413521</string>
+
     <string name="product_name">Product Name</string>
+    <string name="your_phone_number_here">Youe Phone Number Here</string>
+    <string name="update">Update</string>
+    <string name="old_password">Old Password</string>
+    <string name="congratulation">Congratulation</string>
+
+    <string name="facebook_app_id">1372825542745172</string>
 </resources>
