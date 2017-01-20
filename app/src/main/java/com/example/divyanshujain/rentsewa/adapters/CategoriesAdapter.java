@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.divyanshujain.rentsewa.Interfaces.RecyclerViewClick;
+import com.example.divyanshujain.rentsewa.Models.CategoryModel;
 import com.example.divyanshujain.rentsewa.R;
+import com.example.divyanshujain.rentsewa.Utils.ImageLoading;
 import com.neopixl.pixlui.components.textview.TextView;
 
 import java.util.ArrayList;
@@ -19,13 +21,15 @@ import java.util.ArrayList;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.MyViewHolder> {
     private Context context;
-    private ArrayList<String> arrayList;
+    private ArrayList<CategoryModel> categoryModels;
     private RecyclerViewClick recyclerViewClick;
+    private ImageLoading imageLoading;
 
-    public CategoriesAdapter(Context context, ArrayList<String> arrayList, RecyclerViewClick recyclerViewClick) {
+    public CategoriesAdapter(Context context, ArrayList<CategoryModel> arrayList, RecyclerViewClick recyclerViewClick) {
         this.recyclerViewClick = recyclerViewClick;
-        this.arrayList = arrayList;
+        this.categoryModels = arrayList;
         this.context = context;
+        imageLoading = new ImageLoading(context, 5);
     }
 
     @Override
@@ -39,6 +43,9 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.My
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
+        CategoryModel categoryModel = categoryModels.get(position);
+        imageLoading.LoadImage(categoryModel.getCat_icon(), holder.categoryIV, null);
+        holder.categoryNameTV.setText(categoryModel.getCat_name());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,7 +57,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.My
 
     @Override
     public int getItemCount() {
-        return 10;
+        return categoryModels.size();
     }
 
     protected class MyViewHolder extends RecyclerView.ViewHolder {
@@ -63,6 +70,11 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.My
             categoryNameTV = (TextView) itemView.findViewById(R.id.categoryNameTV);
 
         }
+    }
+
+    public void addItem(ArrayList<CategoryModel> categoryModels){
+        this.categoryModels = categoryModels;
+        notifyDataSetChanged();
     }
 }
 
