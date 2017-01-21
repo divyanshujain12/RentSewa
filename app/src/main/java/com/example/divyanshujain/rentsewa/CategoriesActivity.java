@@ -70,7 +70,8 @@ public class CategoriesActivity extends BaseActivity {
         super.onClickItem(position, view);
 
         Intent intent = new Intent(this, SubCategoriesActivity.class);
-        intent.putExtra(Constants.DATA,categoryModels.get(position));
+        intent.putExtra(Constants.NAME,categoryModels.get(position).getCat_name());
+        intent.putExtra(Constants.DATA,categoryModels.get(position).getSubcatData());
         startActivity(intent);
     }
 }

@@ -13,26 +13,26 @@ public class SubCategoryModel implements Parcelable {
     public SubCategoryModel(){
 
     }
-    public final static Parcelable.Creator<SubCategoryModel> CREATOR = new Creator<SubCategoryModel>() {
 
 
-        @SuppressWarnings({
-                "unchecked"
-        })
+    protected SubCategoryModel(Parcel in) {
+        id = in.readString();
+        cat_id = in.readString();
+        subcat_name = in.readString();
+        slug = in.readString();
+        pcount = in.readInt();
+    }
+
+    public static final Creator<SubCategoryModel> CREATOR = new Creator<SubCategoryModel>() {
+        @Override
         public SubCategoryModel createFromParcel(Parcel in) {
-            SubCategoryModel instance = new SubCategoryModel();
-            instance.id = ((String) in.readValue((String.class.getClassLoader())));
-            instance.cat_id = ((String) in.readValue((String.class.getClassLoader())));
-            instance.subcat_name = ((String) in.readValue((String.class.getClassLoader())));
-            instance.slug = ((String) in.readValue((String.class.getClassLoader())));
-            instance.pcount = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            return instance;
+            return new SubCategoryModel(in);
         }
 
+        @Override
         public SubCategoryModel[] newArray(int size) {
-            return (new SubCategoryModel[size]);
+            return new SubCategoryModel[size];
         }
-
     };
 
     public String getId() {
@@ -75,16 +75,18 @@ public class SubCategoryModel implements Parcelable {
         this.pcount = pcount;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(id);
-        dest.writeValue(cat_id);
-        dest.writeValue(subcat_name);
-        dest.writeValue(slug);
-        dest.writeValue(pcount);
-    }
 
+    @Override
     public int describeContents() {
         return 0;
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(cat_id);
+        dest.writeString(subcat_name);
+        dest.writeString(slug);
+        dest.writeInt(pcount);
+    }
 }

@@ -17,26 +17,24 @@ public class CategoryModel implements Parcelable {
 
     }
 
-    public final static Parcelable.Creator<CategoryModel> CREATOR = new Creator<CategoryModel>() {
+    protected CategoryModel(Parcel in) {
+        id = in.readString();
+        cat_name = in.readString();
+        slug = in.readString();
+        cat_icon = in.readString();
+        subcatData = in.createTypedArrayList(SubCategoryModel.CREATOR);
+    }
 
-
-        @SuppressWarnings({
-                "unchecked"
-        })
+    public static final Creator<CategoryModel> CREATOR = new Creator<CategoryModel>() {
+        @Override
         public CategoryModel createFromParcel(Parcel in) {
-            CategoryModel instance = new CategoryModel();
-            instance.id = ((String) in.readValue((String.class.getClassLoader())));
-            instance.cat_name = ((String) in.readValue((String.class.getClassLoader())));
-            instance.slug = ((String) in.readValue((String.class.getClassLoader())));
-            instance.cat_icon = ((String) in.readValue((String.class.getClassLoader())));
-            instance.subcatData = ((ArrayList) in.readValue((ArrayList.class.getClassLoader())));
-            return instance;
+            return new CategoryModel(in);
         }
 
+        @Override
         public CategoryModel[] newArray(int size) {
-            return (new CategoryModel[size]);
+            return new CategoryModel[size];
         }
-
     };
 
     public String getId() {
@@ -79,16 +77,18 @@ public class CategoryModel implements Parcelable {
         this.subcatData = subcatData;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(id);
-        dest.writeValue(cat_name);
-        dest.writeValue(slug);
-        dest.writeValue(cat_icon);
-        dest.writeValue(subcatData);
-    }
 
+    @Override
     public int describeContents() {
         return 0;
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(cat_name);
+        dest.writeString(slug);
+        dest.writeString(cat_icon);
+        dest.writeTypedList(subcatData);
+    }
 }

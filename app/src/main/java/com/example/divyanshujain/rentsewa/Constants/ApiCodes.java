@@ -12,4 +12,5 @@ public interface ApiCodes {
     int FORGOT_PASSWORD = 103;
     int CHANGE_PASSWORD = 104;
     int GET_CATEGORIES = 105;
+
 }
