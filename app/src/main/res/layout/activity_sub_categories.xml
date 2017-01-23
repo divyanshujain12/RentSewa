@@ -20,13 +20,13 @@
         android:layout_marginBottom="@dimen/fifty_dp"/>
 </LinearLayout>
     <com.neopixl.pixlui.components.button.Button
-        android:id="@+id/loginAsVendorBT"
+        android:id="@+id/showAllBT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:gravity="center"
         android:layout_gravity="bottom"
-        android:text="@string/login_as_vendor"
+        android:text="@string/show_all"
         android:textColor="@color/white"
         android:textSize="@dimen/eighteen_sp"
         pixlui:typeface="Roboto-Medium.ttf" />

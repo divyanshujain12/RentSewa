@@ -8,18 +8,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.example.divyanshujain.rentsewa.Constants.ApiCodes;
 import com.example.divyanshujain.rentsewa.Constants.Constants;
 import com.example.divyanshujain.rentsewa.GlobalClasses.BaseActivity;
 import com.example.divyanshujain.rentsewa.Models.SubCategoryModel;
-import com.example.divyanshujain.rentsewa.Utils.CallWebService;
 import com.example.divyanshujain.rentsewa.Utils.CommonFunctions;
 import com.example.divyanshujain.rentsewa.adapters.SubCategoriesAdapter;
+import com.neopixl.pixlui.components.button.Button;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 public class SubCategoriesActivity extends BaseActivity {
 
@@ -29,6 +29,8 @@ public class SubCategoriesActivity extends BaseActivity {
     RecyclerView subCategoriesRV;
     @InjectView(R.id.activity_categories)
     LinearLayout activityCategories;
+    @InjectView(R.id.showAllBT)
+    Button showAllBT;
 
     private ArrayList<SubCategoryModel> subCategoryModels = new ArrayList<>();
     private SubCategoriesAdapter subCategoriesAdapter;
@@ -58,5 +60,10 @@ public class SubCategoriesActivity extends BaseActivity {
 
         Intent intent = new Intent(this, ProductDescriptionActivity.class);
         startActivity(intent);
+    }
+
+    @OnClick(R.id.showAllBT)
+    public void onClick() {
+
     }
 }

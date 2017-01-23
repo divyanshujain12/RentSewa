@@ -37,9 +37,9 @@
 
             <include layout="@layout/price_view" />
 
-               <include layout="@layout/category_view" />
+               <include layout="@layout/desc_category_view" />
 
-               <include layout="@layout/sub_category_view" />
+               <include layout="@layout/desc_sub_category_view" />
 
                <include layout="@layout/added_view" />
 

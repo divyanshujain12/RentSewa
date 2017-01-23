@@ -9,5 +9,8 @@ public interface API {
     String REGISTRATION = BASE + "registrationVendor";
     String LOGIN = BASE + "loginCombine";
     String GET_CATEGORIES = BASE + "getCategories";
+    String FILTER_CATEGORY = BASE + "filterCategory";
+    String CHANGE_PASSWORD = BASE + "changepassword";
+    String GET_CITIES = BASE + "getCurrentCities";
 
 }
