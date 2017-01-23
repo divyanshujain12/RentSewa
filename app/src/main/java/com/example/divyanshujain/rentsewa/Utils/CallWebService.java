@@ -45,12 +45,10 @@ public class CallWebService implements Response.ErrorListener, Response.Listener
 
         if (context != null && showProgressBar) {
             configProgressDialog(context);
-        }
-        else
+        } else
             instance.progressDialog = null;
         return instance;
     }
-
 
 
     public void hitJsonObjectRequestAPI(int requestType, final String url, JSONObject json, final ObjectResponseCallBack callBackInterface) {
@@ -97,9 +95,7 @@ public class CallWebService implements Response.ErrorListener, Response.Listener
     @Override
     public void onResponse(Object response) {
         MyApp.getInstance().getRequestQueue().getCache().invalidate(url, true);
-        if (progressDialog != null)
-            showDialog();
-
+        hideDialog();
         if (response instanceof JSONObject) {
             onJsonObjectResponse((JSONObject) response);
         } else if (response instanceof JSONArray) {
@@ -112,13 +108,18 @@ public class CallWebService implements Response.ErrorListener, Response.Listener
         progressDialog.show();
     }
 
+    private void hideDialog() {
+        if (progressDialog != null)
+            progressDialog.dismiss();
+    }
+
     private void onJsonObjectResponse(JSONObject response) {
         try {
             if (response.getBoolean(Constants.STATUS_CODE)) {
                 if (objectCallBackInterface != null)
                     objectCallBackInterface.onJsonObjectSuccess(response, apiCode);
 
-            }  else
+            } else
                 onError(response.getString(Constants.MESSAGE));
         } catch (final JSONException e) {
             onError(e.getMessage());
@@ -154,9 +155,7 @@ public class CallWebService implements Response.ErrorListener, Response.Listener
     }
 
     private void onError(String error) {
-
-        if (progressDialog != null)
-            showDialog();
+        hideDialog();
         if (objectCallBackInterface != null)
             objectCallBackInterface.onFailure(error, apiCode);
     }
@@ -173,6 +172,7 @@ public class CallWebService implements Response.ErrorListener, Response.Listener
         if (this.url.equals(url))
             MyApp.getInstance().cancelPendingRequests(url);
     }
+
     private static void configProgressDialog(Context context) {
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage(context.getString(R.string.working_please_wait));

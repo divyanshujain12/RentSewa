@@ -8,9 +8,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.example.divyanshujain.rentsewa.Constants.API;
+import com.example.divyanshujain.rentsewa.Constants.ApiCodes;
+import com.example.divyanshujain.rentsewa.Constants.Constants;
 import com.example.divyanshujain.rentsewa.GlobalClasses.BaseActivity;
+import com.example.divyanshujain.rentsewa.Models.CategoryModel;
+import com.example.divyanshujain.rentsewa.Utils.CallWebService;
 import com.example.divyanshujain.rentsewa.Utils.CommonFunctions;
+import com.example.divyanshujain.rentsewa.Utils.UniversalParser;
 import com.example.divyanshujain.rentsewa.adapters.CategoriesAdapter;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -27,6 +36,7 @@ public class CategoriesActivity extends BaseActivity {
     LinearLayout activityCategories;
 
     private CategoriesAdapter categoriesAdapter;
+    ArrayList<CategoryModel> categoryModels = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +48,30 @@ public class CategoriesActivity extends BaseActivity {
 
     private void initViews() {
         CommonFunctions.getInstance().configureToolbarWithOutBackButton(this, toolbarView, getString(R.string.categories));
-        categoriesAdapter = new CategoriesAdapter(this, new ArrayList<String>(), this);
+        categoriesAdapter = new CategoriesAdapter(this, categoryModels, this);
         categoriesRV.setLayoutManager(new GridLayoutManager(this, 2));
         categoriesRV.setAdapter(categoriesAdapter);
+
+        CallWebService.getInstance(this, true, ApiCodes.GET_CATEGORIES).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_CATEGORIES, null, this);
+    }
+
+
+    @Override
+    public void onJsonObjectSuccess(JSONObject response, int apiType) throws JSONException {
+        super.onJsonObjectSuccess(response, apiType);
+
+        categoryModels = UniversalParser.getInstance().parseJsonArrayWithJsonObject(response.getJSONArray(Constants.DATA), CategoryModel.class);
+        categoriesAdapter.addItem(categoryModels);
+
     }
 
     @Override
     public void onClickItem(int position, View view) {
         super.onClickItem(position, view);
 
-        startActivity(new Intent(this, SubCategoriesActivity.class));
+        Intent intent = new Intent(this, SubCategoriesActivity.class);
+        intent.putExtra(Constants.NAME,categoryModels.get(position).getCat_name());
+        intent.putExtra(Constants.DATA,categoryModels.get(position).getSubcatData());
+        startActivity(intent);
     }
 }

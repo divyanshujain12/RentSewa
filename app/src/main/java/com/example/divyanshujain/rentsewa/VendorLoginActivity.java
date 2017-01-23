@@ -78,7 +78,8 @@ public class VendorLoginActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.loginBT:
-                validateFields();
+                goToHome();
+                //validateFields();
                 break;
             case R.id.visitorSignupBT:
                 startActivity(new Intent(this, SignUpActivity.class));

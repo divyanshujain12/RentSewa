@@ -8,7 +8,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.example.divyanshujain.rentsewa.Constants.ApiCodes;
+import com.example.divyanshujain.rentsewa.Constants.Constants;
 import com.example.divyanshujain.rentsewa.GlobalClasses.BaseActivity;
+import com.example.divyanshujain.rentsewa.Models.SubCategoryModel;
+import com.example.divyanshujain.rentsewa.Utils.CallWebService;
 import com.example.divyanshujain.rentsewa.Utils.CommonFunctions;
 import com.example.divyanshujain.rentsewa.adapters.SubCategoriesAdapter;
 
@@ -26,7 +30,9 @@ public class SubCategoriesActivity extends BaseActivity {
     @InjectView(R.id.activity_categories)
     LinearLayout activityCategories;
 
+    private ArrayList<SubCategoryModel> subCategoryModels = new ArrayList<>();
     private SubCategoriesAdapter subCategoriesAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +43,13 @@ public class SubCategoriesActivity extends BaseActivity {
     }
 
     private void initViews() {
-        CommonFunctions.getInstance().configureToolbarWithBackButton(this, toolbarView, getString(R.string.category_name));
-        subCategoriesAdapter = new SubCategoriesAdapter(this, new ArrayList<String>(), this);
+        CommonFunctions.getInstance().configureToolbarWithBackButton(this, toolbarView, getIntent().getStringExtra(Constants.NAME));
+        subCategoryModels = getIntent().getParcelableArrayListExtra(Constants.DATA);
+        subCategoriesAdapter = new SubCategoriesAdapter(this, subCategoryModels, this);
         subCategoriesRV.setLayoutManager(new LinearLayoutManager(this));
         subCategoriesRV.setAdapter(subCategoriesAdapter);
+
+
     }
 
     @Override

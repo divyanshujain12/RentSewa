@@ -12,20 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/subCategoryIV"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/two_hundred_dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/property" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
             <com.neopixl.pixlui.components.textview.TextView
+                android:id="@+id/productNameTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -34,6 +22,17 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/sixteen_sp"
                 pixlui:typeface="Roboto-Medium.ttf" />
+
+        <com.neopixl.pixlui.components.textview.TextView
+            android:id="@+id/remainingProductsTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:padding="@dimen/five_dp"
+            android:text="@string/remaining_items"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fourteen_sp"
+            pixlui:typeface="Roboto-Regular.ttf" />
 
             <com.neopixl.pixlui.components.textview.TextView
                 android:layout_width="match_parent"
@@ -44,6 +43,5 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/sixteen_sp"
                 pixlui:typeface="Roboto-Medium.ttf" />
-        </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>
