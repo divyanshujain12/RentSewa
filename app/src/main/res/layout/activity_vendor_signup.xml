@@ -35,7 +35,7 @@
                 android:orientation="vertical"
                 android:padding="@dimen/fifteen_dp">
 
-                <include layout="@layout/username_view" />
+                <include layout="@layout/shop_name_view" />
 
                 <include layout="@layout/email_view" />
 

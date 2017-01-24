@@ -57,4 +57,26 @@
     <string name="go">Go</string>
     <string name="all_categories">All Categories</string>
     <string name="city">City</string>
+    <string name="err_select_all_filters">Please Select All The Filters!</string>
+    <string name="time_period">Time Period -</string>
+    <string name="rs">"Rs "</string>
+    <string name="products">Products</string>
+    <string name="shop_name">Shop Name</string>
+    <string name="your_shop_name_here">Your Shop Name Here</string>
+    <string name="change_picture">Change Picture</string>
+    <string name="personal_detail">Personal Detail</string>
+    <string name="log_out">Log Out</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="change_password">Change Password</string>
+    <string name="setting">Setting</string>
+    <string name="take_picture">Take Picture</string>
+    <string name="select_picture">Select Picture</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="cancel">Cancel</string>
+    <string name="website">Website</string>
+    <string name="address">Address</string>
 </resources>

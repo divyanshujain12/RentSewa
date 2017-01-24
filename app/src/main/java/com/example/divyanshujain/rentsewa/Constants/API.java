@@ -12,5 +12,6 @@ public interface API {
     String FILTER_CATEGORY = BASE + "filterCategory";
     String CHANGE_PASSWORD = BASE + "changepassword";
     String GET_CITIES = BASE + "getCurrentCities";
-
+    String REGISTRATION_FB_VISITOR = BASE + "registrationFacebookVisitor";
+    String GET_CUSTOMER_DETAIL = BASE+"";
 }

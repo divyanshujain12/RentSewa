@@ -2,10 +2,11 @@
 <resources>
     <color name="colorPrimary">#0087E6</color>
     <color name="colorPrimaryDark">#0087E6</color>
-    <color name="colorAccent">#FFFFFF</color>
+    <color name="colorAccent">#0087E6</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="dark_grey">#5D5D5D</color>
     <color name="dark_grey_with_thirty_three">#335D5D5D</color>
     <color name="dark_grey_with_fifty_five">#555D5D5D</color>
+    <color name="color_primary_with_four_four">#440087E6</color>
 </resources>

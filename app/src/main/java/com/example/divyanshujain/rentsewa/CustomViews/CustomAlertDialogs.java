@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.divyanshujain.rentsewa.Constants.Constants;
 import com.example.divyanshujain.rentsewa.Interfaces.ChangePasswordInterface;
+import com.example.divyanshujain.rentsewa.Interfaces.ImagePickDialogInterface;
 import com.example.divyanshujain.rentsewa.Interfaces.SnackBarCallback;
 import com.example.divyanshujain.rentsewa.Models.ValidationModel;
 import com.example.divyanshujain.rentsewa.R;
@@ -66,7 +67,40 @@ public class CustomAlertDialogs {
 
         alertDialog.show();
     }
+    public static void showImageSelectDialog(Context context, final ImagePickDialogInterface imagePickDialogInterface) {
+        alertDialog = new AlertDialog.Builder(context).create();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View layout = inflater.inflate(R.layout.image_pick_dialog, null);
+        setupFullWidthDialog();
+        TextView selectCameraTV = (TextView) layout.findViewById(R.id.selectCameraTV);
+        TextView selectGalleryTV = (TextView) layout.findViewById(R.id.selectGalleryTV);
+        TextView cancelTV = (TextView) layout.findViewById(R.id.cancelTV);
+        selectCameraTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagePickDialogInterface.Camera();
+                dismissDialog();
+                ;
+            }
+        });
 
+        selectGalleryTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagePickDialogInterface.Gallery();
+                dismissDialog();
+            }
+        });
+        cancelTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissDialog();
+
+            }
+        });
+        alertDialog.setView(layout);
+        alertDialog.show();
+    }
 
     public static void showChangePasswordDialog(final Context context, final ChangePasswordInterface changePasswordInterface) {
         final Validation validation = new Validation();

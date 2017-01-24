@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/activity_user_setting">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent">
+
+            <com.neopixl.pixlui.components.edittext.EditText
+                android:id="@+id/firstNameET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawablePadding="@dimen/ten_dp"
+
+                android:hint="@string/first_name"
+                android:maxLines="1"
+                android:padding="@dimen/ten_dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/sixteen_sp"
+                pixlui:typeface="Roboto-Medium.ttf" />
+        </android.support.design.widget.TextInputLayout>
+    </FrameLayout>
+
+    <include layout="@layout/horizontal_primary_color_line" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:visibility="visible">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.neopixl.pixlui.components.edittext.EditText
+                android:id="@+id/mobileET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawablePadding="@dimen/ten_dp"
+                android:hint="@string/phone_number"
+                android:maxLines="1"
+                android:padding="@dimen/ten_dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/sixteen_sp"
+                pixlui:typeface="Roboto-Medium.ttf" />
+        </android.support.design.widget.TextInputLayout>
+    </FrameLayout>
+
+    <include layout="@layout/horizontal_primary_color_line" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:visibility="visible">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent">
+
+            <com.neopixl.pixlui.components.edittext.EditText
+                android:id="@+id/addressET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawablePadding="@dimen/ten_dp"
+                android:hint="@string/address"
+                android:maxLines="1"
+                android:padding="@dimen/ten_dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/sixteen_sp"
+                pixlui:typeface="Roboto-Medium.ttf" />
+        </android.support.design.widget.TextInputLayout>
+    </FrameLayout>
+
+    <include layout="@layout/horizontal_primary_color_line" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:visibility="visible">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent">
+
+            <com.neopixl.pixlui.components.edittext.EditText
+                android:id="@+id/websiteET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawablePadding="@dimen/ten_dp"
+                android:hint="@string/website"
+                android:maxLines="1"
+                android:padding="@dimen/ten_dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/sixteen_sp"
+                pixlui:typeface="Roboto-Medium.ttf" />
+        </android.support.design.widget.TextInputLayout>
+    </FrameLayout>
+
+    <include layout="@layout/horizontal_primary_color_line" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.neopixl.pixlui.components.edittext.EditText
+                android:id="@+id/changePasswordET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:clickable="false"
+                android:drawablePadding="@dimen/ten_dp"
+
+                android:focusable="false"
+                android:hint="@string/change_password"
+                android:inputType="numberPassword"
+                android:maxLines="1"
+                android:padding="@dimen/ten_dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/sixteen_sp"
+                pixlui:typeface="Roboto-Medium.ttf" />
+        </android.support.design.widget.TextInputLayout>
+    </FrameLayout>
+</merge>

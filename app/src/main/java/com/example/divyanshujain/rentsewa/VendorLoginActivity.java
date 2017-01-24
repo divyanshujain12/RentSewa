@@ -44,8 +44,8 @@ public class VendorLoginActivity extends BaseActivity {
     Button loginBT;
     @InjectView(R.id.activity_login)
     LinearLayout activityLogin;
-    @InjectView(R.id.visitorSignupBT)
-    Button visitorSignupBT;
+    @InjectView(R.id.vendorSignupBT)
+    Button vendorSignupBT;
     private String VENDOR = "vendor";
     private String VISITOR = "visitor";
 
@@ -74,15 +74,15 @@ public class VendorLoginActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.loginBT, R.id.visitorSignupBT})
+    @OnClick({R.id.loginBT, R.id.vendorSignupBT})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.loginBT:
                 goToHome();
                 //validateFields();
                 break;
-            case R.id.visitorSignupBT:
-                startActivity(new Intent(this, SignUpActivity.class));
+            case R.id.vendorSignupBT:
+                startActivity(new Intent(this, VendorSignupActivity.class));
                 break;
         }
     }
@@ -110,7 +110,6 @@ public class VendorLoginActivity extends BaseActivity {
     @Override
     public void onJsonObjectSuccess(JSONObject response, int apiType) throws JSONException {
         super.onJsonObjectSuccess(response, apiType);
-
         UserModel userModel = UniversalParser.getInstance().parseJsonObject(response.getJSONObject(Constants.DATA), UserModel.class);
         MySharedPereference.getInstance().setString(this, Constants.NAME, userModel.getName());
         MySharedPereference.getInstance().setString(this, Constants.PHONE_NUMBER, userModel.getPhone());
@@ -118,13 +117,14 @@ public class VendorLoginActivity extends BaseActivity {
         MySharedPereference.getInstance().setString(this, Constants.DATE_OF_BIRTH, userModel.getDate_of_birth());
         MySharedPereference.getInstance().setString(this, Constants.PASSWORD, validationMap.get(passwordET));
         MySharedPereference.getInstance().setString(this, Constants.USER_ID, userModel.getUser_id());
+        MySharedPereference.getInstance().setString(this, Constants.USER_TYPE, userModel.getUser_type());
         MySharedPereference.getInstance().setBoolean(this, Constants.IS_LOGGED_IN, true);
 
         goToHome();
     }
 
     private void goToHome() {
-        Intent categoryIntent = new Intent(this, CategoriesActivity.class);
+        Intent categoryIntent = new Intent(this, HomeActivity.class);
         startActivity(categoryIntent);
         finish();
     }

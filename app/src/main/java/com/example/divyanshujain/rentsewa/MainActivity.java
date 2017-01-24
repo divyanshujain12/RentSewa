@@ -9,7 +9,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.example.divyanshujain.rentsewa.Constants.API;
+import com.example.divyanshujain.rentsewa.Constants.ApiCodes;
+import com.example.divyanshujain.rentsewa.Constants.Constants;
 import com.example.divyanshujain.rentsewa.GlobalClasses.BaseActivity;
+import com.example.divyanshujain.rentsewa.Models.UserModel;
+import com.example.divyanshujain.rentsewa.Utils.CallWebService;
+import com.example.divyanshujain.rentsewa.Utils.MySharedPereference;
+import com.example.divyanshujain.rentsewa.Utils.UniversalParser;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -17,6 +24,7 @@ import com.facebook.FacebookRequestError;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.neopixl.pixlui.components.button.Button;
@@ -45,6 +53,7 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
     @InjectView(R.id.activity_main)
     FrameLayout activityMain;
     private CallbackManager callbackManager;
+    String objname, objid, objemail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,9 +94,6 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
             case R.id.loginAsVisitorBT:
                 startActivity(new Intent(this, VisitorLoginActivity.class));
                 break;
-         /*   case R.id.visitorSignupBT:
-                startActivity(new Intent(this, SignUpActivity.class));
-                break;*/
         }
     }
 
@@ -125,6 +131,7 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
                             parseFacebookResponse(json_object);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            LoginManager.getInstance().logOut();
                         }
                         if (response != null) {
                             FacebookRequestError error = response.getError();
@@ -146,12 +153,64 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
     private void parseFacebookResponse(JSONObject json_object) throws JSONException {
 
         JSONObject obj = new JSONObject(json_object.toString());
-        String objname = obj.getString("name");
-        String objid = obj.getString("id");
-        String objemail = obj.getString("email");
-       /* JSONObject urlobj = (JSONObject) obj.get("picture");
-        JSONObject dataUrl = (JSONObject) urlobj.get("data");
-        String url = dataUrl.getString("url");*/
+        objname = obj.getString("name");
+        objid = obj.getString("id");
+        objemail = obj.optString("email");
 
+        hitApiForValidateUser();
+    }
+
+    private void hitApiForValidateUser() {
+        CallWebService.getInstance(this, true, ApiCodes.REGISTRATION).hitJsonObjectRequestAPI(CallWebService.POST, API.REGISTRATION_FB_VISITOR, createJsonForVisitorLogin(), this);
+    }
+
+    @Override
+    public void onJsonObjectSuccess(JSONObject response, int apiType) throws JSONException {
+        super.onJsonObjectSuccess(response, apiType);
+
+        UserModel userModel = UniversalParser.getInstance().parseJsonObject(response.getJSONObject(Constants.DATA), UserModel.class);
+        saveDataInSharedPrefs(userModel);
+
+    }
+
+    @Override
+    public void onFailure(String str, int apiType) {
+        super.onFailure(str, apiType);
+        switch (apiType) {
+            case ApiCodes.REGISTRATION:
+                Intent intent = new Intent(this, VisitorSignUpActivity.class);
+                intent.putExtra(Constants.EMAIl, objemail);
+                intent.putExtra(Constants.FB_ID, objid);
+                intent.putExtra(Constants.NAME, objname);
+                startActivity(intent);
+                break;
+        }
+    }
+
+    private void saveDataInSharedPrefs(UserModel userModel) {
+        MySharedPereference.getInstance().setString(this, Constants.NAME, userModel.getName());
+        MySharedPereference.getInstance().setString(this, Constants.PHONE_NUMBER, userModel.getPhone());
+        MySharedPereference.getInstance().setString(this, Constants.EMAIl, userModel.getEmail());
+        MySharedPereference.getInstance().setString(this, Constants.DATE_OF_BIRTH, userModel.getDate_of_birth());
+        MySharedPereference.getInstance().setString(this, Constants.USER_ID, userModel.getUser_id());
+        MySharedPereference.getInstance().setString(this, Constants.USER_TYPE, userModel.getUser_type());
+        MySharedPereference.getInstance().setBoolean(this, Constants.IS_LOGGED_IN, true);
+        goToHome();
+    }
+
+    private void goToHome() {
+        Intent categoryIntent = new Intent(this, HomeActivity.class);
+        startActivity(categoryIntent);
+        finish();
+    }
+
+    private JSONObject createJsonForVisitorLogin() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(Constants.FB_ID, objid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
     }
 }

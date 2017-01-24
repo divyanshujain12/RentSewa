@@ -28,16 +28,17 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class SignUpActivity extends BaseActivity {
+public class VendorSignupActivity extends BaseActivity {
 
     @InjectView(R.id.toolbarView)
     Toolbar toolbarView;
     @InjectView(R.id.logo)
     ImageView logo;
-    @InjectView(R.id.usernameET)
-    EditText usernameET;
+
     @InjectView(R.id.emailET)
     EditText emailET;
+    @InjectView(R.id.phoneET)
+    EditText phoneET;
     @InjectView(R.id.passwordET)
     EditText passwordET;
     @InjectView(R.id.confPasswordET)
@@ -46,14 +47,16 @@ public class SignUpActivity extends BaseActivity {
     Button signUpBT;
     @InjectView(R.id.activity_login)
     FrameLayout activityLogin;
+
     Validation validation;
-    @InjectView(R.id.phoneET)
-    EditText phoneET;
+    @InjectView(R.id.shopNameET)
+    EditText shopNameET;
     private HashMap<View, String> formValues;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.activity_vendor_signup);
         ButterKnife.inject(this);
         initViews();
     }
@@ -65,7 +68,7 @@ public class SignUpActivity extends BaseActivity {
 
     private void addValidation() {
         validation = new Validation();
-        validation.addValidationField(new ValidationModel(usernameET, Validation.TYPE_NAME_VALIDATION, getString(R.string.err_user_name)));
+        validation.addValidationField(new ValidationModel(shopNameET, Validation.TYPE_NAME_VALIDATION, getString(R.string.err_user_name)));
         validation.addValidationField(new ValidationModel(phoneET, Validation.TYPE_PHONE_VALIDATION, getString(R.string.err_phone_number)));
         validation.addValidationField(new ValidationModel(emailET, Validation.TYPE_EMAIL_VALIDATION, getString(R.string.err_email)));
         validation.addValidationField(new ValidationModel(passwordET, Validation.TYPE_PASSWORD_VALIDATION, getString(R.string.err_pass)));
@@ -76,6 +79,7 @@ public class SignUpActivity extends BaseActivity {
     public void onClick() {
         hitWebService();
     }
+
     private void hitWebService() {
         formValues = validation.validate(this);
         if (formValues != null) {
@@ -97,7 +101,7 @@ public class SignUpActivity extends BaseActivity {
     private JSONObject createJsonForSignUp() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(Constants.NAME, formValues.get(usernameET));
+            jsonObject.put(Constants.SHOP_NAME, formValues.get(shopNameET));
             jsonObject.put(Constants.PHONE_NUMBER, formValues.get(phoneET));
             jsonObject.put(Constants.EMAIl, formValues.get(emailET));
             jsonObject.put(Constants.PASSWORD, formValues.get(passwordET));
@@ -115,3 +119,5 @@ public class SignUpActivity extends BaseActivity {
         onBackPressed();
     }
 }
+
+

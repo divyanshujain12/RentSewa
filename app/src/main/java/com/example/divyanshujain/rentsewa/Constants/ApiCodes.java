@@ -13,5 +13,7 @@ public interface ApiCodes {
     int CHANGE_PASSWORD = 104;
     int GET_CATEGORIES = 105;
     int GET_CITIES = 106;
-
+    int FILTER = 107;
+    int GET_USER_INFO = 108;
+    int UPDATE_USER = 109;
 }

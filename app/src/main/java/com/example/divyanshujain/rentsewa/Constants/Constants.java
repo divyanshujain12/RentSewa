@@ -20,5 +20,13 @@ public interface Constants {
     String IS_LOGGED_IN = "is_logged_in";
     String USER_ID = "user_id";
     String USER_TYPE = "user_type";
+    String FILTER_CITY = "filter_city";
+    String FILTER_CATEGORY = "filter_category";
+    String FILTER_SUB_CATEGORY = "filter_subcategory";
+    String SHOP_NAME = "shop_name";
+    String FB_ID = "fb_id";
+    String WEBSITE = "website";
+    String ADDRESS = "address";
 
+    String PROFILE_IMAGE = "profile_image";
 }

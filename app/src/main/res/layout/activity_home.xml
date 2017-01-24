@@ -21,11 +21,11 @@
             android:orientation="vertical"
             android:padding="@dimen/fifteen_dp">
 
+            <include layout="@layout/cities" />
+
             <include layout="@layout/category_view" />
 
             <include layout="@layout/sub_category_view" />
-
-            <include layout="@layout/sub_sub_category_view" />
 
             <com.neopixl.pixlui.components.button.Button
                 android:id="@+id/goBT"

@@ -9,8 +9,9 @@ import android.content.SharedPreferences;
  */
 public class MySharedPereference {
 
-    public static MySharedPereference instance;
-    public static final String APP_PREFERENCE = "SMYT";
+    private static MySharedPereference instance;
+    private static final String APP_PREFERENCE = "SMYT";
+
     private MySharedPereference() {
     }
 
@@ -25,35 +26,34 @@ public class MySharedPereference {
         SharedPreferences sharedPreferences = context.getSharedPreferences(APP_PREFERENCE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(Key, Value);
-        editor.commit();
+        editor.apply();
     }
 
 
     public String getString(Context context, String Key) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(APP_PREFERENCE, Context.MODE_PRIVATE);
-        String requestToken = sharedPreferences.getString(Key, "");
-        return requestToken;
+
+        return sharedPreferences.getString(Key, "");
     }
 
     public void setBoolean(Context context, String Key, boolean Value) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(APP_PREFERENCE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(Key, Value);
-        editor.commit();
+        editor.apply();
     }
 
 
     public boolean getBoolean(Context context, String Key) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(APP_PREFERENCE, Context.MODE_PRIVATE);
-        boolean requestToken = sharedPreferences.getBoolean(Key, false);
-        return requestToken;
+        return sharedPreferences.getBoolean(Key, false);
     }
 
     public void clearSharedPreference(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(APP_PREFERENCE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
     }
 
 }

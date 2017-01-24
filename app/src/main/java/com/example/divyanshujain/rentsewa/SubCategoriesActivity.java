@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.example.divyanshujain.rentsewa.Constants.Constants;
@@ -28,7 +29,7 @@ public class SubCategoriesActivity extends BaseActivity {
     @InjectView(R.id.subCategoriesRV)
     RecyclerView subCategoriesRV;
     @InjectView(R.id.activity_categories)
-    LinearLayout activityCategories;
+    FrameLayout activityCategories;
     @InjectView(R.id.showAllBT)
     Button showAllBT;
 

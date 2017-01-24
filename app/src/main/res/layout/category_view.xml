@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,13 +8,13 @@
     android:layout_height="wrap_content"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:layout_marginTop="@dimen/ten_dp"
     tools:showIn="@layout/activity_home">
-
 
     <com.neopixl.pixlui.components.textview.TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/city"
+        android:text="@string/category"
         android:textColor="@color/white"
         android:textSize="@dimen/eighteen_sp" />
 
@@ -24,6 +26,7 @@
         <Spinner
             android:id="@+id/categorySP"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/fourty_dp" />
+            android:layout_height="@dimen/fourty_dp"
+            pixlui:typeface="Roboto-Medium.ttf" />
     </android.support.v7.widget.CardView>
 </LinearLayout>
