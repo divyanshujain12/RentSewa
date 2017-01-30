@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 
@@ -82,6 +83,8 @@ public class UserSettingActivity extends BaseActivity implements ImagePickDialog
     EditText addressET;
     @InjectView(R.id.websiteET)
     EditText websiteET;
+    @InjectView(R.id.changePasswordFL)
+    FrameLayout changePasswordFL;
     private UserModel userModel;
     private Validation validation;
     private HashMap<View, String> hashMap;
@@ -118,8 +121,8 @@ public class UserSettingActivity extends BaseActivity implements ImagePickDialog
         validation = new Validation();
         validation.addValidationField(new ValidationModel(firstNameET, Validation.TYPE_NAME_VALIDATION, getString(R.string.err_first_name)));
         //validation.addValidationField(new ValidationModel(lastNameET, Validation.TYPE_NAME_VALIDATION, getString(R.string.err_last_name)));
-        //validation.addValidationField(new ValidationModel(mobileET, Validation.TYPE_NAME_VALIDATION, getString(R.string.err_phone_number)));
-        validation.addValidationField(new ValidationModel(changePasswordET, Validation.TYPE_PASSWORD_VALIDATION, getString(R.string.err_pass)));
+        validation.addValidationField(new ValidationModel(mobileET, Validation.TYPE_NAME_VALIDATION, getString(R.string.err_phone_number)));
+
     }
 
     private void createPermission() {
@@ -205,7 +208,7 @@ public class UserSettingActivity extends BaseActivity implements ImagePickDialog
         super.onJsonObjectSuccess(response, apiType);
         switch (apiType) {
             case GET_USER_INFO:
-                userModel = UniversalParser.getInstance().parseJsonObject(response.getJSONArray(Constants.DATA).getJSONObject(0), UserModel.class);
+                userModel = UniversalParser.getInstance().parseJsonObject(response.getJSONObject(Constants.DATA), UserModel.class);
                 updateUI();
                 break;
             case UPDATE_USER:
@@ -224,8 +227,13 @@ public class UserSettingActivity extends BaseActivity implements ImagePickDialog
         //lastNameET.setText(userModel.getLast_name());
         mobileET.setText(userModel.getPhone());
         // statusET.setText(userModel.getTimeline_msg());
-        changePasswordET.setText(MySharedPereference.getInstance().getString(this, Constants.PASSWORD));
-        changePasswordET.setOnTouchListener(this);
+        if (userModel.getUser_type().equalsIgnoreCase(Constants.VISITOR)) {
+            changePasswordFL.setVisibility(View.GONE);
+        } else {
+            changePasswordET.setText(MySharedPereference.getInstance().getString(this, Constants.PASSWORD));
+            changePasswordET.setOnTouchListener(this);
+            validation.addValidationField(new ValidationModel(changePasswordET, Validation.TYPE_PASSWORD_VALIDATION, getString(R.string.err_pass)));
+        }
     }
 
     /*public void sendLocalBroadCastForUserProfile() {
@@ -250,7 +258,7 @@ public class UserSettingActivity extends BaseActivity implements ImagePickDialog
             //jsonObject.put(Constants.PHONE_NUMBER, hashMap.get(mobileET));
             jsonObject.put(Constants.DATE_OF_BIRTH, userModel.getDate_of_birth());
             jsonObject.put(Constants.PASSWORD, hashMap.get(changePasswordET));
-            // jsonObject.put(Constants.TIMELINE_MSG, hashMap.get(statusET));
+             jsonObject.put(Constants.USER_TYPE, userModel.getUser_type());
         } catch (JSONException e) {
             e.printStackTrace();
         }

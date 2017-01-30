@@ -3,6 +3,8 @@ package com.example.divyanshujain.rentsewa;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -200,5 +202,22 @@ public class HomeActivity extends BaseActivity implements AdapterView.OnItemSele
             e.printStackTrace();
         }
         return jsonObject;
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.user_icon_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = null;
+        switch (item.getItemId()) {
+            case R.id.action_user:
+                intent = new Intent(this, UserSettingActivity.class);
+                break;
+        }
+        if (intent != null)
+            startActivity(intent);
+        return true;
     }
 }

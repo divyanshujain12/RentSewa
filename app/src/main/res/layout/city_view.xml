@@ -15,19 +15,18 @@
             android:layout_gravity="bottom"
             android:layout_weight="4"
             android:padding="@dimen/eight_dp"
-            android:text="@string/vendor_rating"
+            android:text="@string/city"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/sixteen_sp"
             pixlui:typeface="Roboto-Regular.ttf" />
 
         <com.neopixl.pixlui.components.textview.TextView
-            android:id="@+id/vendorRatingTV"
+            android:id="@+id/cityTV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="6"
             android:gravity="start"
             android:padding="@dimen/eight_dp"
-            android:text="****"
             android:textColor="@color/black"
             android:textSize="@dimen/sixteen_sp"
             pixlui:typeface="Roboto-Regular.ttf" />

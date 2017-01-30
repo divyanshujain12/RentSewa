@@ -38,6 +38,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
+import static com.example.divyanshujain.rentsewa.Constants.Constants.VENDOR;
+
 public class MainActivity extends BaseActivity implements FacebookCallback<LoginResult> {
 
 
@@ -55,6 +57,7 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
     private CallbackManager callbackManager;
     String objname, objid, objemail;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,12 +68,21 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
     }
 
     private void initViews() {
+        if (MySharedPereference.getInstance().getBoolean(this, Constants.IS_LOGGED_IN)) {
+            String userType = MySharedPereference.getInstance().getString(this, Constants.USER_TYPE);
+            if (userType.equalsIgnoreCase(VENDOR))
+                goToVendorHome();
+            else
+                goToVisitorHome();
+
+            return;
+        }
         setUpFacebookButton();
         //  CommonFunctions.getInstance().configureToolbarWithOutBackButton(this,toolbarView,"");
     }
 
     private void setUpFacebookButton() {
-        loginButtonFacebook.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday"));
+        loginButtonFacebook.setReadPermissions(Arrays.asList("public_profile", "email"));
         loginButtonFacebook.setBackgroundColor(android.R.color.transparent);
         loginButtonFacebook.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto-Medium.ttf"));
         loginButtonFacebook.setTextSize(TypedValue.COMPLEX_UNIT_SP, (getResources().getDimension(R.dimen.eighteen_sp) / getResources().getDisplayMetrics().density));
@@ -120,7 +132,7 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
     }
 
     public void getUserInfo(LoginResult login_result) {
-        GraphRequest data_request = GraphRequest.newMeRequest(
+        GraphRequest request = GraphRequest.newMeRequest(
                 login_result.getAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
                     @Override
@@ -143,10 +155,10 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
                     }
 
                 });
-        Bundle permission_param = new Bundle();
-        permission_param.putString("fields", "id,name,email");
-        data_request.setParameters(permission_param);
-        data_request.executeAsync();
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,email,gender");
+        request.setParameters(parameters);
+        request.executeAsync();
 
     }
 
@@ -195,11 +207,17 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
         MySharedPereference.getInstance().setString(this, Constants.USER_ID, userModel.getUser_id());
         MySharedPereference.getInstance().setString(this, Constants.USER_TYPE, userModel.getUser_type());
         MySharedPereference.getInstance().setBoolean(this, Constants.IS_LOGGED_IN, true);
-        goToHome();
+        goToVisitorHome();
     }
 
-    private void goToHome() {
+    private void goToVisitorHome() {
         Intent categoryIntent = new Intent(this, HomeActivity.class);
+        startActivity(categoryIntent);
+        finish();
+    }
+
+    private void goToVendorHome() {
+        Intent categoryIntent = new Intent(this, VendorListingActivity.class);
         startActivity(categoryIntent);
         finish();
     }

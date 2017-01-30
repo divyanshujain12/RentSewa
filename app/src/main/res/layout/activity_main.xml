@@ -70,7 +70,7 @@
                 android:scaleType="centerInside"
                 android:textColor="@android:color/white"
                 facebook:com_facebook_login_text="@string/login_as_visitor"
-                facebook:theme="@style/FacebookLoginButton" />
+                />
         </android.support.v7.widget.CardView>
 
     </LinearLayout>

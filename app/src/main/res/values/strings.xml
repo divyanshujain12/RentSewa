@@ -79,4 +79,7 @@
     <string name="cancel">Cancel</string>
     <string name="website">Website</string>
     <string name="address">Address</string>
+    <string name="vendor_name">Vendor Name</string>
+    <string name="click_to_contact">Click to contact</string>
+    <string name="user_profile">user_profile</string>
 </resources>

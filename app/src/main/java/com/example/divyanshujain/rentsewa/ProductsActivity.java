@@ -1,9 +1,12 @@
 package com.example.divyanshujain.rentsewa;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -89,5 +92,27 @@ public class ProductsActivity extends BaseActivity {
     @Override
     public void onClickItem(int position, View view) {
         super.onClickItem(position, view);
+
+        Intent intent = new Intent(this, ProductDescriptionActivity.class);
+        intent.putExtra(Constants.PRODUCT_NAME, productsModels.get(position).getTitle());
+        intent.putExtra(Constants.PRODUCT_ID, productsModels.get(position).getId());
+        startActivity(intent);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.user_icon_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = null;
+        switch (item.getItemId()) {
+            case R.id.action_user:
+                intent = new Intent(this, UserSettingActivity.class);
+                break;
+        }
+        if (intent != null)
+            startActivity(intent);
+        return true;
     }
 }

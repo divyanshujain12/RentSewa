@@ -12,7 +12,8 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent">
+            android:background="@android:color/transparent"
+            android:textColorHint="@android:color/white">
 
             <com.neopixl.pixlui.components.edittext.EditText
                 android:id="@+id/firstNameET"
@@ -24,7 +25,7 @@
                 android:hint="@string/first_name"
                 android:maxLines="1"
                 android:padding="@dimen/ten_dp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/white"
                 android:textSize="@dimen/sixteen_sp"
                 pixlui:typeface="Roboto-Medium.ttf" />
         </android.support.design.widget.TextInputLayout>
@@ -40,7 +41,8 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:textColorHint="@android:color/white">
 
             <com.neopixl.pixlui.components.edittext.EditText
                 android:id="@+id/mobileET"
@@ -51,7 +53,7 @@
                 android:hint="@string/phone_number"
                 android:maxLines="1"
                 android:padding="@dimen/ten_dp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/white"
                 android:textSize="@dimen/sixteen_sp"
                 pixlui:typeface="Roboto-Medium.ttf" />
         </android.support.design.widget.TextInputLayout>
@@ -68,7 +70,8 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent">
+            android:background="@android:color/transparent"
+            android:textColorHint="@android:color/white">
 
             <com.neopixl.pixlui.components.edittext.EditText
                 android:id="@+id/addressET"
@@ -79,7 +82,7 @@
                 android:hint="@string/address"
                 android:maxLines="1"
                 android:padding="@dimen/ten_dp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/white"
                 android:textSize="@dimen/sixteen_sp"
                 pixlui:typeface="Roboto-Medium.ttf" />
         </android.support.design.widget.TextInputLayout>
@@ -96,7 +99,8 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent">
+            android:background="@android:color/transparent"
+            android:textColorHint="@android:color/white">
 
             <com.neopixl.pixlui.components.edittext.EditText
                 android:id="@+id/websiteET"
@@ -107,7 +111,7 @@
                 android:hint="@string/website"
                 android:maxLines="1"
                 android:padding="@dimen/ten_dp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/white"
                 android:textSize="@dimen/sixteen_sp"
                 pixlui:typeface="Roboto-Medium.ttf" />
         </android.support.design.widget.TextInputLayout>
@@ -116,13 +120,15 @@
     <include layout="@layout/horizontal_primary_color_line" />
 
     <FrameLayout
+        android:id="@+id/changePasswordFL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/ten_dp">
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:textColorHint="@android:color/white">
 
             <com.neopixl.pixlui.components.edittext.EditText
                 android:id="@+id/changePasswordET"
@@ -137,7 +143,7 @@
                 android:inputType="numberPassword"
                 android:maxLines="1"
                 android:padding="@dimen/ten_dp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/white"
                 android:textSize="@dimen/sixteen_sp"
                 pixlui:typeface="Roboto-Medium.ttf" />
         </android.support.design.widget.TextInputLayout>

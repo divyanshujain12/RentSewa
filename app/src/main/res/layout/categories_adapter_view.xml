@@ -13,19 +13,15 @@
         android:scaleType="fitXY"
         android:src="@drawable/property" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/black_gradient_background" />
-
     <com.neopixl.pixlui.components.textview.TextView
         android:id="@+id/categoryNameTV"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:text="category name"
         android:textSize="@dimen/sixteen_sp"
         android:textColor="@color/white"
         android:padding="@dimen/eight_dp"
+        android:background="@drawable/black_gradient_background"
         pixlui:typeface="Roboto-Medium.ttf" />
 </FrameLayout>

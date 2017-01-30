@@ -15,6 +15,9 @@ public class UserModel implements Parcelable {
     String user_name;
     String user_type;
     String profile_image;
+    String shop_name;
+    String address;
+    String website;
 
     public UserModel() {
     }
@@ -28,6 +31,9 @@ public class UserModel implements Parcelable {
         user_name = in.readString();
         user_type = in.readString();
         profile_image = in.readString();
+        shop_name = in.readString();
+        address = in.readString();
+        website = in.readString();
     }
 
     public static final Creator<UserModel> CREATOR = new Creator<UserModel>() {
@@ -106,6 +112,30 @@ public class UserModel implements Parcelable {
         this.profile_image = profile_image;
     }
 
+    public String getShop_name() {
+        return shop_name;
+    }
+
+    public void setShop_name(String shop_name) {
+        this.shop_name = shop_name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -121,5 +151,8 @@ public class UserModel implements Parcelable {
         dest.writeString(user_type);
         dest.writeString(user_name);
         dest.writeString(profile_image);
+        dest.writeString(shop_name);
+        dest.writeString(address);
+        dest.writeString(website);
     }
 }

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -68,5 +70,22 @@ public class SubCategoriesActivity extends BaseActivity {
     @OnClick(R.id.showAllBT)
     public void onClick() {
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.user_icon_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = null;
+        switch (item.getItemId()) {
+            case R.id.action_user:
+                intent = new Intent(this, UserSettingActivity.class);
+                break;
+        }
+        if (intent != null)
+            startActivity(intent);
+        return true;
     }
 }

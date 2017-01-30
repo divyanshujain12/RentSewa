@@ -29,6 +29,12 @@ public interface Constants {
     String ADDRESS = "address";
     String SLUG = "slug";
     String FROM_FILER = "from_filter";
-
+    String PRODUCT_NAME = "product_name";
+    String PRODUCT_ID = "product_id";
     String PROFILE_IMAGE = "profile_image";
+    String ID = "id";
+    String P_ID = "pid";
+    String VENDOR = "vendor";
+    String VISITOR = "visitor";
+
 }

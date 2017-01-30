@@ -1,8 +1,14 @@
 package com.example.divyanshujain.rentsewa;
 
 import android.content.Intent;
+
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -10,6 +16,7 @@ import android.widget.LinearLayout;
 import com.example.divyanshujain.rentsewa.Constants.API;
 import com.example.divyanshujain.rentsewa.Constants.ApiCodes;
 import com.example.divyanshujain.rentsewa.Constants.Constants;
+import com.example.divyanshujain.rentsewa.CustomViews.CustomAlertDialogs;
 import com.example.divyanshujain.rentsewa.GlobalClasses.BaseActivity;
 import com.example.divyanshujain.rentsewa.Models.UserModel;
 import com.example.divyanshujain.rentsewa.Models.ValidationModel;
@@ -23,6 +30,9 @@ import com.neopixl.pixlui.components.edittext.EditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import java.util.HashMap;
 
@@ -61,6 +71,7 @@ public class VendorLoginActivity extends BaseActivity {
     }
 
     private void initViews() {
+        generateHashCode();
         CommonFunctions.getInstance().configureToolbarWithBackButton(this, toolbarView, getString(R.string.vendor_login));
         addValidation();
     }
@@ -78,8 +89,8 @@ public class VendorLoginActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.loginBT:
-                goToHome();
-                //validateFields();
+                //goToHome();
+                validateFields();
                 break;
             case R.id.vendorSignupBT:
                 startActivity(new Intent(this, VendorSignupActivity.class));
@@ -123,9 +134,39 @@ public class VendorLoginActivity extends BaseActivity {
         goToHome();
     }
 
+    @Override
+    public void onFailure(String str, int apiType) {
+        super.onFailure(str, apiType);
+
+        CustomAlertDialogs.showAlertDialogWithCallBack(this, "ALERT", str, this);
+    }
+
     private void goToHome() {
-        Intent categoryIntent = new Intent(this, HomeActivity.class);
+        Intent categoryIntent = new Intent(this, VendorListingActivity.class);
         startActivity(categoryIntent);
+        finish();
+    }
+
+    private void generateHashCode() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.facebook.samples.hellofacebook",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
+    }
+
+    @Override
+    public void doAction() {
+        super.doAction();
         finish();
     }
 }
