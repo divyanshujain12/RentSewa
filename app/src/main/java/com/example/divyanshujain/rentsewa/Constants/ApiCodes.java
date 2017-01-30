@@ -16,4 +16,8 @@ public interface ApiCodes {
     int FILTER = 107;
     int GET_USER_INFO = 108;
     int UPDATE_USER = 109;
+    int GET_PRODUCT_LISTING = 110;
+    int GET_PRODUCT_REQUESTS = 111;
+    int REQUEST_FOR_A_CALL = 112;
+    int PRODUCT_DETAIL = 113;
 }

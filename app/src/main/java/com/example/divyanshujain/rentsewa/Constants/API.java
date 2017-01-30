@@ -13,5 +13,9 @@ public interface API {
     String CHANGE_PASSWORD = BASE + "changepassword";
     String GET_CITIES = BASE + "getCurrentCities";
     String REGISTRATION_FB_VISITOR = BASE + "registrationFacebookVisitor";
-    String GET_CUSTOMER_DETAIL = BASE+"";
+    String GET_CUSTOMER_DETAIL = BASE + "getUserProfile";
+    String GET_PRODUCT_LISTING = BASE + "productListing";
+    String GET_PRODUCT_REQUESTS = BASE + "getProductRequests";
+    String REQUEST_FOR_A_CALL = BASE + "requestForaCall";
+    String PRODUCT_DETAIL = BASE + "productDetail";
 }

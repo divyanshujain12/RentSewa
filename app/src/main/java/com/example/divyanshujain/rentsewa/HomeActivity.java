@@ -127,6 +127,7 @@ public class HomeActivity extends BaseActivity implements AdapterView.OnItemSele
         productsModels = UniversalParser.getInstance().parseJsonArrayWithJsonObject(response.getJSONArray(Constants.DATA), ProductsModel.class);
         Intent intent = new Intent(this, ProductsActivity.class);
         intent.putExtra(Constants.DATA, productsModels);
+        intent.putExtra(Constants.FROM_FILER,true);
         startActivity(intent);
     }
 

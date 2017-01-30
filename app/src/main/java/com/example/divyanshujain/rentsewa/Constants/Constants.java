@@ -27,6 +27,8 @@ public interface Constants {
     String FB_ID = "fb_id";
     String WEBSITE = "website";
     String ADDRESS = "address";
+    String SLUG = "slug";
+    String FROM_FILER = "from_filter";
 
     String PROFILE_IMAGE = "profile_image";
 }

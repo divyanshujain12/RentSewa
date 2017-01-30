@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.example.divyanshujain.rentsewa.Constants.Constants;
 import com.example.divyanshujain.rentsewa.GlobalClasses.BaseActivity;
@@ -58,9 +57,12 @@ public class SubCategoriesActivity extends BaseActivity {
     @Override
     public void onClickItem(int position, View view) {
         super.onClickItem(position, view);
-
-        Intent intent = new Intent(this, ProductDescriptionActivity.class);
+        Intent intent = new Intent(this, ProductsActivity.class);
+        intent.putExtra(Constants.SLUG, subCategoryModels.get(position).getSlug());
+        intent.putExtra(Constants.FROM_FILER, false);
         startActivity(intent);
+       /* Intent intent = new Intent(this, ProductDescriptionActivity.class);
+        startActivity(intent);*/
     }
 
     @OnClick(R.id.showAllBT)
