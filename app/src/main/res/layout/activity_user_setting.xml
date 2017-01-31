@@ -80,6 +80,7 @@
                 android:padding="@dimen/five_dp"
                 android:text="@string/contact_us"
                 android:textColor="@color/white"
+                android:visibility="gone"
                 android:textSize="@dimen/sixteen_sp"
                 pixlui:typeface="Roboto-Medium.ttf" />
 

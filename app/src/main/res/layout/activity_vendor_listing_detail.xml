@@ -1,0 +1,77 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background"
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/fifty_dp">
+
+        <include layout="@layout/custom_toolbar_with_white_title" />
+
+        <ImageView
+            android:id="@+id/productIV"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/two_hundred_dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/property" />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/five_dp"
+            card_view:elevation="@dimen/five_dp">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/activity_product_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/ten_dp">
+
+                    <include layout="@layout/price_view" />
+
+                    <include layout="@layout/visitor_name_view" />
+
+                    <include layout="@layout/visitor_number_view" />
+
+                    <include layout="@layout/visitor_mail_view" />
+
+                    <include layout="@layout/desc_category_view" />
+
+                    <include layout="@layout/desc_sub_category_view" />
+
+                    <include layout="@layout/enquired_date_view" />
+
+                    <include layout="@layout/views_view" />
+
+                    <include layout="@layout/time_period_view" />
+
+
+
+                </LinearLayout>
+            </ScrollView>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+    <com.neopixl.pixlui.components.button.Button
+        android:id="@+id/clickToContactBT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/thirty_dp"
+        android:background="@color/colorPrimary"
+        android:text="@string/click_to_call"
+        android:textColor="@color/white"
+        android:textSize="@dimen/eighteen_sp"
+        android:layout_gravity="bottom"
+        pixlui:typeface="Roboto-Medium.ttf" />
+
+</FrameLayout>
+

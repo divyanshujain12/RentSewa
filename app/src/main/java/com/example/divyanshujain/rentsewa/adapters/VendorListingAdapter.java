@@ -1,6 +1,8 @@
 package com.example.divyanshujain.rentsewa.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.divyanshujain.rentsewa.Interfaces.RecyclerViewClick;
-import com.example.divyanshujain.rentsewa.Models.ProductsModel;
 import com.example.divyanshujain.rentsewa.Models.VendorListingModel;
 import com.example.divyanshujain.rentsewa.R;
 import com.example.divyanshujain.rentsewa.Utils.ImageLoading;
@@ -44,12 +45,18 @@ public class VendorListingAdapter extends RecyclerView.Adapter<VendorListingAdap
     @Override
     public void onBindViewHolder(final VendorListingAdapter.MyViewHolder holder, int position) {
 
-        VendorListingModel vendorListingModel = vendorListingModels.get(position);
+        final VendorListingModel vendorListingModel = vendorListingModels.get(position);
         imageLoading.LoadImage(vendorListingModel.getImage1(), holder.productIV, null);
         holder.productTitleTV.setText(vendorListingModel.getTitle());
         holder.productPriceTV.setText(context.getString(R.string.rs) + " " + vendorListingModel.getPrice());
-        holder.visitorNameTV.setText(vendorListingModel.getVisitor_name());
+        holder.visitorNameTV.setText(context.getString(R.string.visitor_name) + vendorListingModel.getVisitor_name());
         holder.dateTV.setText(vendorListingModel.getCreated());
+        holder.callIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              recyclerViewClick.onClickItem(holder.getAdapterPosition(),view);
+            }
+        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,7 +72,7 @@ public class VendorListingAdapter extends RecyclerView.Adapter<VendorListingAdap
     }
 
     protected class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView productIV;
+        ImageView productIV, callIV;
         TextView productTitleTV, productPriceTV, visitorNameTV, dateTV;
 
         private MyViewHolder(View itemView) {
@@ -75,6 +82,7 @@ public class VendorListingAdapter extends RecyclerView.Adapter<VendorListingAdap
             productPriceTV = (TextView) itemView.findViewById(R.id.productPriceTV);
             visitorNameTV = (TextView) itemView.findViewById(R.id.visitorNameTV);
             dateTV = (TextView) itemView.findViewById(R.id.dateTV);
+            callIV = (ImageView) itemView.findViewById(R.id.callIV);
         }
     }
 

@@ -82,4 +82,11 @@
     <string name="vendor_name">Vendor Name</string>
     <string name="click_to_contact">Click to contact</string>
     <string name="user_profile">user_profile</string>
+    <string name="call">Call</string>
+    <string name="visitor_name">Visitor Name</string>
+    <string name="visitor_number">Visitor Number</string>
+    <string name="visitor_mail_id">Visitor Mail ID</string>
+    <string name="requested">Requested</string>
+    <string name="enquired">Enquired</string>
+    <string name="click_to_call">Click To Call</string>
 </resources>

@@ -20,6 +20,7 @@ import com.example.divyanshujain.rentsewa.Models.CitiesModel;
 import com.example.divyanshujain.rentsewa.Models.ProductsModel;
 import com.example.divyanshujain.rentsewa.Models.SubCategoryModel;
 import com.example.divyanshujain.rentsewa.Utils.CallWebService;
+import com.example.divyanshujain.rentsewa.Utils.CommonFunctions;
 import com.example.divyanshujain.rentsewa.Utils.UniversalParser;
 import com.example.divyanshujain.rentsewa.adapters.CityAdapter;
 import com.example.divyanshujain.rentsewa.adapters.SpinnerCategoryAdapter;
@@ -42,8 +43,6 @@ import butterknife.OnClick;
 public class HomeActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
     @InjectView(R.id.toolbarView)
     Toolbar toolbarView;
-
-
     @InjectView(R.id.goBT)
     Button goBT;
     @InjectView(R.id.categoriesBT)
@@ -75,6 +74,7 @@ public class HomeActivity extends BaseActivity implements AdapterView.OnItemSele
     }
 
     private void initViews() {
+        CommonFunctions.getInstance().configureToolbarWithOutBackButton(this, toolbarView, getString(R.string.app_name));
         citiesSP.setOnItemSelectedListener(this);
         categorySP.setOnItemSelectedListener(this);
         subCategorySP.setOnItemSelectedListener(this);
@@ -129,7 +129,7 @@ public class HomeActivity extends BaseActivity implements AdapterView.OnItemSele
         productsModels = UniversalParser.getInstance().parseJsonArrayWithJsonObject(response.getJSONArray(Constants.DATA), ProductsModel.class);
         Intent intent = new Intent(this, ProductsActivity.class);
         intent.putExtra(Constants.DATA, productsModels);
-        intent.putExtra(Constants.FROM_FILER,true);
+        intent.putExtra(Constants.FROM_FILER, true);
         startActivity(intent);
     }
 
@@ -203,6 +203,7 @@ public class HomeActivity extends BaseActivity implements AdapterView.OnItemSele
         }
         return jsonObject;
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.user_icon_menu, menu);

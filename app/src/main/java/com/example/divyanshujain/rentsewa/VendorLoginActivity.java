@@ -122,7 +122,7 @@ public class VendorLoginActivity extends BaseActivity {
     public void onJsonObjectSuccess(JSONObject response, int apiType) throws JSONException {
         super.onJsonObjectSuccess(response, apiType);
         UserModel userModel = UniversalParser.getInstance().parseJsonObject(response.getJSONObject(Constants.DATA), UserModel.class);
-        MySharedPereference.getInstance().setString(this, Constants.NAME, userModel.getName());
+        MySharedPereference.getInstance().setString(this, Constants.NAME, userModel.getUser_name());
         MySharedPereference.getInstance().setString(this, Constants.PHONE_NUMBER, userModel.getPhone());
         MySharedPereference.getInstance().setString(this, Constants.EMAIl, userModel.getEmail());
         MySharedPereference.getInstance().setString(this, Constants.DATE_OF_BIRTH, userModel.getDate_of_birth());
