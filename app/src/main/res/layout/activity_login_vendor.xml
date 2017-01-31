@@ -57,7 +57,7 @@
             android:background="@drawable/rounded_corner_light_grey"
             android:gravity="center_vertical"
             android:hint="@string/your_password_here"
-            android:inputType="text"
+            android:inputType="textPassword"
             android:padding="@dimen/fifteen_dp"
             android:textSize="@dimen/sixteen_sp"
             pixlui:typeface="Roboto-Regular.ttf" />

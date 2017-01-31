@@ -3,6 +3,7 @@ package com.example.divyanshujain.rentsewa;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -51,7 +52,7 @@ public class CategoriesActivity extends BaseActivity {
     private void initViews() {
         CommonFunctions.getInstance().configureToolbarWithOutBackButton(this, toolbarView, getString(R.string.categories));
         categoriesAdapter = new CategoriesAdapter(this, categoryModels, this);
-        categoriesRV.setLayoutManager(new GridLayoutManager(this, 2));
+        categoriesRV.setLayoutManager(new LinearLayoutManager(this));
         categoriesRV.setAdapter(categoriesAdapter);
 
         CallWebService.getInstance(this, true, ApiCodes.GET_CATEGORIES).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_CATEGORIES, null, this);
@@ -73,6 +74,7 @@ public class CategoriesActivity extends BaseActivity {
 
         Intent intent = new Intent(this, SubCategoriesActivity.class);
         intent.putExtra(Constants.NAME,categoryModels.get(position).getCat_name());
+        intent.putExtra(Constants.SLUG,categoryModels.get(position).getSlug());
         intent.putExtra(Constants.DATA,categoryModels.get(position).getSubcatData());
         startActivity(intent);
     }

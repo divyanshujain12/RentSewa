@@ -98,6 +98,12 @@ public class VendorSignupActivity extends BaseActivity {
         CustomAlertDialogs.showAlertDialog(this, getString(R.string.congratulation), response.getString(Constants.MESSAGE), this);
     }
 
+    @Override
+    public void onFailure(String str, int apiType) {
+        super.onFailure(str, apiType);
+        CustomAlertDialogs.showAlertDialog(this, getString(R.string.alert), str, this);
+    }
+
     private JSONObject createJsonForSignUp() {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -105,8 +111,6 @@ public class VendorSignupActivity extends BaseActivity {
             jsonObject.put(Constants.PHONE_NUMBER, formValues.get(phoneET));
             jsonObject.put(Constants.EMAIl, formValues.get(emailET));
             jsonObject.put(Constants.PASSWORD, formValues.get(passwordET));
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

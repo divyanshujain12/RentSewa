@@ -59,22 +59,28 @@ public class SubCategoriesActivity extends BaseActivity {
     @Override
     public void onClickItem(int position, View view) {
         super.onClickItem(position, view);
-        Intent intent = new Intent(this, ProductsActivity.class);
-        intent.putExtra(Constants.SLUG, subCategoryModels.get(position).getSlug());
-        intent.putExtra(Constants.FROM_FILER, false);
-        startActivity(intent);
+        goToProductActivity(subCategoryModels.get(position).getSlug());
        /* Intent intent = new Intent(this, ProductDescriptionActivity.class);
         startActivity(intent);*/
     }
 
+
     @OnClick(R.id.showAllBT)
     public void onClick() {
-
+        goToProductActivity(getIntent().getStringExtra(Constants.SLUG));
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.user_icon_menu, menu);
         return true;
+    }
+
+    private void goToProductActivity(String slug) {
+        Intent intent = new Intent(this, ProductsActivity.class);
+        intent.putExtra(Constants.SLUG, slug);
+        intent.putExtra(Constants.FROM_FILER, false);
+        startActivity(intent);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -88,4 +94,6 @@ public class SubCategoriesActivity extends BaseActivity {
             startActivity(intent);
         return true;
     }
+
+
 }

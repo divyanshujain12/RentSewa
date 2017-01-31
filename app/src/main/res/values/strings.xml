@@ -89,4 +89,5 @@
     <string name="requested">Requested</string>
     <string name="enquired">Enquired</string>
     <string name="click_to_call">Click To Call</string>
+    <string name="alert">ALERT</string>
 </resources>

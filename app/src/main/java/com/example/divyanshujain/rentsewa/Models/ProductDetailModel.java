@@ -1,5 +1,7 @@
 package com.example.divyanshujain.rentsewa.Models;
 
+import java.util.ArrayList;
+
 /**
  * Created by divyanshuPC on 1/30/2017.
  */
@@ -20,6 +22,7 @@ public class ProductDetailModel {
     String vendor_name;
     String time_period;
     String image1;
+    ArrayList<ImageModel> imagesArray;
 
     public String getId() {
         return id;
@@ -131,5 +134,13 @@ public class ProductDetailModel {
 
     public void setImage1(String image1) {
         this.image1 = image1;
+    }
+
+    public ArrayList<ImageModel> getImagesArray() {
+        return imagesArray;
+    }
+
+    public void setImagesArray(ArrayList<ImageModel> imagesArray) {
+        this.imagesArray = imagesArray;
     }
 }
