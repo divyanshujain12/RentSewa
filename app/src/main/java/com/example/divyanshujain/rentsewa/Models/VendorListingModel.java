@@ -3,6 +3,8 @@ package com.example.divyanshujain.rentsewa.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Created by divyanshuPC on 1/30/2017.
  */
@@ -20,9 +22,10 @@ public class VendorListingModel implements Parcelable {
     String visitor_email;
     String visitor_phone;
     String image1;
-
+    ArrayList<ImageModel> imagesArray;
     public VendorListingModel() {
     }
+
 
     protected VendorListingModel(Parcel in) {
         id = in.readString();
@@ -37,6 +40,7 @@ public class VendorListingModel implements Parcelable {
         visitor_email = in.readString();
         visitor_phone = in.readString();
         image1 = in.readString();
+        imagesArray = in.createTypedArrayList(ImageModel.CREATOR);
     }
 
     public static final Creator<VendorListingModel> CREATOR = new Creator<VendorListingModel>() {
@@ -147,6 +151,14 @@ public class VendorListingModel implements Parcelable {
         this.image1 = image1;
     }
 
+    public ArrayList<ImageModel> getImagesArray() {
+        return imagesArray;
+    }
+
+    public void setImagesArray(ArrayList<ImageModel> imagesArray) {
+        this.imagesArray = imagesArray;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -166,5 +178,6 @@ public class VendorListingModel implements Parcelable {
         parcel.writeString(visitor_email);
         parcel.writeString(visitor_phone);
         parcel.writeString(image1);
+        parcel.writeTypedList(imagesArray);
     }
 }

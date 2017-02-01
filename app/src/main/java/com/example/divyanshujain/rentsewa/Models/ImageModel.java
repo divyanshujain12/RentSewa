@@ -1,10 +1,13 @@
 package com.example.divyanshujain.rentsewa.Models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by divyanshuPC on 2/1/2017.
  */
 
-public class ImageModel {
+public class ImageModel implements Parcelable{
     String image;
 
     public ImageModel(){
@@ -14,11 +17,37 @@ public class ImageModel {
         this.image = imgUrl;
     }
 
+    protected ImageModel(Parcel in) {
+        image = in.readString();
+    }
+
+    public static final Creator<ImageModel> CREATOR = new Creator<ImageModel>() {
+        @Override
+        public ImageModel createFromParcel(Parcel in) {
+            return new ImageModel(in);
+        }
+
+        @Override
+        public ImageModel[] newArray(int size) {
+            return new ImageModel[size];
+        }
+    };
+
     public String getImage() {
         return image;
     }
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(image);
     }
 }

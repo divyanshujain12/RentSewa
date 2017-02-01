@@ -128,6 +128,8 @@ public class ProductDescriptionActivity extends BaseActivity {
         timePeriodTV.setText(productDetailModel.getTime_period());
         descriptionTV.setText(productDetailModel.getDescription());
         ArrayList<ImageModel> imageModels = productDetailModel.getImagesArray();
+        if (imageModels == null)
+            imageModels = new ArrayList<>();
         imageModels.add(0, new ImageModel(productDetailModel.getImage1()));
         customPagerAdapter = new CustomPagerAdapter(this, imageModels);
         pager.setAdapter(customPagerAdapter);

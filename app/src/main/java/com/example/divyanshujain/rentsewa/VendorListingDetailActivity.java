@@ -4,18 +4,22 @@ import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.divyanshujain.rentsewa.Constants.Constants;
+import com.example.divyanshujain.rentsewa.Models.ImageModel;
 import com.example.divyanshujain.rentsewa.Models.VendorListingModel;
 import com.example.divyanshujain.rentsewa.Utils.CommonFunctions;
 import com.example.divyanshujain.rentsewa.Utils.ImageLoading;
+import com.example.divyanshujain.rentsewa.adapters.CustomPagerAdapter;
 import com.example.divyanshujain.rentsewa.fragments.RuntimePermissionHeadlessFragment;
 import com.neopixl.pixlui.components.button.Button;
 import com.neopixl.pixlui.components.textview.TextView;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -25,8 +29,7 @@ public class VendorListingDetailActivity extends AppCompatActivity implements Ru
 
     @InjectView(R.id.toolbarView)
     Toolbar toolbarView;
-    @InjectView(R.id.productIV)
-    ImageView productIV;
+
     @InjectView(R.id.priceTV)
     TextView priceTV;
     @InjectView(R.id.visitorNameTV)
@@ -51,10 +54,13 @@ public class VendorListingDetailActivity extends AppCompatActivity implements Ru
     Button clickToContactBT;
 
     ImageLoading imageLoading;
+    @InjectView(R.id.pager)
+    ViewPager pager;
     private VendorListingModel vendorListingModel;
     String[] callPermission;
     RuntimePermissionHeadlessFragment runtimePermissionHeadlessFragment;
     private static final int CALL_REQUEST = 101;
+    private CustomPagerAdapter customPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +84,6 @@ public class VendorListingDetailActivity extends AppCompatActivity implements Ru
 
     private void setUpViews() {
 
-        imageLoading.LoadImage(vendorListingModel.getImage1(), productIV, null);
         priceTV.setText(vendorListingModel.getPrice());
         visitorNameTV.setText(vendorListingModel.getVisitor_name());
         visitorNumberTV.setText(vendorListingModel.getVisitor_phone());
@@ -88,6 +93,12 @@ public class VendorListingDetailActivity extends AppCompatActivity implements Ru
         enquiredTV.setText(vendorListingModel.getCreated());
         viewsTV.setText(vendorListingModel.getViews());
         timePeriodTV.setText(vendorListingModel.getTime_period());
+        ArrayList<ImageModel> imageModels = vendorListingModel.getImagesArray();
+        if (imageModels == null)
+            imageModels = new ArrayList<>();
+        imageModels.add(0, new ImageModel(vendorListingModel.getImage1()));
+        customPagerAdapter = new CustomPagerAdapter(this, imageModels);
+        pager.setAdapter(customPagerAdapter);
     }
 
     @OnClick(R.id.clickToContactBT)
