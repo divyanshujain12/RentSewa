@@ -51,6 +51,8 @@ public class VendorSignupActivity extends BaseActivity {
     Validation validation;
     @InjectView(R.id.shopNameET)
     EditText shopNameET;
+    @InjectView(R.id.nameET)
+    EditText nameET;
     private HashMap<View, String> formValues;
 
     @Override
@@ -68,7 +70,8 @@ public class VendorSignupActivity extends BaseActivity {
 
     private void addValidation() {
         validation = new Validation();
-        validation.addValidationField(new ValidationModel(shopNameET, Validation.TYPE_NAME_VALIDATION, getString(R.string.err_user_name)));
+        validation.addValidationField(new ValidationModel(shopNameET, Validation.TYPE_NAME_VALIDATION, getString(R.string.enter_shop_name)));
+        validation.addValidationField(new ValidationModel(nameET, Validation.TYPE_NAME_VALIDATION, getString(R.string.err_user_name)));
         validation.addValidationField(new ValidationModel(phoneET, Validation.TYPE_PHONE_VALIDATION, getString(R.string.err_phone_number)));
         validation.addValidationField(new ValidationModel(emailET, Validation.TYPE_EMAIL_VALIDATION, getString(R.string.err_email)));
         validation.addValidationField(new ValidationModel(passwordET, Validation.TYPE_PASSWORD_VALIDATION, getString(R.string.err_pass)));
@@ -108,6 +111,7 @@ public class VendorSignupActivity extends BaseActivity {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put(Constants.SHOP_NAME, formValues.get(shopNameET));
+            jsonObject.put(Constants.NAME, formValues.get(nameET));
             jsonObject.put(Constants.PHONE_NUMBER, formValues.get(phoneET));
             jsonObject.put(Constants.EMAIl, formValues.get(emailET));
             jsonObject.put(Constants.PASSWORD, formValues.get(passwordET));

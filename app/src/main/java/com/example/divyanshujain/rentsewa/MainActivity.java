@@ -68,15 +68,6 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
     }
 
     private void initViews() {
-        if (MySharedPereference.getInstance().getBoolean(this, Constants.IS_LOGGED_IN)) {
-            String userType = MySharedPereference.getInstance().getString(this, Constants.USER_TYPE);
-            if (userType.equalsIgnoreCase(VENDOR))
-                goToVendorHome();
-            else
-                goToVisitorHome();
-
-            return;
-        }
         setUpFacebookButton();
         //  CommonFunctions.getInstance().configureToolbarWithOutBackButton(this,toolbarView,"");
     }
@@ -210,17 +201,7 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
         goToVisitorHome();
     }
 
-    private void goToVisitorHome() {
-        Intent categoryIntent = new Intent(this, HomeActivity.class);
-        startActivity(categoryIntent);
-        finish();
-    }
 
-    private void goToVendorHome() {
-        Intent categoryIntent = new Intent(this, VendorListingActivity.class);
-        startActivity(categoryIntent);
-        finish();
-    }
 
     private JSONObject createJsonForVisitorLogin() {
         JSONObject jsonObject = new JSONObject();
@@ -230,5 +211,10 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
             e.printStackTrace();
         }
         return jsonObject;
+    }
+    private void goToVisitorHome() {
+        Intent categoryIntent = new Intent(this, HomeActivity.class);
+        startActivity(categoryIntent);
+        finish();
     }
 }

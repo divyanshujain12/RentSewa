@@ -37,6 +37,8 @@
 
                 <include layout="@layout/shop_name_view" />
 
+                <include layout="@layout/name_view"/>
+
                 <include layout="@layout/email_view" />
 
                 <include layout="@layout/phone_number_view" />

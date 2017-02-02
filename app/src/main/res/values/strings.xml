@@ -90,4 +90,7 @@
     <string name="enquired">Enquired</string>
     <string name="click_to_call">Click To Call</string>
     <string name="alert">ALERT</string>
+    <string name="name">Name</string>
+    <string name="your_name_here">Your name here</string>
+    <string name="enter_shop_name">Enter Shop Name</string>
 </resources>
