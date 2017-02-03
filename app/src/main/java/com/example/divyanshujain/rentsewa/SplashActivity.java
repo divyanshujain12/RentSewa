@@ -31,8 +31,6 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
         logoAnim = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         logoAnim.setAnimationListener(this);
         logoLL.startAnimation(logoAnim);
-
-
     }
 
     private void go() {

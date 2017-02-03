@@ -63,7 +63,7 @@ public class HomeActivity extends BaseActivity implements AdapterView.OnItemSele
     private CityAdapter cityAdapter;
     private SpinnerCategoryAdapter categoryAdapter;
     private SpinnerSubCategoryAdapter subCategoryAdapter;
-    private String selectedCity, selectedCategoryID, selectedSubCategoryID;
+    private String selectedCity = "", selectedCategoryID = "", selectedSubCategoryID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,11 +96,11 @@ public class HomeActivity extends BaseActivity implements AdapterView.OnItemSele
     }
 
     private void onGoBtClick() {
-        if (!selectedCity.equals("") && !selectedCategoryID.equals("") && !selectedSubCategoryID.equals("")) {
-            CallWebService.getInstance(this, true, ApiCodes.FILTER).hitJsonObjectRequestAPI(CallWebService.POST, API.FILTER_CATEGORY, createJsonForFilter(), this);
-        } else {
+        //if (!selectedCity.equals("") && !selectedCategoryID.equals("") && !selectedSubCategoryID.equals("")) {
+        CallWebService.getInstance(this, true, ApiCodes.FILTER).hitJsonObjectRequestAPI(CallWebService.POST, API.FILTER_CATEGORY, createJsonForFilter(), this);
+        /*} else {
             CustomToasts.getInstance(this).showErrorToast(getString(R.string.err_select_all_filters));
-        }
+        }*/
     }
 
     @Override
@@ -135,7 +135,12 @@ public class HomeActivity extends BaseActivity implements AdapterView.OnItemSele
 
     private void parseAndSetCityData(JSONObject response) throws JSONException {
         citiesModels = UniversalParser.getInstance().parseJsonArrayWithJsonObject(response.getJSONArray(Constants.DATA), CitiesModel.class);
+
         if (citiesModels != null) {
+            CitiesModel citiesModel = new CitiesModel();
+            citiesModel.setId("101");
+            citiesModel.setCity_name("Please Select City");
+            citiesModels.add(0, citiesModel);
             cityAdapter = new CityAdapter(this, citiesModels);
             citiesSP.setAdapter(cityAdapter);
             CallWebService.getInstance(this, true, ApiCodes.GET_CATEGORIES).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_CATEGORIES, null, this);
@@ -145,6 +150,10 @@ public class HomeActivity extends BaseActivity implements AdapterView.OnItemSele
     private void parseAndSetCategoryData(JSONObject response) throws JSONException {
         categoryModels = UniversalParser.getInstance().parseJsonArrayWithJsonObject(response.getJSONArray(Constants.DATA), CategoryModel.class);
         if (categoryModels != null) {
+            CategoryModel categoryModel = new CategoryModel();
+            categoryModel.setId("101");
+            categoryModel.setCat_name("Please Select Category");
+            categoryModels.add(0, categoryModel);
             categoryAdapter = new SpinnerCategoryAdapter(this, categoryModels);
             categorySP.setAdapter(categoryAdapter);
         }
@@ -154,13 +163,22 @@ public class HomeActivity extends BaseActivity implements AdapterView.OnItemSele
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         switch (adapterView.getId()) {
             case R.id.citiesSP:
-                onCitySelected(i);
+                if (i > 0)
+                    onCitySelected(i);
+                else
+                    selectedCity = "";
                 break;
             case R.id.categorySP:
-                onCategorySelected(i);
+                if (i > 0)
+                    onCategorySelected(i);
+                else
+                    selectedCategoryID = "";
                 break;
             case R.id.subCategorySP:
-                onSubCategorySelected(i);
+                if (i > 0)
+                    onSubCategorySelected(i);
+                else
+                    selectedSubCategoryID = "";
                 break;
         }
     }
@@ -187,6 +205,10 @@ public class HomeActivity extends BaseActivity implements AdapterView.OnItemSele
     private void setSubCatAdapter(int i) {
         subCategoryModels = categoryModels.get(i).getSubcatData();
         if (subCategoryModels != null) {
+            SubCategoryModel subCategoryModel = new SubCategoryModel();
+            subCategoryModel.setId("101");
+            subCategoryModel.setSubcat_name("Please Select SubCategory");
+            subCategoryModels.add(0, subCategoryModel);
             subCategoryAdapter = new SpinnerSubCategoryAdapter(this, subCategoryModels);
             subCategorySP.setAdapter(subCategoryAdapter);
         }
