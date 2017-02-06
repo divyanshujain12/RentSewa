@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/thirty_dp"
             android:gravity="center_vertical"
-            android:text="@string/user_name"
+            android:text="@string/email"
             android:textSize="@dimen/eighteen_sp"
             pixlui:typeface="Roboto-Medium.ttf" />
 
@@ -34,8 +34,8 @@
             android:layout_marginTop="@dimen/two_dp"
             android:background="@drawable/rounded_corner_light_grey"
             android:gravity="center_vertical"
-            android:hint="@string/your_user_name_here"
-            android:inputType="text"
+            android:hint="@string/your_email_address_here"
+            android:inputType="textEmailAddress"
             android:padding="@dimen/fifteen_dp"
             android:textSize="@dimen/sixteen_sp"
             pixlui:typeface="Roboto-Regular.ttf" />

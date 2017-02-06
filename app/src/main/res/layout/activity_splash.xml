@@ -32,10 +32,17 @@
         <com.neopixl.pixlui.components.textview.TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/eight_dp"
+            android:padding="@dimen/two_dp"
             android:text="@string/app_name"
             android:textColor="@color/white"
             android:textSize="@dimen/fourty_sp"
+            pixlui:typeface="Quikhand.ttf" />
+        <com.neopixl.pixlui.components.textview.TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rent_is_new_trend"
+            android:textColor="@color/white"
+            android:textSize="@dimen/twenty_sp"
             pixlui:typeface="Quikhand.ttf" />
     </LinearLayout>
 </FrameLayout>

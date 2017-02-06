@@ -93,4 +93,6 @@
     <string name="name">Name</string>
     <string name="your_name_here">Your name here</string>
     <string name="enter_shop_name">Enter Shop Name</string>
+    <string name="rent_is_new_trend">Rent is New Trend</string>
+    <string name="email">Email</string>
 </resources>
