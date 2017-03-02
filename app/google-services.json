@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "32206814624",
+    "firebase_url": "https://rentsewa-b0d20.firebaseio.com",
+    "project_id": "rentsewa-b0d20",
+    "storage_bucket": "rentsewa-b0d20.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32206814624:android:159bfb15a3bb29b0",
+        "android_client_info": {
+          "package_name": "com.app.rentsewaaa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "32206814624-8bvs43gav1c9uhjn2s332glib3r07ub7.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "32206814624-hrof77428814euu768gcevh50okq3cdc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBh1PFRxcJmY3o-TmvtavwzAJPZ0zrItdU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

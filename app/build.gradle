@@ -4,7 +4,7 @@ android {
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
     defaultConfig {
-        applicationId "com.app.rentsewaa"
+        applicationId "com.app.rentsewaaa"
         minSdkVersion 15
         targetSdkVersion 24
         versionCode 1
@@ -35,4 +35,6 @@ dependencies {
     compile 'com.androidadvance:topsnackbar:1.1.1'
     compile 'com.facebook.android:facebook-android-sdk:4.6.0'
     compile files('libs/universal-image-loader-1.9.3.jar')
+    compile 'com.google.firebase:firebase-messaging:10.0.1'
 }
+apply plugin: 'com.google.gms.google-services'

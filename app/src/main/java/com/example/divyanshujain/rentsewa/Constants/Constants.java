@@ -36,5 +36,6 @@ public interface Constants {
     String P_ID = "pid";
     String VENDOR = "vendor";
     String VISITOR = "visitor";
-
+    String TITLE = "title";
+    String PUSH_DATA = "push_data";
 }
