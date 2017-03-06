@@ -38,4 +38,6 @@ public interface Constants {
     String VISITOR = "visitor";
     String TITLE = "title";
     String PUSH_DATA = "push_data";
+    String FCM_ID = "fcm_id";
+
 }

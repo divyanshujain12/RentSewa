@@ -20,4 +20,5 @@ public interface ApiCodes {
     int GET_PRODUCT_REQUESTS = 111;
     int REQUEST_FOR_A_CALL = 112;
     int PRODUCT_DETAIL = 113;
+    int FCM_ID = 114;
 }

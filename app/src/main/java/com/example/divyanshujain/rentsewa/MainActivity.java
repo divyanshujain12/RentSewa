@@ -15,6 +15,7 @@ import com.example.divyanshujain.rentsewa.Constants.Constants;
 import com.example.divyanshujain.rentsewa.GlobalClasses.BaseActivity;
 import com.example.divyanshujain.rentsewa.Models.UserModel;
 import com.example.divyanshujain.rentsewa.Utils.CallWebService;
+import com.example.divyanshujain.rentsewa.Utils.CommonFunctions;
 import com.example.divyanshujain.rentsewa.Utils.MySharedPereference;
 import com.example.divyanshujain.rentsewa.Utils.UniversalParser;
 import com.facebook.CallbackManager;
@@ -37,8 +38,6 @@ import java.util.Arrays;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-
-import static com.example.divyanshujain.rentsewa.Constants.Constants.VENDOR;
 
 public class MainActivity extends BaseActivity implements FacebookCallback<LoginResult> {
 
@@ -198,6 +197,7 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
         MySharedPereference.getInstance().setString(this, Constants.USER_ID, userModel.getUser_id());
         MySharedPereference.getInstance().setString(this, Constants.USER_TYPE, userModel.getUser_type());
         MySharedPereference.getInstance().setBoolean(this, Constants.IS_LOGGED_IN, true);
+        CommonFunctions.getInstance().sendFCMidToServer(this);
         goToVisitorHome();
     }
 
