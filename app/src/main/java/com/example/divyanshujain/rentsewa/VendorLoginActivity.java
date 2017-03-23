@@ -130,6 +130,7 @@ public class VendorLoginActivity extends BaseActivity {
         MySharedPereference.getInstance().setString(this, Constants.USER_ID, userModel.getUser_id());
         MySharedPereference.getInstance().setString(this, Constants.USER_TYPE, userModel.getUser_type());
         MySharedPereference.getInstance().setBoolean(this, Constants.IS_LOGGED_IN, true);
+        CommonFunctions.getInstance().sendFCMidToServer(this);
 
         goToHome();
     }

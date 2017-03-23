@@ -1,12 +1,15 @@
 package com.example.divyanshujain.rentsewa.Utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.example.divyanshujain.rentsewa.Constants.API;
+import com.example.divyanshujain.rentsewa.Constants.ApiCodes;
 import com.example.divyanshujain.rentsewa.Constants.Constants;
 import com.example.divyanshujain.rentsewa.fragments.RuntimePermissionHeadlessFragment;
 
@@ -74,5 +77,20 @@ public class CommonFunctions {
                     .getSystemService(Activity.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    public void sendFCMidToServer(Context context) {
+        CallWebService.getInstance(context, false, ApiCodes.FCM_ID).hitJsonObjectRequestAPI(CallWebService.POST, API.FCM_ID, createJsonForSendFCMidToServer(context), null);
+    }
+
+    private JSONObject createJsonForSendFCMidToServer(Context context) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(Constants.FCM_ID, MySharedPereference.getInstance().getString(context, Constants.FCM_ID));
+            jsonObject.put(Constants.USER_ID, MySharedPereference.getInstance().getString(context, Constants.USER_ID));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
     }
 }

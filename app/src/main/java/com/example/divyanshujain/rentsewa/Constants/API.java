@@ -18,4 +18,5 @@ public interface API {
     String GET_PRODUCT_REQUESTS = BASE + "getProductRequests";
     String REQUEST_FOR_A_CALL = BASE + "requestForaCall";
     String PRODUCT_DETAIL = BASE + "productDetail";
+    String FCM_ID = BASE+"updateFCMId";
 }
