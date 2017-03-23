@@ -1,13 +1,29 @@
 package com.example.divyanshujain.rentsewa.Fcm;
 
+import android.app.ActivityManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
 
 import com.example.divyanshujain.rentsewa.Constants.Constants;
+import com.example.divyanshujain.rentsewa.Models.VendorListingModel;
+import com.example.divyanshujain.rentsewa.R;
+import com.example.divyanshujain.rentsewa.Utils.UniversalParser;
+import com.example.divyanshujain.rentsewa.VendorSignupActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -16,6 +32,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String NEW_CHALLENGE = "New Challenge";
     private static final String UPCOMING_ROUND = "Upcoming Round";
     private static final String CHALLENGE_DELETED = "Challenge Deleted";
+    private static final int NEW_CHALLENGE_NOTIFICATION_ID = 112312;
 
     /**
      * Called when message is received.
@@ -68,33 +85,73 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             JSONObject data = jsonObject.getJSONObject(Constants.DATA);
             String notificationType = data.getString(Constants.TITLE);
             JSONObject pushData = data.getJSONObject(Constants.PUSH_DATA);
-
-            switch (notificationType) {
+            generateNewRequestNotification(pushData);
+           /* switch (notificationType) {
                 case NEW_CHALLENGE:
-                    generateNewChallengeNotification(pushData);
+                    generateNewRequestNotification(pushData);
                     break;
-                case UPCOMING_ROUND:
-                    generateUpcomingRoundNotification(pushData);
-                    break;
-                case CHALLENGE_DELETED:
-                    generateDeletedChallengeNotification(pushData);
-                    break;
-            }
+            }*/
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    private void generateNewChallengeNotification(JSONObject pushData) {
-
+    private void generateNewRequestNotification(JSONObject pushData) {
+        VendorListingModel vendorListingModel = UniversalParser.getInstance().parseJsonObject(pushData,VendorListingModel.class);
+        sendNewRequestNotification(getBaseContext(),vendorListingModel.getVisitor_name()+" is requested for a call. For more detail click on me",vendorListingModel);
     }
+    public void sendNewRequestNotification(final Context context, String messageBody, VendorListingModel vendorListingModel) {
+        final Intent intent = new Intent(context, VendorSignupActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        //intent.putExtra(Constants.DATA, categoryModel);
+        intent.putExtra(Constants.DATA, vendorListingModel);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
 
-    private void generateUpcomingRoundNotification(JSONObject pushData) {
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        final Notification.Builder builder = new Notification.Builder(context);
+        builder.setStyle(new Notification.BigTextStyle(builder)
+                .bigText(messageBody)
+                .setBigContentTitle("Requested For Call")
+                .setSummaryText("summary"))
+                .setAutoCancel(true)
+                .setContentTitle("Requested For Call")
+                .setContentText("Summary")
+                .setSmallIcon(R.mipmap.ic_launcher).setContentIntent(pendingIntent);
+        builder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
+        builder.setSound(defaultSoundUri);
+        if (!isAppIsInBackground(context)) {
+            builder.setPriority(Notification.PRIORITY_MAX);
+        }
 
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(NEW_CHALLENGE_NOTIFICATION_ID, builder.build());
     }
+    public static boolean isAppIsInBackground(Context context) {
+        boolean isInBackground = true;
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+            List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
+            for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
+                if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                    for (String activeProcess : processInfo.pkgList) {
+                        if (activeProcess.equals(context.getPackageName())) {
+                            isInBackground = false;
+                        }
+                    }
+                }
+            }
+        } else {
+            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+            ComponentName componentInfo = taskInfo.get(0).topActivity;
+            if (componentInfo.getPackageName().equals(context.getPackageName())) {
+                isInBackground = false;
+            }
+        }
 
-    private void generateDeletedChallengeNotification(JSONObject pushData) {
-
+        return isInBackground;
     }
 }

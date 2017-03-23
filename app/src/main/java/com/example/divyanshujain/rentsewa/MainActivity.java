@@ -63,7 +63,7 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
     ViewPager backgroundImagesVP;
     private CallbackManager callbackManager;
     String objname, objid, objemail;
-
+    ArrayList<ImageModel> imageModels;
     private CustomPagerAdapter customPagerAdapter;
 
 
@@ -186,7 +186,7 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
                 saveDataInSharedPrefs(userModel);
                 break;
             case ApiCodes.GET_SLIDER:
-                ArrayList<ImageModel> imageModels = UniversalParser.getInstance().parseJsonArrayWithJsonObject(response.getJSONArray(Constants.DATA), ImageModel.class);
+                imageModels = UniversalParser.getInstance().parseJsonArrayWithJsonObject(response.getJSONArray(Constants.DATA), ImageModel.class);
                 customPagerAdapter = new CustomPagerAdapter(this, imageModels);
                 backgroundImagesVP.setAdapter(customPagerAdapter);
                 startTimer();
@@ -200,9 +200,16 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-            int nextItem = backgroundImagesVP.getCurrentItem();
+                int currentItem = backgroundImagesVP.getCurrentItem();
+                if (currentItem < imageModels.size() - 1) {
+                    currentItem++;
+                } else {
+                    currentItem = 0;
+                }
+
+                backgroundImagesVP.setCurrentItem(currentItem);
             }
-        }, 0, 1000);
+        }, 2000, 2000);
     }
 
     @Override
