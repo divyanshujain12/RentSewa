@@ -3,21 +3,24 @@ package com.example.divyanshujain.rentsewa;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.example.divyanshujain.rentsewa.Constants.API;
 import com.example.divyanshujain.rentsewa.Constants.ApiCodes;
 import com.example.divyanshujain.rentsewa.Constants.Constants;
 import com.example.divyanshujain.rentsewa.GlobalClasses.BaseActivity;
+import com.example.divyanshujain.rentsewa.Models.ImageModel;
 import com.example.divyanshujain.rentsewa.Models.UserModel;
 import com.example.divyanshujain.rentsewa.Utils.CallWebService;
 import com.example.divyanshujain.rentsewa.Utils.CommonFunctions;
 import com.example.divyanshujain.rentsewa.Utils.MySharedPereference;
 import com.example.divyanshujain.rentsewa.Utils.UniversalParser;
+import com.example.divyanshujain.rentsewa.adapters.CustomPagerAdapter;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -33,7 +36,10 @@ import com.neopixl.pixlui.components.button.Button;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -52,9 +58,13 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
     @InjectView(R.id.loginButtonFacebook)
     LoginButton loginButtonFacebook;
     @InjectView(R.id.activity_main)
-    FrameLayout activityMain;
+    RelativeLayout activityMain;
+    @InjectView(R.id.backgroundImagesVP)
+    ViewPager backgroundImagesVP;
     private CallbackManager callbackManager;
     String objname, objid, objemail;
+
+    private CustomPagerAdapter customPagerAdapter;
 
 
     @Override
@@ -68,6 +78,8 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
 
     private void initViews() {
         setUpFacebookButton();
+
+        CallWebService.getInstance(this, false, ApiCodes.GET_SLIDER).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_SLIDER, null, this);
         //  CommonFunctions.getInstance().configureToolbarWithOutBackButton(this,toolbarView,"");
     }
 
@@ -88,7 +100,6 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
 
     @OnClick({R.id.loginAsVendorBT, R.id.loginAsVisitorBT})
     public void onClick(View view) {
-
         switch (view.getId()) {
             case R.id.loginAsVendorBT:
                 startActivity(new Intent(this, VendorLoginActivity.class));
@@ -169,10 +180,29 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
     @Override
     public void onJsonObjectSuccess(JSONObject response, int apiType) throws JSONException {
         super.onJsonObjectSuccess(response, apiType);
+        switch (apiType) {
+            case ApiCodes.REGISTRATION:
+                UserModel userModel = UniversalParser.getInstance().parseJsonObject(response.getJSONObject(Constants.DATA), UserModel.class);
+                saveDataInSharedPrefs(userModel);
+                break;
+            case ApiCodes.GET_SLIDER:
+                ArrayList<ImageModel> imageModels = UniversalParser.getInstance().parseJsonArrayWithJsonObject(response.getJSONArray(Constants.DATA), ImageModel.class);
+                customPagerAdapter = new CustomPagerAdapter(this, imageModels);
+                backgroundImagesVP.setAdapter(customPagerAdapter);
+                startTimer();
+                break;
+        }
 
-        UserModel userModel = UniversalParser.getInstance().parseJsonObject(response.getJSONObject(Constants.DATA), UserModel.class);
-        saveDataInSharedPrefs(userModel);
+    }
 
+    private void startTimer() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+            int nextItem = backgroundImagesVP.getCurrentItem();
+            }
+        }, 0, 1000);
     }
 
     @Override
@@ -202,7 +232,6 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
     }
 
 
-
     private JSONObject createJsonForVisitorLogin() {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -212,6 +241,7 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
         }
         return jsonObject;
     }
+
     private void goToVisitorHome() {
         Intent categoryIntent = new Intent(this, HomeActivity.class);
         startActivity(categoryIntent);
