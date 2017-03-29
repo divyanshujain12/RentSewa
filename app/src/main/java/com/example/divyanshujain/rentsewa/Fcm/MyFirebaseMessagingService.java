@@ -16,6 +16,7 @@ import com.example.divyanshujain.rentsewa.Constants.Constants;
 import com.example.divyanshujain.rentsewa.Models.VendorListingModel;
 import com.example.divyanshujain.rentsewa.R;
 import com.example.divyanshujain.rentsewa.Utils.UniversalParser;
+import com.example.divyanshujain.rentsewa.VendorListingDetailActivity;
 import com.example.divyanshujain.rentsewa.VendorSignupActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -102,7 +103,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         sendNewRequestNotification(getBaseContext(),vendorListingModel.getVisitor_name()+" is requested for a call. For more detail click on me",vendorListingModel);
     }
     public void sendNewRequestNotification(final Context context, String messageBody, VendorListingModel vendorListingModel) {
-        final Intent intent = new Intent(context, VendorSignupActivity.class);
+        final Intent intent = new Intent(context, VendorListingDetailActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         //intent.putExtra(Constants.DATA, categoryModel);
         intent.putExtra(Constants.DATA, vendorListingModel);
