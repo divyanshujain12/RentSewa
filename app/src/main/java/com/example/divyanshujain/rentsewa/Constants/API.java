@@ -19,5 +19,14 @@ public interface API {
     String REQUEST_FOR_A_CALL = BASE + "requestForaCall";
     String PRODUCT_DETAIL = BASE + "productDetail";
     String GET_SLIDER = BASE + "getSlider";
-    String FCM_ID = BASE+"updateFCMId";
+    String FCM_ID = BASE + "updateFCMId";
+    String GET_PRODUCT_LOCATION = BASE + "getProductLocation";
+    String GET_ALL_COUNTRY = BASE + "getAllCountry";
+    String GET_ALL_STATE = BASE + "getStateByCountry";
+    String GET_ALL_CITIES = BASE + "getCityStateWise";
+    String POST_PRODUCT = BASE + "productProcess";
+    String PRODUCT_EDIT_PROCESS = BASE + "productEditProcess";
+    String DELETE_PRODUCT = BASE + "deleteproduct";
+    String VENDOR_PRODUCT_LISTING = BASE+"vendorProductListing";
+
 }

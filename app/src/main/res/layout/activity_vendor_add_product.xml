@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"
+    android:id="@+id/activity_vendor_add_product"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    android:padding="@dimen/fifteen_dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/postBT"
+        android:layout_marginBottom="@dimen/five_dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/add_product_add_photos_view" />
+
+            <include layout="@layout/title_view" />
+
+            <include layout="@layout/email_view" />
+
+            <include layout="@layout/phone_number_view" />
+
+            <include layout="@layout/add_product_price_view" />
+
+            <include layout="@layout/add_product_pin_code_view" />
+
+            <include layout="@layout/add_product_time_period" />
+
+            <include layout="@layout/add_product_desc_view" />
+
+            <include layout="@layout/add_product_category_view" />
+
+            <include layout="@layout/add_product_sub_category_view" />
+
+            <include layout="@layout/add_product_city_view" />
+
+            <include layout="@layout/add_product_p_location_view" />
+
+            <include layout="@layout/add_product_state_view" />
+
+            <include layout="@layout/add_product_country_view" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.neopixl.pixlui.components.button.Button
+        android:id="@+id/postBT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/rounded_corner_white_full"
+        android:gravity="center"
+        android:text="Post"
+        android:textSize="@dimen/eighteen_sp"
+        pixlui:typeface="Roboto-Medium.ttf" />
+</RelativeLayout>

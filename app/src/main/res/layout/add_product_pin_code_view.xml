@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui">
+
+    <com.neopixl.pixlui.components.textview.TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:gravity="center_vertical"
+        android:text="@string/pin_code"
+        android:textSize="@dimen/eighteen_sp"
+        pixlui:typeface="Roboto-Medium.ttf" />
+
+
+    <com.neopixl.pixlui.components.edittext.EditText
+        android:id="@+id/pinCodeET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner_light_grey"
+        android:gravity="center_vertical"
+        android:inputType="number"
+        android:hint="@string/tour_pin_code_here"
+        android:maxLength="6"
+        android:padding="@dimen/fifteen_dp"
+        android:textSize="@dimen/sixteen_sp"
+        pixlui:typeface="Roboto-Regular.ttf" />
+
+</merge>
