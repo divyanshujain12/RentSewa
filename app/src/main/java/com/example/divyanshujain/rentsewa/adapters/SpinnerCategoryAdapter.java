@@ -21,9 +21,9 @@ public class SpinnerCategoryAdapter extends BaseAdapter {
     ArrayList<CategoryModel> citiesModels;
     LayoutInflater inflter;
 
-    public SpinnerCategoryAdapter(Context applicationContext, ArrayList<CategoryModel> citiesModels) {
+    public SpinnerCategoryAdapter(Context applicationContext, ArrayList<CategoryModel> categoryModels) {
         this.context = applicationContext;
-        this.citiesModels = citiesModels;
+        this.citiesModels = categoryModels;
         inflter = (LayoutInflater.from(applicationContext));
     }
 

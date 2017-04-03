@@ -8,12 +8,17 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
+import com.example.divyanshujain.rentsewa.Constants.API;
+import com.example.divyanshujain.rentsewa.Constants.ApiCodes;
+import com.example.divyanshujain.rentsewa.Constants.Constants;
 import com.example.divyanshujain.rentsewa.GlobalClasses.BaseActivity;
 import com.example.divyanshujain.rentsewa.Models.CategoryModel;
 import com.example.divyanshujain.rentsewa.Models.CitiesModel;
 import com.example.divyanshujain.rentsewa.Models.CountryModel;
 import com.example.divyanshujain.rentsewa.Models.StateModel;
 import com.example.divyanshujain.rentsewa.Models.SubCategoryModel;
+import com.example.divyanshujain.rentsewa.Utils.CallWebService;
+import com.example.divyanshujain.rentsewa.Utils.UniversalParser;
 import com.example.divyanshujain.rentsewa.Utils.Validation;
 import com.example.divyanshujain.rentsewa.adapters.CityAdapter;
 import com.example.divyanshujain.rentsewa.adapters.CountryAdapter;
@@ -22,6 +27,9 @@ import com.example.divyanshujain.rentsewa.adapters.SpinnerSubCategoryAdapter;
 import com.example.divyanshujain.rentsewa.adapters.StateAdapter;
 import com.neopixl.pixlui.components.button.Button;
 import com.neopixl.pixlui.components.edittext.EditText;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -66,6 +74,7 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
     @InjectView(R.id.activity_vendor_add_product)
     RelativeLayout activityVendorAddProduct;
 
+    CityAdapter productLocationCityAdapter;
     CityAdapter cityAdapter;
     StateAdapter stateAdapter;
     CountryAdapter countryAdapter;
@@ -73,6 +82,7 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
     private SpinnerSubCategoryAdapter subCategoryAdapter;
 
     private ArrayList<CitiesModel> cityModels = new ArrayList<>();
+    private ArrayList<CitiesModel> productLocationCityModels = new ArrayList<>();
     private ArrayList<StateModel> stateModels = new ArrayList<>();
     private ArrayList<CountryModel> countryModels = new ArrayList<>();
     private ArrayList<CategoryModel> categoryModels = new ArrayList<>();
@@ -92,19 +102,30 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
     }
 
     private void initViews() {
-        citiesSP.setOnItemSelectedListener(this);
-        stateSP.setOnItemSelectedListener(this);
-        countrySP.setOnItemSelectedListener(this);
 
+        productLocationCityAdapter = new CityAdapter(this, productLocationCityModels);
         cityAdapter = new CityAdapter(this, cityModels);
         stateAdapter = new StateAdapter(this, 0, stateModels);
         countryAdapter = new CountryAdapter(this, 0, countryModels);
-        categorySP.setOnItemSelectedListener(this);
-        subCategorySP.setOnItemSelectedListener(this);
+        categoryAdapter = new SpinnerCategoryAdapter(this, categoryModels);
+        subCategoryAdapter = new SpinnerSubCategoryAdapter(this, subCategoryModels);
 
+        pLocationcitiesSP.setAdapter(productLocationCityAdapter);
         citiesSP.setAdapter(cityAdapter);
         stateSP.setAdapter(stateAdapter);
         countrySP.setAdapter(countryAdapter);
+        categorySP.setAdapter(categoryAdapter);
+        subCategorySP.setAdapter(subCategoryAdapter);
+
+        pLocationcitiesSP.setOnItemSelectedListener(this);
+        citiesSP.setOnItemSelectedListener(this);
+        stateSP.setOnItemSelectedListener(this);
+        countrySP.setOnItemSelectedListener(this);
+        categorySP.setOnItemSelectedListener(this);
+        subCategorySP.setOnItemSelectedListener(this);
+
+        CallWebService.getInstance(this, true, ApiCodes.GET_PRODUCT_LOCATION).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_PRODUCT_LOCATION, null, this);
+        CallWebService.getInstance(this, true, ApiCodes.GET_ALL_COUNTRY).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_ALL_COUNTRY, null, this);
     }
 
     @OnClick({R.id.addImageIV, R.id.postBT})
@@ -115,6 +136,29 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
             case R.id.postBT:
                 break;
         }
+    }
+
+    @Override
+    public void onJsonObjectSuccess(JSONObject response, int apiType) throws JSONException {
+        super.onJsonObjectSuccess(response, apiType);
+        switch (apiType) {
+            case ApiCodes.GET_PRODUCT_LOCATION:
+                productLocationCityModels = UniversalParser.getInstance().parseJsonArrayWithJsonObject(response.getJSONArray(Constants.DATA), CitiesModel.class);
+                break;
+            case ApiCodes.GET_ALL_COUNTRY:
+                break;
+            case ApiCodes.GET_ALL_STATE:
+                break;
+            case ApiCodes.GET_ALL_CITIES:
+                break;
+            case ApiCodes.POST_PRODUCT:
+                break;
+            case ApiCodes.PRODUCT_EDIT_PROCESS:
+                break;
+            case ApiCodes.VENDOR_PRODUCT_LISTING:
+                break;
+        }
+
     }
 
     @Override
