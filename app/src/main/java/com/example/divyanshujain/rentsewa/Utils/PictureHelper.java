@@ -47,7 +47,7 @@ public class PictureHelper {
      */
     public void takeFromCamera(Activity activity, String title) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File photo = new File(Environment.getExternalStorageDirectory(),  "Pic.jpg");
+        File photo = new File(Environment.getExternalStorageDirectory(), "Pic.jpg");
         intent.putExtra(MediaStore.EXTRA_OUTPUT,
                 Uri.fromFile(photo));
         cameraImageUri = Uri.fromFile(photo);
@@ -70,20 +70,36 @@ public class PictureHelper {
      *
      * @return the picture Uri, or null if no picture was taken.
      */
+
+    public Bitmap retrieveAllSelectedPicturePath(Activity activity, Uri uris) throws Exception {
+
+
+        getOrientation(activity, uris);
+        String filePath = getPath(activity, uris);
+        if (filePath != null && filePath.length() > 0) {
+            Bitmap bitmap = getBitmap(activity, uris);
+            bitmap = rotatePicInPortraitMode(filePath, bitmap);
+            Log.d(TAG, String.valueOf(bitmapSizeInKB(bitmap)));
+            return bitmap;
+
+        }
+        return null;
+    }
+
     public HashMap<String, Bitmap> retrievePicturePath(Activity activity, int requestCode, int resultCode, Intent data) throws Exception {
 
         if (resultCode == Activity.RESULT_OK) {
             Uri result = null;
             Bitmap bitmap;
             if (requestCode == REQUEST_CAMERA) {
-               // bitmap = (Bitmap) data.getExtras().get("data");
+                // bitmap = (Bitmap) data.getExtras().get("data");
                 //Log.d(TAG, String.valueOf(bitmapSizeInKB(bitmap)));
                 result = cameraImageUri;
             } else
                 result = data.getData();
 
             // String filePath = getRealPathFromURI(activity, result);
-            getOrientation(activity,result);
+            getOrientation(activity, result);
             String filePath = getPath(activity, result);
             if (filePath != null && filePath.length() > 0) {
                 bitmap = getBitmap(activity, result);

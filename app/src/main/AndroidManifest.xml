@@ -70,7 +70,8 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
-        <activity android:name=".VendorAddProduct"></activity>
+        <activity android:name=".VendorAddProduct"
+            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>

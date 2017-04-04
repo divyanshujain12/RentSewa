@@ -39,7 +39,7 @@ public class StateAdapter extends ArrayAdapter<StateModel> {
     }
 
     private View getCustomView(int position, View convertView, ViewGroup parent) {
-        TextView row = (TextView) inflater.inflate(R.layout.spinner_rows, parent, false);
+        TextView row = (TextView) inflater.inflate(R.layout.custom_spinner_items, parent, false);
         row.setText(stateModels.get(position).getName());
         return row;
     }

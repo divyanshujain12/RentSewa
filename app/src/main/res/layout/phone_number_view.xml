@@ -16,13 +16,13 @@
     <com.neopixl.pixlui.components.edittext.EditText
         android:id="@+id/phoneET"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/fourty_dp"
         android:layout_marginTop="@dimen/two_dp"
         android:background="@drawable/rounded_corner_light_grey"
         android:gravity="center_vertical"
         android:hint="@string/your_phone_number_here"
         android:inputType="phone"
-        android:padding="@dimen/fifteen_dp"
+        android:paddingLeft="@dimen/five_dp"
         android:textSize="@dimen/sixteen_sp"
         pixlui:typeface="Roboto-Regular.ttf" />
 </merge>

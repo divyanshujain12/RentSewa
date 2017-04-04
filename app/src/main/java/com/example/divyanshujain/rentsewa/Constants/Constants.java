@@ -39,5 +39,7 @@ public interface Constants {
     String TITLE = "title";
     String PUSH_DATA = "push_data";
     String FCM_ID = "fcm_id";
+    String STATE_ID = "state_id";
+    String COUNTRY_ID = "country_id";
 
 }

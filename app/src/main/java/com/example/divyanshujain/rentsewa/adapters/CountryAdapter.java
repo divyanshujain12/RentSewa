@@ -39,7 +39,7 @@ public class CountryAdapter extends ArrayAdapter<CountryModel> {
     }
 
     private View getCustomView(int position, View convertView, ViewGroup parent) {
-        TextView row = (TextView) inflater.inflate(R.layout.spinner_rows, parent, false);
+        TextView row = (TextView) inflater.inflate(R.layout.custom_spinner_items, parent, false);
         row.setText(countryModels.get(position).getName());
         return row;
     }

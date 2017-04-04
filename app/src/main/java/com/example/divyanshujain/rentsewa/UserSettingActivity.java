@@ -253,9 +253,9 @@ public class UserSettingActivity extends BaseActivity implements ImagePickDialog
             jsonObject.put(Constants.WEBSITE, websiteET.getText().toString());
             jsonObject.put(Constants.ADDRESS, addressET.getText().toString());
             jsonObject.put(Constants.USER_NAME, hashMap.get(firstNameET));
-            //jsonObject.put(Constants.LAST_NAME, hashMap.get(lastNameET));
+            //jsonObject.put(Constants.LAST_NAME, hashMaps.get(lastNameET));
             jsonObject.put(Constants.EMAIl, userModel.getEmail());
-            //jsonObject.put(Constants.PHONE_NUMBER, hashMap.get(mobileET));
+            //jsonObject.put(Constants.PHONE_NUMBER, hashMaps.get(mobileET));
             jsonObject.put(Constants.DATE_OF_BIRTH, userModel.getDate_of_birth());
             jsonObject.put(Constants.PASSWORD, hashMap.get(changePasswordET));
              jsonObject.put(Constants.USER_TYPE, userModel.getUser_type());

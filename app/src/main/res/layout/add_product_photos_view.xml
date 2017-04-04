@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/one_hundred_dp"
+    android:orientation="vertical"
+    tools:showIn="@layout/activity_vendor_add_product">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/productImagesRV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/addedImageLL"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+
+        <include layout="@layout/add_image_button_view" />
+
+    </LinearLayout>
+</LinearLayout>

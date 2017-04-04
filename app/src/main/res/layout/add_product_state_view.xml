@@ -14,9 +14,6 @@
     <Spinner
         android:id="@+id/stateSP"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_corner_light_grey"
-        android:gravity="center_vertical"
-        android:padding="@dimen/fifteen_dp"
-        android:textSize="@dimen/sixteen_sp" />
+        android:layout_height="@dimen/fourty_dp"
+        android:background="@drawable/rounded_corner_light_grey"/>
 </merge>

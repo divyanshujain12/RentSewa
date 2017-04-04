@@ -6,7 +6,7 @@ package com.example.divyanshujain.rentsewa.Models;
 
 public class StateModel {
     private String state_id;
-    private String name;
+    private String state_name;
 
     public String getState_id() {
         return state_id;
@@ -17,10 +17,10 @@ public class StateModel {
     }
 
     public String getName() {
-        return name;
+        return state_name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.state_name = name;
     }
 }

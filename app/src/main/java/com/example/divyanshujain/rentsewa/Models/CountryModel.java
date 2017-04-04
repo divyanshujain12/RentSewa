@@ -6,7 +6,7 @@ package com.example.divyanshujain.rentsewa.Models;
 
 public class CountryModel {
     private String country_id;
-    private String name;
+    private String country__name;
 
     public String getCountry_id() {
         return country_id;
@@ -17,10 +17,10 @@ public class CountryModel {
     }
 
     public String getName() {
-        return name;
+        return country__name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.country__name = name;
     }
 }

@@ -4,12 +4,14 @@ import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.example.divyanshujain.rentsewa.Constants.API;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 public class VendorListingActivity extends BaseActivity implements RuntimePermissionHeadlessFragment.PermissionCallback {
 
@@ -40,9 +43,11 @@ public class VendorListingActivity extends BaseActivity implements RuntimePermis
     @InjectView(R.id.vendorRV)
     RecyclerView vendorRV;
     @InjectView(R.id.activity_vendor_listing)
-    LinearLayout activityVendorListing;
+    FrameLayout activityVendorListing;
 
     ArrayList<VendorListingModel> vendorListingModels = new ArrayList<>();
+    @InjectView(R.id.addProductFAB)
+    FloatingActionButton addProductFAB;
     private VendorListingAdapter vendorListingAdapter;
     String[] callPermission;
     RuntimePermissionHeadlessFragment runtimePermissionHeadlessFragment;
@@ -140,5 +145,11 @@ public class VendorListingActivity extends BaseActivity implements RuntimePermis
     @Override
     public void onPermissionDenied(int permissionType) {
 
+    }
+
+    @OnClick(R.id.addProductFAB)
+    public void onClick() {
+        Intent intent = new Intent(this, VendorAddProduct.class);
+        startActivity(intent);
     }
 }
