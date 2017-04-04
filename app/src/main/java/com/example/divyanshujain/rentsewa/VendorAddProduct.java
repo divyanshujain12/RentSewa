@@ -46,7 +46,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -92,8 +91,7 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
     RelativeLayout activityVendorAddProduct;
 
     private static final int PICK_IMAGE_MULTIPLE = 1;
-    String imageEncoded;
-    List<String> imagesEncodedList;
+
 
     CityAdapter productLocationCityAdapter;
     CityAdapter cityAdapter;
@@ -144,7 +142,7 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
         countrySP.setOnItemSelectedListener(this);
         categorySP.setOnItemSelectedListener(this);
         subCategorySP.setOnItemSelectedListener(this);
-        bitmapsList.add(null);
+        initializeBitmapArray();
         productImagesRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         addImagesRvAdapter = new AddImagesRvAdapter(this, bitmapsList, this);
         productImagesRV.setAdapter(addImagesRvAdapter);
@@ -154,6 +152,7 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
         CallWebService.getInstance(this, false, ApiCodes.GET_ALL_COUNTRY).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_ALL_COUNTRY, null, this);
         CallWebService.getInstance(this, false, ApiCodes.GET_CATEGORIES).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_CATEGORIES, null, this);
     }
+
 
     @OnClick({R.id.addImageIV, R.id.postBT})
     public void onClick(View view) {
@@ -226,7 +225,7 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
         switch (parent.getId()) {
             case R.id.categorySP:
                 selectedCategoryID = categoryModels.get(position).getId();
-                setUpSubCategroySP(position);
+                setUpSubCategorySP(position);
                 break;
             case R.id.subCategorySP:
                 selectedSubCategoryID = subCategoryModels.get(position).getId();
@@ -248,7 +247,7 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
         }
     }
 
-    private void setUpSubCategroySP(int position) {
+    private void setUpSubCategorySP(int position) {
         subCategoryModels = categoryModels.get(position).getSubcatData();
         subCategoryAdapter = new SpinnerSubCategoryAdapter(this, subCategoryModels);
         subCategorySP.setAdapter(subCategoryAdapter);
@@ -286,6 +285,7 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
             // When an Image is picked
             if (requestCode == PICK_IMAGE_MULTIPLE && resultCode == RESULT_OK
                     && null != data) {
+                initializeBitmapArray();
                 if (data.getData() != null) {
                     Uri mImageUri = data.getData();
                     // Get the cursor
@@ -342,5 +342,10 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
     @Override
     public void onPermissionDenied(int permissionType) {
 
+    }
+
+    private void initializeBitmapArray() {
+        bitmapsList = new ArrayList<>();
+        bitmapsList.add(null);
     }
 }

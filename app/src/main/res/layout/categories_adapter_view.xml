@@ -17,9 +17,10 @@
     <com.neopixl.pixlui.components.textview.TextView
         android:id="@+id/categoryNameTV"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="bottom"
         android:text="category name"
+        android:gravity="bottom"
         android:textSize="@dimen/sixteen_sp"
         android:textColor="@color/white"
         android:padding="@dimen/eight_dp"
