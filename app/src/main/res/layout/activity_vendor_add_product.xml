@@ -38,6 +38,8 @@
 
             <include layout="@layout/title_view" />
 
+            <include layout="@layout/add_product_brand_view" />
+
             <include layout="@layout/email_view" />
 
             <include layout="@layout/phone_number_view" />
@@ -45,6 +47,8 @@
             <include layout="@layout/add_product_price_view" />
 
             <include layout="@layout/add_product_pin_code_view" />
+
+            <include layout="@layout/add_product_address_view" />
 
             <include layout="@layout/add_product_time_period" />
 

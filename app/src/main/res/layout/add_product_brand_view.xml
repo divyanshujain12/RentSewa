@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui">
+
+    <com.neopixl.pixlui.components.textview.TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:gravity="center_vertical"
+        android:text="Brand"
+        android:textSize="@dimen/eighteen_sp"
+        pixlui:typeface="Roboto-Medium.ttf" />
+
+    <com.neopixl.pixlui.components.edittext.EditText
+        android:id="@+id/brandET"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fourty_dp"
+        android:layout_marginTop="@dimen/two_dp"
+        android:background="@drawable/rounded_corner_light_grey"
+        android:gravity="center_vertical"
+        android:hint="@string/your_nrand_here"
+        android:inputType="text"
+        android:paddingLeft="@dimen/five_dp"
+        android:textSize="@dimen/sixteen_sp"
+        pixlui:typeface="Roboto-Regular.ttf" />
+</merge>

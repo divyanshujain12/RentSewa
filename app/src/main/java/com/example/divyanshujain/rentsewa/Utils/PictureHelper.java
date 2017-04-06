@@ -94,7 +94,7 @@ public class PictureHelper {
             if (requestCode == REQUEST_CAMERA) {
                 // bitmap = (Bitmap) data.getExtras().get("data");
                 //Log.d(TAG, String.valueOf(bitmapSizeInKB(bitmap)));
-                result = cameraImageUri;
+                result = data.getData();;
             } else
                 result = data.getData();
 

@@ -1,13 +1,17 @@
 package com.example.divyanshujain.rentsewa;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,7 +25,9 @@ import android.widget.Toast;
 import com.example.divyanshujain.rentsewa.Constants.API;
 import com.example.divyanshujain.rentsewa.Constants.ApiCodes;
 import com.example.divyanshujain.rentsewa.Constants.Constants;
+import com.example.divyanshujain.rentsewa.CustomViews.CustomAlertDialogs;
 import com.example.divyanshujain.rentsewa.GlobalClasses.BaseActivity;
+import com.example.divyanshujain.rentsewa.Interfaces.SnackBarCallback;
 import com.example.divyanshujain.rentsewa.Models.CategoryModel;
 import com.example.divyanshujain.rentsewa.Models.CitiesModel;
 import com.example.divyanshujain.rentsewa.Models.CountryModel;
@@ -30,6 +36,8 @@ import com.example.divyanshujain.rentsewa.Models.SubCategoryModel;
 import com.example.divyanshujain.rentsewa.Models.ValidationModel;
 import com.example.divyanshujain.rentsewa.Utils.CallWebService;
 import com.example.divyanshujain.rentsewa.Utils.CommonFunctions;
+import com.example.divyanshujain.rentsewa.Utils.MultipartUtility;
+import com.example.divyanshujain.rentsewa.Utils.MySharedPereference;
 import com.example.divyanshujain.rentsewa.Utils.PictureHelper;
 import com.example.divyanshujain.rentsewa.Utils.UniversalParser;
 import com.example.divyanshujain.rentsewa.Utils.Validation;
@@ -46,8 +54,11 @@ import com.neopixl.pixlui.components.edittext.EditText;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -103,6 +114,10 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
     ScrollView scrollview;
     @InjectView(R.id.productImagesRV)
     RecyclerView productImagesRV;
+    @InjectView(R.id.brandET)
+    EditText brandET;
+    @InjectView(R.id.addressET)
+    EditText addressET;
     private SpinnerCategoryAdapter categoryAdapter;
     private SpinnerSubCategoryAdapter subCategoryAdapter;
 
@@ -118,7 +133,8 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
     ArrayList<Bitmap> bitmapsList = new ArrayList<>();
     private Validation validation;
     private AddImagesRvAdapter addImagesRvAdapter;
-
+    ProgressDialog progressDialog;
+    private HashMap<View, String> valuesHashMap = new HashMap<>();
 
     private String selectedProductLocationID, selectedCityID, selectedCategoryID, selectedSubCategoryID, selectedStateID, selectedCountryID;
 
@@ -141,13 +157,15 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
         scrollview.requestFocusFromTouch();
 
         validation = new Validation();
-        validation.addValidationField(new ValidationModel(titleET,Validation.TYPE_EMPTY_FIELD_VALIDATION,"Title Cant Left Blank!"));
-        validation.addValidationField(new ValidationModel(emailET,Validation.TYPE_EMAIL_VALIDATION,"Invalid Email"));
-        validation.addValidationField(new ValidationModel(phoneET,Validation.TYPE_PHONE_VALIDATION,"Invalid Phone Number"));
-        validation.addValidationField(new ValidationModel(priceET,Validation.TYPE_EMPTY_FIELD_VALIDATION,"Invalid Price"));
-        validation.addValidationField(new ValidationModel(pinCodeET,Validation.TYPE_EMPTY_FIELD_VALIDATION,"Invalid Pin Code"));
-        validation.addValidationField(new ValidationModel(titleET,Validation.TYPE_EMPTY_FIELD_VALIDATION,"Title Cant Left Blank!"));
-        validation.addValidationField(new ValidationModel(titleET,Validation.TYPE_EMPTY_FIELD_VALIDATION,"Title Cant Left Blank!"));
+        validation.addValidationField(new ValidationModel(titleET, Validation.TYPE_EMPTY_FIELD_VALIDATION, "Title Cant Left Blank!"));
+        validation.addValidationField(new ValidationModel(emailET, Validation.TYPE_EMAIL_VALIDATION, "Invalid Email"));
+        validation.addValidationField(new ValidationModel(phoneET, Validation.TYPE_PHONE_VALIDATION, "Invalid Phone Number"));
+        validation.addValidationField(new ValidationModel(priceET, Validation.TYPE_EMPTY_FIELD_VALIDATION, "Invalid Price"));
+        validation.addValidationField(new ValidationModel(pinCodeET, Validation.TYPE_EMPTY_FIELD_VALIDATION, "Invalid Pin Code"));
+        validation.addValidationField(new ValidationModel(timeET, Validation.TYPE_EMPTY_FIELD_VALIDATION, "Invalid Time!"));
+        validation.addValidationField(new ValidationModel(descET, Validation.TYPE_EMPTY_FIELD_VALIDATION, "Description Cant Left Blank!"));
+        validation.addValidationField(new ValidationModel(brandET, Validation.TYPE_EMPTY_FIELD_VALIDATION, "Invalid Brand!"));
+        validation.addValidationField(new ValidationModel(addressET, Validation.TYPE_EMPTY_FIELD_VALIDATION, "Invalid Address!"));
 
         pLocationcitiesSP.setOnItemSelectedListener(this);
         citiesSP.setOnItemSelectedListener(this);
@@ -175,6 +193,12 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
 
                 break;
             case R.id.postBT:
+                valuesHashMap = validation.validate(this);
+                if (valuesHashMap != null && bitmapsList.size() > 0) {
+                    for (String imagePath : bitmapHashMap.keySet()) {
+                        new UploadFileToServer(this, imagePath).execute();
+                    }
+                }
                 break;
         }
     }
@@ -300,10 +324,8 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
                     && null != data) {
                 initializeBitmapArray();
                 if (data.getData() != null) {
-                    Uri mImageUri = data.getData();
-                    // Get the cursor
                     bitmapHashMap = PictureHelper.getInstance().retrievePicturePath(this, requestCode, resultCode, data);
-                    bitmapsList.addAll(bitmapHashMap.values());
+
                 } else {
                     if (data.getClipData() != null) {
                         ClipData mClipData = data.getClipData();
@@ -318,6 +340,10 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
                             bitmapsList.add(0, PictureHelper.getInstance().retrieveAllSelectedPicturePath(this, uri));
                         }
                     }
+                }
+                for (String imagePath : bitmapHashMap.keySet()) {
+                    Bitmap bitmap = bitmapHashMap.get(imagePath);
+                    bitmapsList.add(0, bitmap);
                 }
 
                 addImagesRvAdapter.addItem(bitmapsList);
@@ -355,6 +381,107 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
 
     @Override
     public void onPermissionDenied(int permissionType) {
+
+    }
+
+    public class UploadFileToServer extends AsyncTask<String, String, String> {
+        long totalSize = 0;
+        String filePath;
+        File sourceFile;
+        String charset = "UTF-8";
+        Context context;
+
+        public UploadFileToServer(Context context, String filePath) {
+            this.filePath = filePath;
+
+            this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("Uploading Data...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+            sourceFile = new File(filePath);
+            totalSize = (int) sourceFile.length();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onProgressUpdate(String... progress) {
+            Log.d("PROG", progress[0]);
+        }
+
+        @Override
+        protected String doInBackground(String... args) {
+            String responseString = "";
+            try {
+                MultipartUtility multipart = new MultipartUtility(API.POST_PRODUCT, charset);
+
+                multipart.addHeaderField("User-Agent", "CodeJava");
+                multipart.addHeaderField("Test-Header", "Header-Value");
+
+                setParams(context, filePath, multipart);
+                multipart.addFilePart(Constants.P_IMAGE, new File(filePath));
+
+                List<String> response = multipart.finish();
+
+                System.out.println("SERVER REPLIED:");
+
+                for (String line : response) {
+                    responseString = line;
+                }
+            } catch (IOException ex) {
+                System.err.println(ex);
+            }
+            return responseString;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Log.e("Response", "Response from server: " + result);
+            super.onPostExecute(result);
+            if (progressDialog != null)
+                progressDialog.cancel();
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                CustomAlertDialogs.showAlertDialog(VendorAddProduct.this, getString(R.string.congratulation), jsonObject.getString(Constants.MESSAGE), new SnackBarCallback() {
+                    @Override
+                    public void doAction() {
+                        finish();
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+            //reset();
+
+        }
+
+        private void setParams(Context context, String filename, MultipartUtility multipartUtility) {
+            multipartUtility.addFormField(Constants.USER_ID, MySharedPereference.getInstance().getString(context, Constants.USER_ID));
+            multipartUtility.addFormField(Constants.P_TITLE, valuesHashMap.get(titleET));
+            multipartUtility.addFormField(Constants.P_BRAND, valuesHashMap.get(brandET));
+            multipartUtility.addFormField(Constants.P_CATEGORY, selectedCategoryID);
+            multipartUtility.addFormField(Constants.P_SUB_CATEGORY, selectedSubCategoryID);
+            multipartUtility.addFormField(Constants.P_PRICE, valuesHashMap.get(priceET));
+            multipartUtility.addFormField(Constants.P_TIME_PERIOD, valuesHashMap.get(timeET));
+            multipartUtility.addFormField(Constants.P_DESC, valuesHashMap.get(descET));
+            multipartUtility.addFormField(Constants.P_NAME, valuesHashMap.get(titleET));
+            multipartUtility.addFormField(Constants.P_IMAGE, filename);
+            multipartUtility.addFormField(Constants.P_LOCATION, selectedProductLocationID);
+            multipartUtility.addFormField(Constants.P_EMAIL, valuesHashMap.get(emailET));
+            multipartUtility.addFormField(Constants.P_PHONE, valuesHashMap.get(phoneET));
+            multipartUtility.addFormField(Constants.P_ADDRESS, valuesHashMap.get(addressET));
+            multipartUtility.addFormField(Constants.P_COUNTRY, selectedCountryID);
+            multipartUtility.addFormField(Constants.P_STATE, selectedStateID);
+            multipartUtility.addFormField(Constants.P_CITY, selectedCityID);
+            multipartUtility.addFormField(Constants.P_ZIP, valuesHashMap.get(pinCodeET));
+        }
+
 
     }
 

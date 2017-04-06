@@ -42,4 +42,27 @@ public interface Constants {
     String STATE_ID = "state_id";
     String COUNTRY_ID = "country_id";
 
+    String P_TITLE = "ptitle";
+    String P_BRAND = "pbrand";
+    String P_CATEGORY = "pcategory";
+    String P_SUB_CATEGORY = "psubcategory";
+    String P_PRICE = "pprice";
+    String P_TIME_PERIOD = "ptime_period";
+    String P_DESC = "description";
+    String P_IMAGE = "pimage";
+    String P_NAME = "pname";
+    String P_LOCATION = "plocation";
+    String P_EMAIL = "pemail";
+    String P_PHONE = "pphone";
+    String P_ADDRESS = "paddress";
+    String P_COUNTRY = "pcountry";
+    String P_STATE = "pstate";
+    String P_CITY = "pcity";
+    String P_ZIP = "pzip";
+    String P_PROD_IMG = "prod_img";
+
+
+
+
+
 }
