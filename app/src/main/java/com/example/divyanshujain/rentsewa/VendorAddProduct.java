@@ -27,6 +27,7 @@ import com.example.divyanshujain.rentsewa.Models.CitiesModel;
 import com.example.divyanshujain.rentsewa.Models.CountryModel;
 import com.example.divyanshujain.rentsewa.Models.StateModel;
 import com.example.divyanshujain.rentsewa.Models.SubCategoryModel;
+import com.example.divyanshujain.rentsewa.Models.ValidationModel;
 import com.example.divyanshujain.rentsewa.Utils.CallWebService;
 import com.example.divyanshujain.rentsewa.Utils.CommonFunctions;
 import com.example.divyanshujain.rentsewa.Utils.PictureHelper;
@@ -113,7 +114,7 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
     private ArrayList<SubCategoryModel> subCategoryModels = new ArrayList<>();
     protected String[] mRequiredPermissions = {};
     RuntimePermissionHeadlessFragment runtimePermissionHeadlessFragment;
-    HashMap<String,Bitmap> bitmapHashMap = new HashMap<>();
+    HashMap<String, Bitmap> bitmapHashMap = new HashMap<>();
     ArrayList<Bitmap> bitmapsList = new ArrayList<>();
     private Validation validation;
     private AddImagesRvAdapter addImagesRvAdapter;
@@ -138,6 +139,16 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
         runtimePermissionHeadlessFragment = CommonFunctions.getInstance().addRuntimePermissionFragment(this, this);
 
         scrollview.requestFocusFromTouch();
+
+        validation = new Validation();
+        validation.addValidationField(new ValidationModel(titleET,Validation.TYPE_EMPTY_FIELD_VALIDATION,"Title Cant Left Blank!"));
+        validation.addValidationField(new ValidationModel(emailET,Validation.TYPE_EMAIL_VALIDATION,"Invalid Email"));
+        validation.addValidationField(new ValidationModel(phoneET,Validation.TYPE_PHONE_VALIDATION,"Invalid Phone Number"));
+        validation.addValidationField(new ValidationModel(priceET,Validation.TYPE_EMPTY_FIELD_VALIDATION,"Invalid Price"));
+        validation.addValidationField(new ValidationModel(pinCodeET,Validation.TYPE_EMPTY_FIELD_VALIDATION,"Invalid Pin Code"));
+        validation.addValidationField(new ValidationModel(titleET,Validation.TYPE_EMPTY_FIELD_VALIDATION,"Title Cant Left Blank!"));
+        validation.addValidationField(new ValidationModel(titleET,Validation.TYPE_EMPTY_FIELD_VALIDATION,"Title Cant Left Blank!"));
+
         pLocationcitiesSP.setOnItemSelectedListener(this);
         citiesSP.setOnItemSelectedListener(this);
         stateSP.setOnItemSelectedListener(this);
@@ -291,7 +302,8 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
                 if (data.getData() != null) {
                     Uri mImageUri = data.getData();
                     // Get the cursor
-                    bitmapsList.add(PictureHelper.getInstance().retrieveAllSelectedPicturePath(this, mImageUri));
+                    bitmapHashMap = PictureHelper.getInstance().retrievePicturePath(this, requestCode, resultCode, data);
+                    bitmapsList.addAll(bitmapHashMap.values());
                 } else {
                     if (data.getClipData() != null) {
                         ClipData mClipData = data.getClipData();
@@ -303,7 +315,7 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
                         for (int i = 0; i < mClipData.getItemCount(); i++) {
                             ClipData.Item item = mClipData.getItemAt(i);
                             Uri uri = item.getUri();
-                            bitmapsList.add(0,PictureHelper.getInstance().retrieveAllSelectedPicturePath(this, uri));
+                            bitmapsList.add(0, PictureHelper.getInstance().retrieveAllSelectedPicturePath(this, uri));
                         }
                     }
                 }
