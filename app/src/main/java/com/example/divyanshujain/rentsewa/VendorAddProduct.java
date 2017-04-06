@@ -46,6 +46,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -112,6 +113,7 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
     private ArrayList<SubCategoryModel> subCategoryModels = new ArrayList<>();
     protected String[] mRequiredPermissions = {};
     RuntimePermissionHeadlessFragment runtimePermissionHeadlessFragment;
+    HashMap<String,Bitmap> bitmapHashMap = new HashMap<>();
     ArrayList<Bitmap> bitmapsList = new ArrayList<>();
     private Validation validation;
     private AddImagesRvAdapter addImagesRvAdapter;
@@ -169,7 +171,7 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
     private void openGallery() {
         Intent intent = new Intent();
         intent.setType("image/*");
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        //intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_MULTIPLE);
     }
