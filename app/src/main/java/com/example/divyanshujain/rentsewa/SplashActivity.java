@@ -60,7 +60,7 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
     }
 
     private void goToVendorHome() {
-        Intent categoryIntent = new Intent(this, VendorListingActivity.class);
+        Intent categoryIntent = new Intent(this, VendorAllProductListing.class);
         startActivity(categoryIntent);
         finish();
     }

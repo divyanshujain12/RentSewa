@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -31,6 +30,8 @@ import com.example.divyanshujain.rentsewa.Interfaces.SnackBarCallback;
 import com.example.divyanshujain.rentsewa.Models.CategoryModel;
 import com.example.divyanshujain.rentsewa.Models.CitiesModel;
 import com.example.divyanshujain.rentsewa.Models.CountryModel;
+import com.example.divyanshujain.rentsewa.Models.ProductDetailModel;
+import com.example.divyanshujain.rentsewa.Models.ProductsModel;
 import com.example.divyanshujain.rentsewa.Models.StateModel;
 import com.example.divyanshujain.rentsewa.Models.SubCategoryModel;
 import com.example.divyanshujain.rentsewa.Models.ValidationModel;
@@ -135,7 +136,7 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
     private AddImagesRvAdapter addImagesRvAdapter;
     ProgressDialog progressDialog;
     private HashMap<View, String> valuesHashMap = new HashMap<>();
-
+    private ProductsModel productsModel;
     private String selectedProductLocationID, selectedCityID, selectedCategoryID, selectedSubCategoryID, selectedStateID, selectedCountryID;
 
     @Override
@@ -182,6 +183,16 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
         CallWebService.getInstance(this, false, ApiCodes.GET_PRODUCT_LOCATION).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_PRODUCT_LOCATION, null, this);
         CallWebService.getInstance(this, false, ApiCodes.GET_ALL_COUNTRY).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_ALL_COUNTRY, null, this);
         CallWebService.getInstance(this, false, ApiCodes.GET_CATEGORIES).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_CATEGORIES, null, this);
+
+
+        productsModel = getIntent().getParcelableExtra(Constants.DATA);
+        if (productsModel != null) {
+            hitApiForGetProductDetail();
+        }
+    }
+
+    private void hitApiForGetProductDetail() {
+        CallWebService.getInstance(this, true, ApiCodes.PRODUCT_DETAIL).hitJsonObjectRequestAPI(CallWebService.POST, API.PRODUCT_DETAIL, createJsonForGetProductDetail(), this);
     }
 
 
@@ -240,6 +251,10 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
                 categoryAdapter = new SpinnerCategoryAdapter(this, categoryModels);
                 categorySP.setAdapter(categoryAdapter);
                 break;
+            case ApiCodes.PRODUCT_DETAIL:
+                ProductDetailModel productDetailModel = UniversalParser.getInstance().parseJsonObject(response.getJSONObject(Constants.DATA), ProductDetailModel.class);
+                updateUI(productDetailModel);
+                break;
             case ApiCodes.POST_PRODUCT:
                 break;
             case ApiCodes.PRODUCT_EDIT_PROCESS:
@@ -249,6 +264,8 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
         }
 
     }
+
+
 
 
     @Override
@@ -347,7 +364,7 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
                 }
 
                 addImagesRvAdapter.addItem(bitmapsList);
-                //addImageToScrollView();
+
             } else {
                 Toast.makeText(this, "You haven't picked Image",
                         Toast.LENGTH_LONG).show();
@@ -360,20 +377,16 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void addImageToScrollView() {
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
-        for (int i = 0; i < bitmapsList.size(); i++) {
-            View view = layoutInflater.inflate(R.layout.add_product_images_view, null);
-            ImageView productIV = (ImageView) view.findViewById(R.id.productIV);
-            Bitmap bitmap = bitmapsList.get(i);
-            productIV.setId(i);
-            productIV.setImageBitmap(bitmap);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParams.rightMargin = 10;
-            addedImageLL.addView(productIV, layoutParams);
+    private JSONObject createJsonForGetProductDetail() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(Constants.ID, productsModel.getId());
+            return jsonObject;
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        return null;
     }
-
     @Override
     public void onPermissionGranted(int permissionType) {
         openGallery();
@@ -481,6 +494,15 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
             multipartUtility.addFormField(Constants.P_CITY, selectedCityID);
             multipartUtility.addFormField(Constants.P_ZIP, valuesHashMap.get(pinCodeET));
         }
+
+
+    }
+    private void updateUI(ProductDetailModel productDetailModel) {
+        titleET.setText(productDetailModel.getTitle());
+        brandET.setText(productDetailModel.getBrand_name());
+        priceET.setText(productDetailModel.getPrice());
+        timeET.setText(productDetailModel.getTime_period());
+        descET.setText(productDetailModel.getDescription());
 
 
     }

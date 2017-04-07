@@ -143,7 +143,8 @@ public class VendorLoginActivity extends BaseActivity {
     }
 
     private void goToHome() {
-        Intent categoryIntent = new Intent(this, VendorListingActivity.class);
+       // Intent categoryIntent = new Intent(this, VendorListingActivity.class);
+        Intent categoryIntent = new Intent(this, VendorAllProductListing.class);
         startActivity(categoryIntent);
         finish();
     }

@@ -14,6 +14,16 @@ public class ProductsModel implements Parcelable{
     String price;
     String time_period;
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    String status;
+
     public ProductsModel(){}
 
     protected ProductsModel(Parcel in) {
@@ -22,6 +32,7 @@ public class ProductsModel implements Parcelable{
         image1 = in.readString();
         price = in.readString();
         time_period = in.readString();
+        status = in.readString();
     }
 
     public static final Creator<ProductsModel> CREATOR = new Creator<ProductsModel>() {
@@ -88,5 +99,6 @@ public class ProductsModel implements Parcelable{
         parcel.writeString(image1);
         parcel.writeString(price);
         parcel.writeString(time_period);
+        parcel.writeString(status);
     }
 }

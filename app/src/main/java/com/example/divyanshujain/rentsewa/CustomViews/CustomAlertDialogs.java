@@ -59,7 +59,6 @@ public class CustomAlertDialogs {
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NO", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ((Activity)context).onBackPressed();
                 dialog.dismiss();
 
             }

@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.divyanshujain.rentsewa.VendorAllProductListing">
 
-</android.support.constraint.ConstraintLayout>
+    <include layout="@layout/custom_toolbar_with_white_title" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/productListingRV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbarView" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addProductFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_action_plus"
+        app:elevation="@dimen/five_dp"
+        app:fabSize="normal"
+        app:useCompatPadding="true" />
+
+</RelativeLayout>
