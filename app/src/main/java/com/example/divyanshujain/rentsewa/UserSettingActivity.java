@@ -95,6 +95,7 @@ public class UserSettingActivity extends BaseActivity implements ImagePickDialog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_user_setting);
         ButterKnife.inject(this);
 

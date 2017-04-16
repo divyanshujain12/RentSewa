@@ -105,4 +105,7 @@
     <string name="your_nrand_here">Your Brand Here</string>
     <string name="your_address_here">Your Address Here</string>
     <string name="all_products">All Products</string>
+    <string name="did_you_forgot_your_password">Did you forgot your password?</string>
+    <string name="please_fill_the_details_to_get_the_password">Please fill the details to get the password</string>
+    <string name="send_password">Send Password</string>
 </resources>

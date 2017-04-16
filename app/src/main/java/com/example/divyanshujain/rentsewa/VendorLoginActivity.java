@@ -1,7 +1,6 @@
 package com.example.divyanshujain.rentsewa;
 
 import android.content.Intent;
-
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -33,7 +32,6 @@ import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
 import java.util.HashMap;
 
 import butterknife.ButterKnife;
@@ -170,5 +168,9 @@ public class VendorLoginActivity extends BaseActivity {
     public void doAction() {
         super.doAction();
         finish();
+    }
+
+    public void forgotPassword(View view) {
+        startActivity(new Intent(this, ForgotPassword.class));
     }
 }

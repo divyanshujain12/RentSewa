@@ -24,37 +24,35 @@
             android:id="@+id/productTitleTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/eight_dp"
+            android:padding="@dimen/two_dp"
             android:text="@string/app_name"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/eighteen_sp"
             pixlui:typeface="Roboto-Medium.ttf" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-            <com.neopixl.pixlui.components.textview.TextView
-                android:id="@+id/productPriceTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:padding="@dimen/eight_dp"
-                android:text="@string/price"
-                android:textColor="@color/black"
-                android:textSize="@dimen/twenty_sp"
-                pixlui:typeface="Roboto-Medium.ttf" />
+        <com.neopixl.pixlui.components.textview.TextView
+            android:id="@+id/productPriceTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha=".5"
+            android:padding="@dimen/two_dp"
+            android:text="@string/price"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sixteen_sp"
+            pixlui:typeface="Roboto-Medium.ttf" />
 
 
-            <com.neopixl.pixlui.components.textview.TextView
-                android:id="@+id/timePeriodTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/eight_dp"
-                android:text="@string/time_period"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sixteen_sp"
-                pixlui:typeface="Roboto-Regular.ttf" />
-        </FrameLayout>
+        <com.neopixl.pixlui.components.textview.TextView
+            android:id="@+id/timePeriodTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha=".5"
+            android:padding="@dimen/two_dp"
+            android:text="@string/time_period"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sixteen_sp"
+            pixlui:typeface="Roboto-Regular.ttf" />
+
     </LinearLayout>
 </android.support.v7.widget.CardView>

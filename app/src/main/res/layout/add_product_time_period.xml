@@ -25,7 +25,7 @@
         android:background="@drawable/rounded_corner_light_grey"
         android:gravity="center_vertical"
         android:hint="@string/time_in_hours"
-        android:inputType="phone"
+        android:inputType="text"
         android:paddingLeft="@dimen/five_dp"
         android:textSize="@dimen/sixteen_sp"
         pixlui:typeface="Roboto-Regular.ttf" />

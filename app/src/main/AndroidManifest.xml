@@ -73,7 +73,8 @@
         <activity
             android:name=".VendorAddProduct"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".VendorAllProductListing"></activity>
+        <activity android:name=".VendorAllProductListing" />
+        <activity android:name=".ForgotPassword" />
     </application>
 
 </manifest>

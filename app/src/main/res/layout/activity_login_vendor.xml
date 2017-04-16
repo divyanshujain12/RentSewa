@@ -68,9 +68,10 @@
             android:layout_marginTop="@dimen/twenty_dp"
             android:gravity="center_vertical"
             android:text="@string/forgot_password"
+            android:onClick="forgotPassword"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/eighteen_sp"
-            android:visibility="gone"
+            android:visibility="visible"
             pixlui:typeface="Roboto-Medium.ttf" />
 
         <com.neopixl.pixlui.components.button.Button
