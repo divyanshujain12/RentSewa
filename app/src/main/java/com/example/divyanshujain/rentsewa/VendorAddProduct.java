@@ -454,12 +454,21 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
             try {
 
                 JSONObject jsonObject = new JSONObject(result);
-                CustomAlertDialogs.showAlertDialog(VendorAddProduct.this, getString(R.string.congratulation), jsonObject.getString(Constants.MESSAGE), new SnackBarCallback() {
-                    @Override
-                    public void doAction() {
-                        finish();
-                    }
-                });
+                if (jsonObject.getBoolean(Constants.STATUS_CODE)) {
+                    CustomAlertDialogs.showAlertDialog(VendorAddProduct.this, getString(R.string.congratulation), jsonObject.getString(Constants.MESSAGE), new SnackBarCallback() {
+                        @Override
+                        public void doAction() {
+                           // finish();
+                        }
+                    });
+                } else {
+                    CustomAlertDialogs.showAlertDialog(VendorAddProduct.this, getString(R.string.alert), jsonObject.getString(Constants.MESSAGE), new SnackBarCallback() {
+                        @Override
+                        public void doAction() {
+
+                        }
+                    });
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
