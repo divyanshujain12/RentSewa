@@ -60,9 +60,7 @@ public interface Constants {
     String P_CITY = "pcity";
     String P_ZIP = "pzip";
     String P_PROD_IMG = "prod_img";
-
-
-
+    String P_IMAGES_MULTIPLE = "pimage_multiple";
 
 
 }
