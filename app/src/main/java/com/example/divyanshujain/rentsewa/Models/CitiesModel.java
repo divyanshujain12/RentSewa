@@ -59,4 +59,9 @@ public class CitiesModel implements Parcelable {
         parcel.writeString(id);
         parcel.writeString(city_name);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.id.equals(((CitiesModel) obj).id);
+    }
 }

@@ -23,4 +23,9 @@ public class StateModel {
     public void setName(String name) {
         this.state_name = name;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.state_id.equals(((StateModel) obj).state_id);
+    }
 }

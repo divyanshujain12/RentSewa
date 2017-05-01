@@ -28,6 +28,7 @@ public interface API {
     String POST_PRODUCT = BASE + "productProcess";
     String PRODUCT_EDIT_PROCESS = BASE + "productEditProcess";
     String DELETE_PRODUCT = BASE + "deleteproduct";
-    String VENDOR_PRODUCT_LISTING = BASE+"vendorProductListing";
+    String VENDOR_PRODUCT_LISTING = BASE + "vendorProductListing";
+    String GET_PRODUCT_DETAIL_BY_PRODUCT_ID = BASE + "getproductDetailByProductId";
 
 }

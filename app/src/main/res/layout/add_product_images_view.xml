@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/productIV"
-        android:layout_width="@dimen/two_hundred_dp"
-        android:layout_height="@dimen/one_hundred_dp"
+        android:layout_width="@dimen/one_hundred_fifty_five_dp"
+        android:layout_height="@dimen/eighty_dp"
         android:scaleType="centerCrop"
         android:layout_margin="@dimen/five_dp"/>
 </LinearLayout>

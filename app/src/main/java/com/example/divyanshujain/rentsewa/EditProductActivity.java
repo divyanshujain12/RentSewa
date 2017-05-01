@@ -1,6 +1,5 @@
 package com.example.divyanshujain.rentsewa;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Context;
@@ -31,6 +30,7 @@ import com.example.divyanshujain.rentsewa.Interfaces.SnackBarCallback;
 import com.example.divyanshujain.rentsewa.Models.CategoryModel;
 import com.example.divyanshujain.rentsewa.Models.CitiesModel;
 import com.example.divyanshujain.rentsewa.Models.CountryModel;
+import com.example.divyanshujain.rentsewa.Models.EditProductDetailModel;
 import com.example.divyanshujain.rentsewa.Models.StateModel;
 import com.example.divyanshujain.rentsewa.Models.SubCategoryModel;
 import com.example.divyanshujain.rentsewa.Models.ValidationModel;
@@ -60,13 +60,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class VendorAddProduct extends BaseActivity implements AdapterView.OnItemSelectedListener, RuntimePermissionHeadlessFragment.PermissionCallback {
-
-
+public class EditProductActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, RuntimePermissionHeadlessFragment.PermissionCallback {
     private static final int EXTERNAL_STORAGE_REQUEST = 101;
     @InjectView(R.id.addedImageLL)
     LinearLayout addedImageLL;
@@ -133,14 +130,13 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
     ProgressDialog progressDialog;
     private HashMap<View, String> valuesHashMap = new HashMap<>();
     private String productID = "";
-
+    EditProductDetailModel editProductDetailModel;
     private String selectedProductLocationID, selectedCityID, selectedCategoryID, selectedSubCategoryID, selectedStateID, selectedCountryID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vendor_add_product);
-        ButterKnife.inject(this);
+        setContentView(R.layout.activity_edit_product);
 
         initViews();
     }
@@ -148,7 +144,7 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
     private void initViews() {
 
         mRequiredPermissions = new String[]{
-                Manifest.permission.READ_EXTERNAL_STORAGE
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
         };
         runtimePermissionHeadlessFragment = CommonFunctions.getInstance().addRuntimePermissionFragment(this, this);
 
@@ -176,10 +172,8 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
         addImagesRvAdapter = new AddImagesRvAdapter(this, bitmapsList, this);
         productImagesRV.setAdapter(addImagesRvAdapter);
 
+        CallWebService.getInstance(this, false, ApiCodes.GET_PRODUCT_DETAIL_BY_PRODUCT_ID).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_PRODUCT_DETAIL_BY_PRODUCT_ID, createJsonForGettingProduct(), this);
 
-        CallWebService.getInstance(this, false, ApiCodes.GET_PRODUCT_LOCATION).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_PRODUCT_LOCATION, null, this);
-        CallWebService.getInstance(this, false, ApiCodes.GET_ALL_COUNTRY).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_ALL_COUNTRY, null, this);
-        CallWebService.getInstance(this, false, ApiCodes.GET_CATEGORIES).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_CATEGORIES, null, this);
     }
 
 
@@ -213,39 +207,135 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
     public void onJsonObjectSuccess(JSONObject response, int apiType) throws JSONException {
         super.onJsonObjectSuccess(response, apiType);
         switch (apiType) {
+            case ApiCodes.GET_PRODUCT_DETAIL_BY_PRODUCT_ID:
+                editProductDetailModel = UniversalParser.getInstance().parseJsonObject(response, EditProductDetailModel.class);
+                updateUI();
+                CallWebService.getInstance(this, false, ApiCodes.GET_PRODUCT_LOCATION).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_PRODUCT_LOCATION, null, this);
+                CallWebService.getInstance(this, false, ApiCodes.GET_ALL_COUNTRY).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_ALL_COUNTRY, null, this);
+                CallWebService.getInstance(this, false, ApiCodes.GET_CATEGORIES).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_CATEGORIES, null, this);
+                break;
             case ApiCodes.GET_PRODUCT_LOCATION:
                 productLocationCityModels = UniversalParser.getInstance().parseJsonArrayWithJsonObject(response.getJSONArray(Constants.DATA), CitiesModel.class);
-                productLocationCityAdapter = new CityAdapter(this, productLocationCityModels);
-                pLocationcitiesSP.setAdapter(productLocationCityAdapter);
+                setUpProductLocationSP();
                 break;
             case ApiCodes.GET_ALL_COUNTRY:
                 countryModels = UniversalParser.getInstance().parseJsonArrayWithJsonObject(response.getJSONArray(Constants.DATA), CountryModel.class);
-                countryAdapter = new CountryAdapter(this, 0, countryModels);
-                countrySP.setAdapter(countryAdapter);
+                setUpCountrySP();
                 break;
             case ApiCodes.GET_ALL_STATE:
                 stateModels = UniversalParser.getInstance().parseJsonArrayWithJsonObject(response.getJSONArray(Constants.DATA), StateModel.class);
-                stateAdapter = new StateAdapter(this, 0, stateModels);
-                stateSP.setAdapter(stateAdapter);
+                setUpStateSP();
                 break;
             case ApiCodes.GET_ALL_CITIES:
                 cityModels = UniversalParser.getInstance().parseJsonArrayWithJsonObject(response.getJSONArray(Constants.DATA), CitiesModel.class);
-                cityAdapter = new CityAdapter(this, cityModels);
-                citiesSP.setAdapter(cityAdapter);
+                setUpCitySP();
                 break;
             case ApiCodes.GET_CATEGORIES:
                 categoryModels = UniversalParser.getInstance().parseJsonArrayWithJsonObject(response.getJSONArray(Constants.DATA), CategoryModel.class);
-                categoryAdapter = new SpinnerCategoryAdapter(this, categoryModels);
-                categorySP.setAdapter(categoryAdapter);
+                setUpCategorySP();
                 break;
             case ApiCodes.POST_PRODUCT:
                 break;
             case ApiCodes.PRODUCT_EDIT_PROCESS:
                 break;
-
-
         }
+    }
 
+    private void setUpProductLocationSP() {
+        productLocationCityAdapter = new CityAdapter(this, productLocationCityModels);
+        pLocationcitiesSP.setAdapter(productLocationCityAdapter);
+        setProductLocationSelected();
+    }
+
+    private void setUpCountrySP() {
+        countryAdapter = new CountryAdapter(this, 0, countryModels);
+        countrySP.setAdapter(countryAdapter);
+        setCountrySelected();
+    }
+
+    private void setUpSubCategorySP(int position) {
+        subCategoryModels = categoryModels.get(position).getSubcatData();
+        subCategoryAdapter = new SpinnerSubCategoryAdapter(this, subCategoryModels);
+        subCategorySP.setAdapter(subCategoryAdapter);
+        setSubCategorySelected();
+    }
+
+    private void setUpStateSP() {
+        stateAdapter = new StateAdapter(this, 0, stateModels);
+        stateSP.setAdapter(stateAdapter);
+        setStateSelected();
+    }
+
+    private void setUpCitySP() {
+        cityAdapter = new CityAdapter(this, cityModels);
+        citiesSP.setAdapter(cityAdapter);
+        setCitySelected();
+    }
+
+    private void setUpCategorySP() {
+        categoryAdapter = new SpinnerCategoryAdapter(this, categoryModels);
+        categorySP.setAdapter(categoryAdapter);
+        setCategorySelected();
+    }
+
+    private void setProductLocationSelected() {
+        CitiesModel citiesModel = new CitiesModel();
+        selectedProductLocationID = editProductDetailModel.getPlocation();
+        citiesModel.setId(selectedProductLocationID);
+        int selectedPLocation = productLocationCityModels.indexOf(citiesModel);
+        pLocationcitiesSP.setSelection(selectedPLocation);
+    }
+
+    private void setCategorySelected() {
+        CategoryModel categoryModel = new CategoryModel();
+        selectedCategoryID = editProductDetailModel.getPcategory();
+        categoryModel.setId(selectedCategoryID);
+        int selectedPCategory = categoryModels.indexOf(categoryModel);
+        categorySP.setSelection(selectedPCategory);
+    }
+
+    private void setSubCategorySelected() {
+        SubCategoryModel subCategoryModel = new SubCategoryModel();
+        selectedSubCategoryID = editProductDetailModel.getPsubcategory();
+        subCategoryModel.setId(selectedSubCategoryID);
+        int selectedPSubCategory = subCategoryModels.indexOf(subCategoryModel);
+        subCategorySP.setSelection(selectedPSubCategory);
+    }
+
+    private void setCountrySelected() {
+        CountryModel countryModel = new CountryModel();
+        selectedCountryID = editProductDetailModel.getPcountry();
+        countryModel.setCountry_id(selectedCountryID);
+        int selectedPCountry = countryModels.indexOf(countryModel);
+        countrySP.setSelection(selectedPCountry);
+    }
+
+    private void setStateSelected() {
+        StateModel stateModel = new StateModel();
+        selectedStateID = editProductDetailModel.getPstate();
+        stateModel.setState_id(selectedStateID);
+        int selectedState = stateModels.indexOf(stateModel);
+        stateSP.setSelection(selectedState);
+    }
+
+    private void setCitySelected() {
+        CitiesModel citiesModel = new CitiesModel();
+        selectedCityID = editProductDetailModel.getPcity();
+        citiesModel.setId(selectedCityID);
+        int selectedPCity = productLocationCityModels.indexOf(citiesModel);
+        citiesSP.setSelection(selectedPCity);
+    }
+
+    private void updateUI() {
+        titleET.setText(editProductDetailModel.getPtitle());
+        emailET.setText(editProductDetailModel.getPemail());
+        phoneET.setText(editProductDetailModel.getPphone());
+        priceET.setText(editProductDetailModel.getPprice());
+        pinCodeET.setText(editProductDetailModel.getPzip());
+        timeET.setText(editProductDetailModel.getPtime_period());
+        descET.setText(editProductDetailModel.getDescription());
+        brandET.setText(editProductDetailModel.getPbrand());
+        addressET.setText(editProductDetailModel.getPaddress());
     }
 
 
@@ -261,6 +351,7 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
             case R.id.categorySP:
                 selectedCategoryID = categoryModels.get(position).getId();
                 setUpSubCategorySP(position);
+
                 break;
             case R.id.subCategorySP:
                 selectedSubCategoryID = subCategoryModels.get(position).getId();
@@ -282,11 +373,6 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
         }
     }
 
-    private void setUpSubCategorySP(int position) {
-        subCategoryModels = categoryModels.get(position).getSubcatData();
-        subCategoryAdapter = new SpinnerSubCategoryAdapter(this, subCategoryModels);
-        subCategorySP.setAdapter(subCategoryAdapter);
-    }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
@@ -309,6 +395,16 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
         try {
             jsonObject.put(Constants.STATE_ID, cityId);
         } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    private JSONObject createJsonForGettingProduct() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(Constants.P_ID, getIntent().getStringExtra(Constants.P_ID));
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return jsonObject;
@@ -452,14 +548,14 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
 
                 JSONObject jsonObject = new JSONObject(result);
                 if (jsonObject.getBoolean(Constants.STATUS_CODE)) {
-                    CustomAlertDialogs.showAlertDialog(VendorAddProduct.this, getString(R.string.congratulation), jsonObject.getString(Constants.MESSAGE), new SnackBarCallback() {
+                    CustomAlertDialogs.showAlertDialog(EditProductActivity.this, getString(R.string.congratulation), jsonObject.getString(Constants.MESSAGE), new SnackBarCallback() {
                         @Override
                         public void doAction() {
-                           // finish();
+                            // finish();
                         }
                     });
                 } else {
-                    CustomAlertDialogs.showAlertDialog(VendorAddProduct.this, getString(R.string.alert), jsonObject.getString(Constants.MESSAGE), new SnackBarCallback() {
+                    CustomAlertDialogs.showAlertDialog(EditProductActivity.this, getString(R.string.alert), jsonObject.getString(Constants.MESSAGE), new SnackBarCallback() {
                         @Override
                         public void doAction() {
 
@@ -508,3 +604,4 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
         bitmapsList.add(null);
     }
 }
+

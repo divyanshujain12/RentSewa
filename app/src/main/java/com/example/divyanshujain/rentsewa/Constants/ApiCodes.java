@@ -30,4 +30,5 @@ public interface ApiCodes {
     int PRODUCT_EDIT_PROCESS = 121;
     int DELETE_PRODUCT = 122;
     int VENDOR_PRODUCT_LISTING = 123;
+    int GET_PRODUCT_DETAIL_BY_PRODUCT_ID = 124;
 }

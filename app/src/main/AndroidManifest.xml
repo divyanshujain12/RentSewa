@@ -75,6 +75,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".VendorAllProductListing" />
         <activity android:name=".ForgotPassword" />
+        <activity android:name=".EditProductActivity"></activity>
     </application>
 
 </manifest>

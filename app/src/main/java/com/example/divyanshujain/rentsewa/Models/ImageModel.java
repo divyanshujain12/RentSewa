@@ -9,6 +9,7 @@ import android.os.Parcelable;
 
 public class ImageModel implements Parcelable{
     String image;
+    String id;
 
     public ImageModel(){
 
@@ -19,6 +20,7 @@ public class ImageModel implements Parcelable{
 
     protected ImageModel(Parcel in) {
         image = in.readString();
+        id = in.readString();
     }
 
     public static final Creator<ImageModel> CREATOR = new Creator<ImageModel>() {
@@ -41,6 +43,14 @@ public class ImageModel implements Parcelable{
         this.image = image;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -49,5 +59,6 @@ public class ImageModel implements Parcelable{
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(image);
+        parcel.writeString(id);
     }
 }
