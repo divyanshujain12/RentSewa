@@ -1,6 +1,7 @@
 package com.example.divyanshujain.rentsewa.Utils;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -71,19 +72,24 @@ public class PictureHelper {
      * @return the picture Uri, or null if no picture was taken.
      */
 
-    public Bitmap retrieveAllSelectedPicturePath(Activity activity, Uri uris) throws Exception {
+    public HashMap<String,Bitmap> retrieveAllSelectedPicturePath(Activity activity, ClipData mClipData) throws Exception {
+
+        HashMap<String, Bitmap> hashMap = new HashMap<>();
+        for (int i = 0; i < mClipData.getItemCount(); i++) {
+            ClipData.Item item = mClipData.getItemAt(i);
+            Uri uri = item.getUri();
+            getOrientation(activity, uri);
+            String filePath = getPath(activity, uri);
+            if (filePath != null && filePath.length() > 0) {
+                Bitmap bitmap = getBitmap(activity, uri);
+                bitmap = rotatePicInPortraitMode(filePath, bitmap);
+                Log.d(TAG, String.valueOf(bitmapSizeInKB(bitmap)));
+                hashMap.put(filePath, bitmap);
 
 
-        getOrientation(activity, uris);
-        String filePath = getPath(activity, uris);
-        if (filePath != null && filePath.length() > 0) {
-            Bitmap bitmap = getBitmap(activity, uris);
-            bitmap = rotatePicInPortraitMode(filePath, bitmap);
-            Log.d(TAG, String.valueOf(bitmapSizeInKB(bitmap)));
-            return bitmap;
-
+            }
         }
-        return null;
+        return hashMap;
     }
 
     public HashMap<String, Bitmap> retrievePicturePath(Activity activity, int requestCode, int resultCode, Intent data) throws Exception {

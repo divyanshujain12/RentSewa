@@ -1,19 +1,19 @@
 package com.example.divyanshujain.rentsewa;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -36,6 +36,7 @@ import com.example.divyanshujain.rentsewa.Models.SubCategoryModel;
 import com.example.divyanshujain.rentsewa.Models.ValidationModel;
 import com.example.divyanshujain.rentsewa.Utils.CallWebService;
 import com.example.divyanshujain.rentsewa.Utils.CommonFunctions;
+import com.example.divyanshujain.rentsewa.Utils.ImageLoading;
 import com.example.divyanshujain.rentsewa.Utils.MultipartUtility;
 import com.example.divyanshujain.rentsewa.Utils.MySharedPereference;
 import com.example.divyanshujain.rentsewa.Utils.PictureHelper;
@@ -60,11 +61,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class EditProductActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, RuntimePermissionHeadlessFragment.PermissionCallback {
     private static final int EXTERNAL_STORAGE_REQUEST = 101;
+
     @InjectView(R.id.addedImageLL)
     LinearLayout addedImageLL;
     @InjectView(R.id.addImageIV)
@@ -100,6 +103,7 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
     @InjectView(R.id.activity_vendor_add_product)
     RelativeLayout activityVendorAddProduct;
     private static final int PICK_IMAGE_MULTIPLE = 1;
+    private static final int PICK_IMAGE_PRIMARY = 2;
     CityAdapter productLocationCityAdapter;
     CityAdapter cityAdapter;
     StateAdapter stateAdapter;
@@ -112,6 +116,14 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
     EditText brandET;
     @InjectView(R.id.addressET)
     EditText addressET;
+    @InjectView(R.id.primaryIV)
+    ImageView primaryIV;
+    @InjectView(R.id.addImageLL)
+    LinearLayout addImageLL;
+    @InjectView(R.id.primaryImageFL)
+    FrameLayout primaryImageFL;
+    @InjectView(R.id.activity_edit_product)
+    RelativeLayout activityEditProduct;
     private SpinnerCategoryAdapter categoryAdapter;
     private SpinnerSubCategoryAdapter subCategoryAdapter;
 
@@ -131,12 +143,19 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
     private HashMap<View, String> valuesHashMap = new HashMap<>();
     private String productID = "";
     EditProductDetailModel editProductDetailModel;
+    private int currentUploadedImagePos = 1;
+    private boolean allFileUploaded = false;
     private String selectedProductLocationID, selectedCityID, selectedCategoryID, selectedSubCategoryID, selectedStateID, selectedCountryID;
+    private String message = "";
+    private ImageLoading imageLoading;
+    private int selectedImageType = 0;
+    private HashMap<String, Bitmap> newPrimaryImage = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_product);
+        ButterKnife.inject(this);
 
         initViews();
     }
@@ -144,7 +163,7 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
     private void initViews() {
 
         mRequiredPermissions = new String[]{
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
+                Manifest.permission.READ_EXTERNAL_STORAGE
         };
         runtimePermissionHeadlessFragment = CommonFunctions.getInstance().addRuntimePermissionFragment(this, this);
 
@@ -171,18 +190,19 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
         productImagesRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         addImagesRvAdapter = new AddImagesRvAdapter(this, bitmapsList, this);
         productImagesRV.setAdapter(addImagesRvAdapter);
+        imageLoading = new ImageLoading(this);
 
         CallWebService.getInstance(this, false, ApiCodes.GET_PRODUCT_DETAIL_BY_PRODUCT_ID).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_PRODUCT_DETAIL_BY_PRODUCT_ID, createJsonForGettingProduct(), this);
 
     }
 
 
-    @OnClick({R.id.addImageIV, R.id.postBT})
+    @OnClick({R.id.addImageIV, R.id.postBT, R.id.addImageLL})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.addImageIV:
-
-
+            case R.id.addImageLL:
+                selectedImageType = PICK_IMAGE_PRIMARY;
+                runtimePermissionHeadlessFragment.addAndCheckPermission(mRequiredPermissions, EXTERNAL_STORAGE_REQUEST);
                 break;
             case R.id.postBT:
                 valuesHashMap = validation.validate(this);
@@ -195,12 +215,13 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
         }
     }
 
-    private void openGallery() {
+    private void openGallery(int type) {
         Intent intent = new Intent();
         intent.setType("image/*");
+        if (type == PICK_IMAGE_MULTIPLE)
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_MULTIPLE);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), type);
     }
 
     @Override
@@ -336,12 +357,15 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
         descET.setText(editProductDetailModel.getDescription());
         brandET.setText(editProductDetailModel.getPbrand());
         addressET.setText(editProductDetailModel.getPaddress());
+        imageLoading.LoadImage(editProductDetailModel.getPimage_fullpath(), primaryIV, null);
+        addImageLL.setVisibility(View.GONE);
     }
 
 
     @Override
     public void onClickItem(int position, View view) {
         super.onClickItem(position, view);
+        selectedImageType = PICK_IMAGE_MULTIPLE;
         runtimePermissionHeadlessFragment.addAndCheckPermission(mRequiredPermissions, EXTERNAL_STORAGE_REQUEST);
     }
 
@@ -410,6 +434,7 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
         return jsonObject;
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
@@ -428,11 +453,7 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
                                     Toast.LENGTH_LONG).show();
                             return;
                         }
-                        for (int i = 0; i < mClipData.getItemCount(); i++) {
-                            ClipData.Item item = mClipData.getItemAt(i);
-                            Uri uri = item.getUri();
-                            bitmapsList.add(0, PictureHelper.getInstance().retrieveAllSelectedPicturePath(this, uri));
-                        }
+                        bitmapHashMap = PictureHelper.getInstance().retrieveAllSelectedPicturePath(this, mClipData);
                     }
                 }
                 for (String imagePath : bitmapHashMap.keySet()) {
@@ -442,6 +463,10 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
 
                 addImagesRvAdapter.addItem(bitmapsList);
                 //addImageToScrollView();
+            } else if (requestCode == PICK_IMAGE_PRIMARY && resultCode == RESULT_OK
+                    && null != data) {
+                newPrimaryImage = PictureHelper.getInstance().retrievePicturePath(this, requestCode, resultCode, data);
+                setImageToPrimaryIV();
             } else {
                 Toast.makeText(this, "You haven't picked Image",
                         Toast.LENGTH_LONG).show();
@@ -454,23 +479,14 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void addImageToScrollView() {
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
-        for (int i = 0; i < bitmapsList.size(); i++) {
-            View view = layoutInflater.inflate(R.layout.add_product_images_view, null);
-            ImageView productIV = (ImageView) view.findViewById(R.id.productIV);
-            Bitmap bitmap = bitmapsList.get(i);
-            productIV.setId(i);
-            productIV.setImageBitmap(bitmap);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParams.rightMargin = 10;
-            addedImageLL.addView(productIV, layoutParams);
-        }
+    private void setImageToPrimaryIV() {
+        primaryIV.setImageBitmap(newPrimaryImage.get(newPrimaryImage.keySet().iterator().next()));
     }
+
 
     @Override
     public void onPermissionGranted(int permissionType) {
-        openGallery();
+        openGallery(selectedImageType);
     }
 
     @Override
@@ -520,10 +536,14 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
                 multipart.addHeaderField("Test-Header", "Header-Value");
                 if (!onlyImages) {
                     setParams(context, filePath, multipart);
+                    multipart.addFilePart(Constants.P_IMAGE, new File(filePath));
                 } else {
                     setParamsForOnlyImages(filePath, multipart, productID);
+                    multipart.addFilePart(Constants.P_IMAGES_MULTIPLE, new File(filePath));
+                    if (currentUploadedImagePos == bitmapHashMap.size())
+                        allFileUploaded = true;
                 }
-                multipart.addFilePart(Constants.P_IMAGE, new File(filePath));
+
 
                 List<String> response = multipart.finish();
 
@@ -548,14 +568,22 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
 
                 JSONObject jsonObject = new JSONObject(result);
                 if (jsonObject.getBoolean(Constants.STATUS_CODE)) {
-                    CustomAlertDialogs.showAlertDialog(EditProductActivity.this, getString(R.string.congratulation), jsonObject.getString(Constants.MESSAGE), new SnackBarCallback() {
-                        @Override
-                        public void doAction() {
-                            // finish();
+                    if (!onlyImages) {
+                        message = jsonObject.getString(Constants.MESSAGE);
+                        bitmapHashMap.remove(filePath);
+                        productID = jsonObject.getString(Constants.P_ID);
+                        for (String filePath : bitmapHashMap.keySet()) {
+                            new UploadFileToServer(EditProductActivity.this, filePath, API.PRODUCT_ADD_MULTIPLE_IMAGE, true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                         }
-                    });
+                    } else if (allFileUploaded)
+                        CustomAlertDialogs.showAlertDialog(EditProductActivity.this, getString(R.string.congratulation), jsonObject.getString(Constants.MESSAGE), new SnackBarCallback() {
+                            @Override
+                            public void doAction() {
+                                finish();
+                            }
+                        });
                 } else {
-                    CustomAlertDialogs.showAlertDialog(EditProductActivity.this, getString(R.string.alert), jsonObject.getString(Constants.MESSAGE), new SnackBarCallback() {
+                    CustomAlertDialogs.showAlertDialog(EditProductActivity.this, getString(R.string.alert), message, new SnackBarCallback() {
                         @Override
                         public void doAction() {
 
@@ -604,4 +632,3 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
         bitmapsList.add(null);
     }
 }
-

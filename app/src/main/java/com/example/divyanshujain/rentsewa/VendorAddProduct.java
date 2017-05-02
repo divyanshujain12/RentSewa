@@ -6,13 +6,11 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -133,9 +131,10 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
     ProgressDialog progressDialog;
     private HashMap<View, String> valuesHashMap = new HashMap<>();
     private String productID = "";
-
+    private int currentUploadedImagePos = 1;
+    private boolean allFileUploaded = false;
     private String selectedProductLocationID, selectedCityID, selectedCategoryID, selectedSubCategoryID, selectedStateID, selectedCountryID;
-
+    private String message = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,9 +192,8 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
             case R.id.postBT:
                 valuesHashMap = validation.validate(this);
                 if (valuesHashMap != null && bitmapsList.size() > 0) {
-                    for (String imagePath : bitmapHashMap.keySet()) {
+                    String imagePath = bitmapHashMap.keySet().iterator().next();
                         new UploadFileToServer(this, imagePath, API.POST_PRODUCT, false).execute();
-                    }
                 }
                 break;
         }
@@ -332,11 +330,7 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
                                     Toast.LENGTH_LONG).show();
                             return;
                         }
-                        for (int i = 0; i < mClipData.getItemCount(); i++) {
-                            ClipData.Item item = mClipData.getItemAt(i);
-                            Uri uri = item.getUri();
-                            bitmapsList.add(0, PictureHelper.getInstance().retrieveAllSelectedPicturePath(this, uri));
-                        }
+                        bitmapHashMap = PictureHelper.getInstance().retrieveAllSelectedPicturePath(this, mClipData);
                     }
                 }
                 for (String imagePath : bitmapHashMap.keySet()) {
@@ -358,19 +352,7 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void addImageToScrollView() {
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
-        for (int i = 0; i < bitmapsList.size(); i++) {
-            View view = layoutInflater.inflate(R.layout.add_product_images_view, null);
-            ImageView productIV = (ImageView) view.findViewById(R.id.productIV);
-            Bitmap bitmap = bitmapsList.get(i);
-            productIV.setId(i);
-            productIV.setImageBitmap(bitmap);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParams.rightMargin = 10;
-            addedImageLL.addView(productIV, layoutParams);
-        }
-    }
+
 
     @Override
     public void onPermissionGranted(int permissionType) {
@@ -424,10 +406,16 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
                 multipart.addHeaderField("Test-Header", "Header-Value");
                 if (!onlyImages) {
                     setParams(context, filePath, multipart);
+                    multipart.addFilePart(Constants.P_IMAGE, new File(filePath));
                 } else {
                     setParamsForOnlyImages(filePath, multipart, productID);
+                    multipart.addFilePart(Constants.P_IMAGES_MULTIPLE, new File(filePath));
+                    if (currentUploadedImagePos == bitmapHashMap.size())
+                        allFileUploaded = true;
+                    else
+                        currentUploadedImagePos++;
                 }
-                multipart.addFilePart(Constants.P_IMAGE, new File(filePath));
+
 
                 List<String> response = multipart.finish();
 
@@ -452,14 +440,22 @@ public class VendorAddProduct extends BaseActivity implements AdapterView.OnItem
 
                 JSONObject jsonObject = new JSONObject(result);
                 if (jsonObject.getBoolean(Constants.STATUS_CODE)) {
+                    if (!onlyImages) {
+                        message = jsonObject.getString(Constants.MESSAGE);
+                        bitmapHashMap.remove(filePath);
+                        productID = jsonObject.getString(Constants.P_ID);
+                        for (String filePath : bitmapHashMap.keySet()) {
+                            new UploadFileToServer(VendorAddProduct.this, filePath, API.PRODUCT_ADD_MULTIPLE_IMAGE, true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        }
+                    } else if (allFileUploaded)
                     CustomAlertDialogs.showAlertDialog(VendorAddProduct.this, getString(R.string.congratulation), jsonObject.getString(Constants.MESSAGE), new SnackBarCallback() {
                         @Override
                         public void doAction() {
-                           // finish();
+                            finish();
                         }
                     });
                 } else {
-                    CustomAlertDialogs.showAlertDialog(VendorAddProduct.this, getString(R.string.alert), jsonObject.getString(Constants.MESSAGE), new SnackBarCallback() {
+                    CustomAlertDialogs.showAlertDialog(VendorAddProduct.this, getString(R.string.alert), message, new SnackBarCallback() {
                         @Override
                         public void doAction() {
 
