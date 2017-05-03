@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"
     android:layout_width="match_parent"
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/background"
         android:orientation="vertical"
-        android:layout_marginBottom="@dimen/fifty_dp">
+        android:layout_above="@+id/clickToContactBT">
 
         <include layout="@layout/custom_toolbar_with_white_title" />
 
@@ -91,7 +91,8 @@
         android:text="@string/click_to_contact"
         android:textColor="@color/white"
         android:textSize="@dimen/eighteen_sp"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         pixlui:typeface="Roboto-Medium.ttf" />
 
-</FrameLayout>
+</RelativeLayout>
