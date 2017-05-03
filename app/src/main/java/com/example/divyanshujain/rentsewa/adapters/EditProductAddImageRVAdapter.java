@@ -1,7 +1,6 @@
 package com.example.divyanshujain.rentsewa.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,26 +8,27 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.divyanshujain.rentsewa.Interfaces.RecyclerViewClick;
+import com.example.divyanshujain.rentsewa.Models.ImageModel;
 import com.example.divyanshujain.rentsewa.R;
 import com.example.divyanshujain.rentsewa.Utils.ImageLoading;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
-import static android.view.View.GONE;
-
 /**
- * Created by divyanshu.jain on 4/4/2017.
+ * Created by divyanshu.jain on 5/3/2017.
  */
 
-public class AddImagesRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class EditProductAddImageRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
-    private ArrayList<Bitmap> bitmaps;
+    private ArrayList<ImageModel> imageModels;
     private RecyclerViewClick recyclerViewClick;
     private ImageLoading imageLoading;
 
-    public AddImagesRvAdapter(Context context, ArrayList<Bitmap> bitmaps, RecyclerViewClick recyclerViewClick) {
+    public EditProductAddImageRVAdapter(Context context, ArrayList<ImageModel> imageModels, RecyclerViewClick recyclerViewClick) {
         this.recyclerViewClick = recyclerViewClick;
-        this.bitmaps = bitmaps;
+        this.imageModels = imageModels;
         this.context = context;
         imageLoading = new ImageLoading(context, 5);
     }
@@ -51,7 +51,7 @@ public class AddImagesRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
 
         int type = getItemViewType(position);
         switch (type) {
@@ -59,21 +59,30 @@ public class AddImagesRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        recyclerViewClick.onClickItem(position, view);
+                        recyclerViewClick.onClickItem(holder.getAdapterPosition(), view);
                     }
                 });
                 break;
             case 1:
                 MyViewHolder myViewHolder = ((MyViewHolder) holder);
-                myViewHolder.productIV.setImageBitmap(bitmaps.get(position));
-                myViewHolder.editIV.setVisibility(GONE);
+                if (imageModels.get(position).getImage().startsWith("http"))
+                    Picasso.with(context).load(imageModels.get(position).getImage()).into(myViewHolder.productIV);
+                    //imageLoading.LoadImage(imageModels.get(position).getImage(), myViewHolder.productIV, null);
+                else
+                    Picasso.with(context).load(new File(imageModels.get(position).getImage())).into(myViewHolder.productIV);
+                myViewHolder.editIV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        recyclerViewClick.onClickItem(holder.getAdapterPosition(), view);
+                    }
+                });
                 break;
         }
     }
 
     @Override
     public int getItemCount() {
-        return bitmaps.size();
+        return imageModels.size();
     }
 
     protected class MyViewHolder extends RecyclerView.ViewHolder {
@@ -93,15 +102,19 @@ public class AddImagesRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public void addItem(ArrayList<Bitmap> bitmaps) {
-        this.bitmaps = bitmaps;
+    public void addItem(ArrayList<ImageModel> bitmaps) {
+        this.imageModels = bitmaps;
         notifyDataSetChanged();
     }
 
+    public void removeItem(int pos) {
+        this.imageModels.remove(pos);
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == bitmaps.size() - 1) {
+        if (position == imageModels.size() - 1) {
             return 0;
         } else
             return 1;

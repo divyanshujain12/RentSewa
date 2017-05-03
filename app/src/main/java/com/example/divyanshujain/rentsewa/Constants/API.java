@@ -31,5 +31,6 @@ public interface API {
     String VENDOR_PRODUCT_LISTING = BASE + "vendorProductListing";
     String GET_PRODUCT_DETAIL_BY_PRODUCT_ID = BASE + "getproductDetailByProductId";
     String PRODUCT_ADD_MULTIPLE_IMAGE = BASE + "productAddMultipleImages";
+    String REMOVE_MULTIPLE_IMAGES = BASE + "removeMultipleImage";
 
 }

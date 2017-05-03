@@ -56,6 +56,12 @@ public class VendorAllProductListing extends BaseActivity {
     private void initViews() {
         CommonFunctions.getInstance().configureToolbarWithBackButton(this, toolbarView, getString(R.string.all_products));
         productListingRV.setLayoutManager(new LinearLayoutManager(this));
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         CallWebService.getInstance(this, true, ApiCodes.VENDOR_PRODUCT_LISTING).hitJsonObjectRequestAPI(CallWebService.POST, API.VENDOR_PRODUCT_LISTING, createJsonForGetProducts(), this);
     }
 
@@ -80,9 +86,9 @@ public class VendorAllProductListing extends BaseActivity {
         switch (view.getId()) {
             case R.id.editIV:
 
-                /*Intent intent = new Intent(this, VendorAddProduct.class);
-                intent.putExtra(Constants.DATA, productsModels.get(position));
-                startActivity(intent);*/
+                Intent intent = new Intent(this, EditProductActivity.class);
+                intent.putExtra(Constants.P_ID, productsModels.get(position).getId());
+                startActivity(intent);
                 break;
             case R.id.deleteIV:
                 CustomAlertDialogs.showAlertDialogWithCallBack(this, "Alert", "Are you sure want to delete this product?", new SnackBarCallback() {
@@ -97,6 +103,7 @@ public class VendorAllProductListing extends BaseActivity {
                 Intent intent1 = new Intent(this, ProductDescriptionActivity.class);
                 intent1.putExtra(Constants.PRODUCT_NAME, productsModels.get(position).getTitle());
                 intent1.putExtra(Constants.PRODUCT_ID, productsModels.get(position).getId());
+                intent1.putExtra(Constants.FROM_VENDOR, true);
                 startActivity(intent1);
                 break;
         }

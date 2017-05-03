@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.divyanshujain.rentsewa.Constants.API;
@@ -65,7 +66,7 @@ public class ProductDescriptionActivity extends BaseActivity {
     Button clickToContactBT;
     @InjectView(R.id.pager)
     ViewPager pager;
-
+    private boolean fromVendor = false;
     private String productName, productID;
     private ImageLoading imageLoading;
     private CustomPagerAdapter customPagerAdapter;
@@ -82,6 +83,9 @@ public class ProductDescriptionActivity extends BaseActivity {
     private void initViews() {
         productName = getIntent().getStringExtra(Constants.PRODUCT_NAME);
         productID = getIntent().getStringExtra(Constants.PRODUCT_ID);
+        fromVendor = getIntent().getBooleanExtra(Constants.FROM_VENDOR, false);
+        if (fromVendor)
+            clickToContactBT.setVisibility(View.GONE);
         CommonFunctions.getInstance().configureToolbarWithBackButton(this, toolbarView, productName);
         imageLoading = new ImageLoading(this);
         CallWebService.getInstance(this, true, ApiCodes.PRODUCT_DETAIL).hitJsonObjectRequestAPI(CallWebService.POST, API.PRODUCT_DETAIL, createJsonForGetProductDetail(), this);

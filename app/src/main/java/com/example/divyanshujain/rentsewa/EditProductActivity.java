@@ -31,6 +31,7 @@ import com.example.divyanshujain.rentsewa.Models.CategoryModel;
 import com.example.divyanshujain.rentsewa.Models.CitiesModel;
 import com.example.divyanshujain.rentsewa.Models.CountryModel;
 import com.example.divyanshujain.rentsewa.Models.EditProductDetailModel;
+import com.example.divyanshujain.rentsewa.Models.ImageModel;
 import com.example.divyanshujain.rentsewa.Models.StateModel;
 import com.example.divyanshujain.rentsewa.Models.SubCategoryModel;
 import com.example.divyanshujain.rentsewa.Models.ValidationModel;
@@ -45,6 +46,7 @@ import com.example.divyanshujain.rentsewa.Utils.Validation;
 import com.example.divyanshujain.rentsewa.adapters.AddImagesRvAdapter;
 import com.example.divyanshujain.rentsewa.adapters.CityAdapter;
 import com.example.divyanshujain.rentsewa.adapters.CountryAdapter;
+import com.example.divyanshujain.rentsewa.adapters.EditProductAddImageRVAdapter;
 import com.example.divyanshujain.rentsewa.adapters.SpinnerCategoryAdapter;
 import com.example.divyanshujain.rentsewa.adapters.SpinnerSubCategoryAdapter;
 import com.example.divyanshujain.rentsewa.adapters.StateAdapter;
@@ -100,8 +102,8 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
     Spinner pLocationcitiesSP;
     @InjectView(R.id.postBT)
     Button postBT;
-    @InjectView(R.id.activity_vendor_add_product)
-    RelativeLayout activityVendorAddProduct;
+   /* @InjectView(R.id.activity_vendor_add_product)
+    RelativeLayout activityVendorAddProduct;*/
     private static final int PICK_IMAGE_MULTIPLE = 1;
     private static final int PICK_IMAGE_PRIMARY = 2;
     CityAdapter productLocationCityAdapter;
@@ -124,6 +126,8 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
     FrameLayout primaryImageFL;
     @InjectView(R.id.activity_edit_product)
     RelativeLayout activityEditProduct;
+    @InjectView(R.id.editIV)
+    ImageView editIV;
     private SpinnerCategoryAdapter categoryAdapter;
     private SpinnerSubCategoryAdapter subCategoryAdapter;
 
@@ -150,6 +154,9 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
     private ImageLoading imageLoading;
     private int selectedImageType = 0;
     private HashMap<String, Bitmap> newPrimaryImage = new HashMap<>();
+    private EditProductAddImageRVAdapter editProductAddImageRVAdapter;
+    ArrayList<ImageModel> imageModels;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,7 +175,7 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
         runtimePermissionHeadlessFragment = CommonFunctions.getInstance().addRuntimePermissionFragment(this, this);
 
         scrollview.requestFocusFromTouch();
-
+        productID = getIntent().getStringExtra(Constants.P_ID);
         validation = new Validation();
         validation.addValidationField(new ValidationModel(titleET, Validation.TYPE_EMPTY_FIELD_VALIDATION, "Title Cant Left Blank!"));
         validation.addValidationField(new ValidationModel(emailET, Validation.TYPE_EMAIL_VALIDATION, "Invalid Email"));
@@ -193,23 +200,26 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
         imageLoading = new ImageLoading(this);
 
         CallWebService.getInstance(this, false, ApiCodes.GET_PRODUCT_DETAIL_BY_PRODUCT_ID).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_PRODUCT_DETAIL_BY_PRODUCT_ID, createJsonForGettingProduct(), this);
-
     }
 
 
-    @OnClick({R.id.addImageIV, R.id.postBT, R.id.addImageLL})
+    @OnClick({R.id.addImageIV, R.id.postBT, R.id.editIV})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.addImageLL:
+            case R.id.editIV:
                 selectedImageType = PICK_IMAGE_PRIMARY;
                 runtimePermissionHeadlessFragment.addAndCheckPermission(mRequiredPermissions, EXTERNAL_STORAGE_REQUEST);
                 break;
             case R.id.postBT:
                 valuesHashMap = validation.validate(this);
                 if (valuesHashMap != null && bitmapsList.size() > 0) {
-                    for (String imagePath : bitmapHashMap.keySet()) {
-                        new UploadFileToServer(this, imagePath, API.POST_PRODUCT, false).execute();
-                    }
+                    String imagePath;
+                    if (newPrimaryImage.size() > 0)
+                        imagePath = newPrimaryImage.keySet().iterator().next();
+                    else
+                        imagePath = editProductDetailModel.getPimage_fullpath();
+                    new UploadFileToServer(this, imagePath, API.PRODUCT_EDIT_PROCESS, false).execute();
+
                 }
                 break;
         }
@@ -219,7 +229,7 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
         Intent intent = new Intent();
         intent.setType("image/*");
         if (type == PICK_IMAGE_MULTIPLE)
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), type);
     }
@@ -229,7 +239,7 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
         super.onJsonObjectSuccess(response, apiType);
         switch (apiType) {
             case ApiCodes.GET_PRODUCT_DETAIL_BY_PRODUCT_ID:
-                editProductDetailModel = UniversalParser.getInstance().parseJsonObject(response, EditProductDetailModel.class);
+                editProductDetailModel = UniversalParser.getInstance().parseJsonObject(response.getJSONObject(Constants.DATA), EditProductDetailModel.class);
                 updateUI();
                 CallWebService.getInstance(this, false, ApiCodes.GET_PRODUCT_LOCATION).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_PRODUCT_LOCATION, null, this);
                 CallWebService.getInstance(this, false, ApiCodes.GET_ALL_COUNTRY).hitJsonObjectRequestAPI(CallWebService.POST, API.GET_ALL_COUNTRY, null, this);
@@ -254,6 +264,9 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
             case ApiCodes.GET_CATEGORIES:
                 categoryModels = UniversalParser.getInstance().parseJsonArrayWithJsonObject(response.getJSONArray(Constants.DATA), CategoryModel.class);
                 setUpCategorySP();
+                break;
+            case ApiCodes.REMOVE_MULTIPLE_IMAGES:
+
                 break;
             case ApiCodes.POST_PRODUCT:
                 break;
@@ -343,7 +356,7 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
         CitiesModel citiesModel = new CitiesModel();
         selectedCityID = editProductDetailModel.getPcity();
         citiesModel.setId(selectedCityID);
-        int selectedPCity = productLocationCityModels.indexOf(citiesModel);
+        int selectedPCity = cityModels.indexOf(citiesModel);
         citiesSP.setSelection(selectedPCity);
     }
 
@@ -358,6 +371,10 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
         brandET.setText(editProductDetailModel.getPbrand());
         addressET.setText(editProductDetailModel.getPaddress());
         imageLoading.LoadImage(editProductDetailModel.getPimage_fullpath(), primaryIV, null);
+        imageModels = editProductDetailModel.getImagesArray();
+        imageModels.add(null);
+        editProductAddImageRVAdapter = new EditProductAddImageRVAdapter(this, editProductDetailModel.getImagesArray(), this);
+        productImagesRV.setAdapter(editProductAddImageRVAdapter);
         addImageLL.setVisibility(View.GONE);
     }
 
@@ -365,8 +382,38 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
     @Override
     public void onClickItem(int position, View view) {
         super.onClickItem(position, view);
-        selectedImageType = PICK_IMAGE_MULTIPLE;
-        runtimePermissionHeadlessFragment.addAndCheckPermission(mRequiredPermissions, EXTERNAL_STORAGE_REQUEST);
+        switch (view.getId()) {
+            case R.id.editIV:
+                if (imageModels.get(position).getImage().startsWith("http")) {
+                    CallWebService.getInstance(this, true, ApiCodes.REMOVE_MULTIPLE_IMAGES).hitJsonObjectRequestAPI(CallWebService.POST, API.REMOVE_MULTIPLE_IMAGES, createJsonForRemoveImage(position), this);
+                } else {
+                    bitmapHashMap.remove(imageModels.get(position).getImage());
+                }
+                imageModels.remove(position);
+                editProductAddImageRVAdapter.addItem(imageModels);
+                break;
+            default:
+                if (imageModels.size() > 5) {
+                    Toast.makeText(this, "You can select max 5 images",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+                selectedImageType = PICK_IMAGE_MULTIPLE;
+                runtimePermissionHeadlessFragment.addAndCheckPermission(mRequiredPermissions, EXTERNAL_STORAGE_REQUEST);
+                break;
+        }
+
+    }
+
+    private JSONObject createJsonForRemoveImage(int position) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(Constants.P_ID, productID);
+            jsonObject.put(Constants.ID, imageModels.get(position).getId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
     }
 
     @Override
@@ -427,7 +474,7 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
     private JSONObject createJsonForGettingProduct() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(Constants.P_ID, getIntent().getStringExtra(Constants.P_ID));
+            jsonObject.put(Constants.P_ID, productID);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -448,7 +495,7 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
                 } else {
                     if (data.getClipData() != null) {
                         ClipData mClipData = data.getClipData();
-                        if (mClipData.getItemCount() > 5) {
+                        if (imageModels.size() > 5) {
                             Toast.makeText(this, "You can select max 5 images",
                                     Toast.LENGTH_LONG).show();
                             return;
@@ -457,12 +504,14 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
                     }
                 }
                 for (String imagePath : bitmapHashMap.keySet()) {
+                    ImageModel imageModel = new ImageModel(imagePath);
+                    imageModels.add(0, imageModel);
                     Bitmap bitmap = bitmapHashMap.get(imagePath);
                     bitmapsList.add(0, bitmap);
                 }
+                editProductAddImageRVAdapter.addItem(imageModels);
 
-                addImagesRvAdapter.addItem(bitmapsList);
-                //addImageToScrollView();
+
             } else if (requestCode == PICK_IMAGE_PRIMARY && resultCode == RESULT_OK
                     && null != data) {
                 newPrimaryImage = PictureHelper.getInstance().retrievePicturePath(this, requestCode, resultCode, data);
@@ -536,12 +585,15 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
                 multipart.addHeaderField("Test-Header", "Header-Value");
                 if (!onlyImages) {
                     setParams(context, filePath, multipart);
-                    multipart.addFilePart(Constants.P_IMAGE, new File(filePath));
+                    if (newPrimaryImage.size() > 0)
+                        multipart.addFilePart(Constants.P_IMAGE, new File(filePath));
                 } else {
                     setParamsForOnlyImages(filePath, multipart, productID);
                     multipart.addFilePart(Constants.P_IMAGES_MULTIPLE, new File(filePath));
                     if (currentUploadedImagePos == bitmapHashMap.size())
                         allFileUploaded = true;
+                    else
+                        currentUploadedImagePos++;
                 }
 
 
@@ -570,20 +622,19 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
                 if (jsonObject.getBoolean(Constants.STATUS_CODE)) {
                     if (!onlyImages) {
                         message = jsonObject.getString(Constants.MESSAGE);
-                        bitmapHashMap.remove(filePath);
-                        productID = jsonObject.getString(Constants.P_ID);
                         for (String filePath : bitmapHashMap.keySet()) {
                             new UploadFileToServer(EditProductActivity.this, filePath, API.PRODUCT_ADD_MULTIPLE_IMAGE, true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                         }
-                    } else if (allFileUploaded)
-                        CustomAlertDialogs.showAlertDialog(EditProductActivity.this, getString(R.string.congratulation), jsonObject.getString(Constants.MESSAGE), new SnackBarCallback() {
+                    }
+                    if (bitmapHashMap.size() == 0 || allFileUploaded)
+                        CustomAlertDialogs.showAlertDialog(EditProductActivity.this, getString(R.string.congratulation), message, new SnackBarCallback() {
                             @Override
                             public void doAction() {
                                 finish();
                             }
                         });
                 } else {
-                    CustomAlertDialogs.showAlertDialog(EditProductActivity.this, getString(R.string.alert), message, new SnackBarCallback() {
+                    CustomAlertDialogs.showAlertDialog(EditProductActivity.this, getString(R.string.alert), jsonObject.getString(Constants.MESSAGE), new SnackBarCallback() {
                         @Override
                         public void doAction() {
 
@@ -601,6 +652,7 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
 
         private void setParams(Context context, String filename, MultipartUtility multipartUtility) {
             multipartUtility.addFormField(Constants.USER_ID, MySharedPereference.getInstance().getString(context, Constants.USER_ID));
+            multipartUtility.addFormField(Constants.P_ID, productID);
             multipartUtility.addFormField(Constants.P_TITLE, valuesHashMap.get(titleET));
             multipartUtility.addFormField(Constants.P_BRAND, valuesHashMap.get(brandET));
             multipartUtility.addFormField(Constants.P_CATEGORY, selectedCategoryID);
@@ -610,6 +662,8 @@ public class EditProductActivity extends BaseActivity implements AdapterView.OnI
             multipartUtility.addFormField(Constants.P_DESC, valuesHashMap.get(descET));
             multipartUtility.addFormField(Constants.P_NAME, valuesHashMap.get(titleET));
             multipartUtility.addFormField(Constants.P_IMAGE, filename);
+            if (newPrimaryImage.size() == 0)
+                multipartUtility.addFormField(Constants.P_IMAGE_OLD_FILE, editProductDetailModel.getPimage());
             multipartUtility.addFormField(Constants.P_LOCATION, selectedProductLocationID);
             multipartUtility.addFormField(Constants.P_EMAIL, valuesHashMap.get(emailET));
             multipartUtility.addFormField(Constants.P_PHONE, valuesHashMap.get(phoneET));

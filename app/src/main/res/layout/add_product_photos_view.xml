@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/one_hundred_dp"
     android:orientation="vertical"
-    tools:showIn="@layout/activity_vendor_add_product">
+    tools:showIn="@layout/activity_vendor_add_product"
+    android:layout_marginTop="@dimen/five_dp">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/productImagesRV"

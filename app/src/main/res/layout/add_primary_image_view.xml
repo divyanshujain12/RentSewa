@@ -5,19 +5,23 @@
     android:layout_width="@dimen/two_hundred_dp"
     android:layout_height="@dimen/two_hundred_dp"
     android:layout_centerHorizontal="true"
+    android:layout_marginTop="@dimen/ten_dp"
+    android:layout_gravity="center_horizontal"
     android:background="@drawable/rounded_corner_light_grey">
+
 
     <ImageView
         android:id="@+id/primaryIV"
         android:layout_width="@dimen/two_hundred_dp"
-        android:layout_height="@dimen/two_hundred_dp" />
-
+        android:layout_height="@dimen/two_hundred_dp"
+        android:scaleType="fitXY"/>
     <LinearLayout
         android:id="@+id/addImageLL"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
+        android:alpha=".8"
         android:orientation="vertical">
 
         <ImageView
@@ -36,4 +40,14 @@
             android:textSize="@dimen/twelve_sp"
             pixlui:typeface="Roboto-Medium.ttf" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/editIV"
+        android:layout_width="@dimen/fourty_dp"
+        android:layout_height="@dimen/fourty_dp"
+        android:layout_margin="@dimen/five_dp"
+        android:background="@drawable/rounded_shape_blue_button"
+        android:padding="@dimen/ten_dp"
+        android:layout_gravity="bottom|right"
+        android:src="@drawable/ic_edit" />
 </FrameLayout>

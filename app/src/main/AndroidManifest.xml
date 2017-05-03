@@ -72,10 +72,11 @@
 
         <activity
             android:name=".VendorAddProduct"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize|stateVisible" />
         <activity android:name=".VendorAllProductListing" />
         <activity android:name=".ForgotPassword" />
-        <activity android:name=".EditProductActivity"></activity>
+        <activity android:name=".EditProductActivity"
+            android:windowSoftInputMode="adjustResize|stateVisible" ></activity>
     </application>
 
 </manifest>

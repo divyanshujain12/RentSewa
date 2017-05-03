@@ -41,6 +41,7 @@ public interface Constants {
     String FCM_ID = "fcm_id";
     String STATE_ID = "state_id";
     String COUNTRY_ID = "country_id";
+    String FROM_VENDOR = "from_vendor";
 
     String P_TITLE = "ptitle";
     String P_BRAND = "pbrand";
@@ -61,6 +62,7 @@ public interface Constants {
     String P_ZIP = "pzip";
     String P_PROD_IMG = "prod_img";
     String P_IMAGES_MULTIPLE = "pimage_multiple";
+    String P_IMAGE_OLD_FILE = "pimage_old_file";
 
 
 }

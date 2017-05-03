@@ -48,11 +48,11 @@ public class VendorProductRvAdapter extends RecyclerView.Adapter<VendorProductRv
         holder.productTitleTV.setText(productsModel.getTitle());
         holder.productPriceTV.setText(context.getString(R.string.rs) + " " + productsModel.getPrice());
         holder.timePeriodTV.setText(context.getString(R.string.time_period) + " " + productsModel.getTime_period());
-      /*  if (productsModel.getStatus().equals("0")) {
+        if (productsModel.getStatus().equals("0")) {
             holder.editIV.setVisibility(View.VISIBLE);
-        } else {*/
+        } else {
         holder.editIV.setVisibility(View.GONE);
-        //}
+        }
         holder.deleteIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
