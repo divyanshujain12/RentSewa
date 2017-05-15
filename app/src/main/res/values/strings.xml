@@ -100,7 +100,7 @@
     <string name="pin_code">Pin Code</string>
     <string name="state">State</string>
     <string name="tour_pin_code_here">Your Pin Code Here</string>
-    <string name="time_in_hours">Time in Hours</string>
+    <string name="time_in_hours">Time period like :: Per Hours,Per Day</string>
     <string name="product_location">Product Location</string>
     <string name="your_nrand_here">Your Brand Here</string>
     <string name="your_address_here">Your Address Here</string>
