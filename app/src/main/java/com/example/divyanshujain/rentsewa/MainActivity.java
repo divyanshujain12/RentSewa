@@ -65,7 +65,7 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
     String objname, objid, objemail;
     ArrayList<ImageModel> imageModels;
     private CustomPagerAdapter customPagerAdapter;
-
+    int currentItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,14 +200,19 @@ public class MainActivity extends BaseActivity implements FacebookCallback<Login
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                int currentItem = backgroundImagesVP.getCurrentItem();
+                currentItem = backgroundImagesVP.getCurrentItem();
                 if (currentItem < imageModels.size() - 1) {
                     currentItem++;
                 } else {
                     currentItem = 0;
                 }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        backgroundImagesVP.setCurrentItem(currentItem);
+                    }
+                });
 
-                backgroundImagesVP.setCurrentItem(currentItem);
             }
         }, 2000, 2000);
     }
